@@ -7,6 +7,8 @@
  */
 namespace app\admin\controller;
 
+use think\Db;
+
 class Admin extends Base
 {
     public function _initialize()
@@ -20,12 +22,75 @@ class Admin extends Base
 
     public function lists()
     {
+        $list = Db::name('admin')->select();
+        $count = count($list);
+//        dump($list);//die;
+        $this->assign('list',$list);
+        $this->assign('count',$count);
         return $this->fetch();
     }
 
     public function add()
     {
+        $admin_id = input('get.id/d');
+        if(!empty($admin_id)){
+            $act = 'edit';
+            $data = Db::name('admin')->where(['id'=>$admin_id])->find();
+
+            $this->assign('admin_id',$admin_id);
+            $this->assign('data',$data);
+//            dump($data);//die;
+        }else {
+            $act = 'add';
+        }
+
+        $this->assign('act',$act);
         return $this->fetch();
+    }
+
+    public function addHandle()
+    {
+        $data = input('post.');
+
+        $return = ['status'=>0,'msg'=>'参数错误']; //初始化返回信息
+        if($data['act'] == 'add'){
+            $is_name = Db::name('admin')->where('name',$data['adminName'])->find();
+            if(!empty($is_name)){
+                return json(['status'=>0,'msg'=>'已经有此管理员了！']);
+            }
+            $data1 = [
+                'name'    => $data['adminName'],
+                'password'=> md5($data['password']),
+                'is_super'=> $data['adminRole'],
+                'addtime' => time()
+            ];
+            dump($data1);
+//            die;
+            $res = Db::name('admin')->insert($data1);
+//            dump($data);die;
+//            dump($res);die;
+//            die;
+            if($res) {
+                return json(['status'=> 1, 'msg'=> '添加成功']);
+            }else {
+                return json(['status'=> 0, 'msg'=> '添加失败，数据库未响应']);
+            }
+        }
+        if($data['act'] == 'edit'){
+            $data1 = [
+                'name'    => $data['adminName'],
+                'password'=> md5($data['password']),
+                'is_super'=> $data['adminRole'],
+                'addtime' => time()
+            ];
+            $res = Db::name('admin')->where('id',$data['admin_id'])->update($data1);
+            if($res) {
+                return json(['status'=> 1, 'msg'=> '添加成功']);
+            }else {
+                return json(['status'=> 0, 'msg'=> '添加失败，数据库未响应']);
+            }
+        }
+
     }
 
     public function role()
