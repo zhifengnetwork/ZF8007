@@ -14,10 +14,9 @@
             <form action="{:url('admin/system/other_setting')}" method="post" class="form form-horizontal" id="form-article-add">
                 <div id="tab-system" class="HuiTab">
                     <div class="tabBar cl">
-                        <a href="{:url('admin/system/base_setting')}"><span>基本设置</span></a>
-                        <a href="{:url('admin/system/safe_setting')}"><span>安全设置</span></a>
-                        <a href="{:url('admin/system/email_setting')}"><span>邮件设置</span></a>
-                        <a href="{:url('admin/system/other_setting')}"><span>其他设置</span></a>
+                        {foreach name="menu_list" item="vo"}
+                        <a href="/admin/system/{$vo.url}"><span>{$vo.name}</span></a>
+                        {/foreach}
                     </div>
                     <div>
                         hahahah

@@ -17,52 +17,48 @@
                         {foreach name="menu_list" item="vo"}
                             <a href="/admin/system/{$vo.url}"><span>{$vo.name}</span></a>
                         {/foreach}
-                        <!--<a href="{:url('admin/system/base_setting')}"><span>基本设置</span></a>-->
-                        <!--<a href="{:url('admin/system/safe_setting')}"><span>安全设置</span></a>-->
-                        <!--<a href="{:url('admin/system/email_setting')}"><span>邮件设置</span></a>-->
-                        <!--<a href="{:url('admin/system/other_setting')}"><span>其他设置</span></a>-->
                     </div>
                     <!--<div class="tabCon">-->
                         <div class="row cl">
                             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>网站名称：</label>
                             <div class="formControls col-xs-8 col-sm-9">
-                                <input type="text" name="website-title" placeholder="控制在25个字、50个字节以内" value="" class="input-text">
+                                <input type="text" name="website_title" placeholder="控制在25个字、50个字节以内" value="{$data.website_title ?? ''} " class="input-text">
                             </div>
                         </div>
                         <div class="row cl">
                             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>关键词：</label>
                             <div class="formControls col-xs-8 col-sm-9">
-                                <input type="text" name="website-Keywords" placeholder="5个左右,8汉字以内,用英文,隔开" value="" class="input-text">
+                                <input type="text" name="website_Keywords" placeholder="5个左右,8汉字以内,用英文,隔开" value="{$data.website_Keywords ?? ''}" class="input-text">
                             </div>
                         </div>
                         <div class="row cl">
                             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>描述：</label>
                             <div class="formControls col-xs-8 col-sm-9">
-                                <input type="text" name="website-description" placeholder="空制在80个汉字，160个字符以内" value="" class="input-text">
+                                <input type="text" name="website_description" placeholder="空制在80个汉字，160个字符以内" value="{$data.website_description ?? ''}" class="input-text">
                             </div>
                         </div>
                         <div class="row cl">
-                            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>css、js、images路径配置：</label>
+                            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>联系人：</label>
                             <div class="formControls col-xs-8 col-sm-9">
-                                <input type="text" name="website-static" placeholder="默认为空，为相对路径" value="" class="input-text">
+                                <input type="text" name="website_man" value="{$data.website_man ?? ''}" class="input-text">
                             </div>
                         </div>
                         <div class="row cl">
-                            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>上传目录配置：</label>
+                            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>联系电话：</label>
                             <div class="formControls col-xs-8 col-sm-9">
-                                <input type="text" name="website-uploadfile" placeholder="默认为uploadfile" value="" class="input-text">
+                                <input type="text" name="website_photo" value="{$data.website_photo ?? ''}" class="input-text">
                             </div>
                         </div>
                         <div class="row cl">
                             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>底部版权信息：</label>
                             <div class="formControls col-xs-8 col-sm-9">
-                                <input type="text" name="website-copyright" placeholder="&copy; 2014 H-ui.net" value="" class="input-text">
+                                <input type="text" name="website_copyright" placeholder="&copy; 2014 H-ui.net" value="{$data.website_copyright ?? ''}" class="input-text">
                             </div>
                         </div>
                         <div class="row cl">
                             <label class="form-label col-xs-4 col-sm-2">备案号：</label>
                             <div class="formControls col-xs-8 col-sm-9">
-                                <input type="text" name="website-icp" placeholder="京ICP备00000000号" value="" class="input-text">
+                                <input type="text" name="website_icp" placeholder="京ICP备00000000号" value="{$data.website_icp ?? ''}" class="input-text">
                             </div>
                         </div>
                     <!--</div>-->
@@ -90,4 +86,5 @@
         // $('.HuiTab').Huitab("#tab-system .tabBar span","#tab-system .tabCon","current","click","0");
         $('#tab-system').Huitab({index:"{$index}"});
     });
+
 </script>
