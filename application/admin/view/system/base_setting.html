@@ -22,7 +22,7 @@
                         <!--<a href="{:url('admin/system/email_setting')}"><span>邮件设置</span></a>-->
                         <!--<a href="{:url('admin/system/other_setting')}"><span>其他设置</span></a>-->
                     </div>
-                    <div class="tabCon">
+                    <!--<div class="tabCon">-->
                         <div class="row cl">
                             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>网站名称：</label>
                             <div class="formControls col-xs-8 col-sm-9">
@@ -65,8 +65,7 @@
                                 <input type="text" name="website-icp" placeholder="京ICP备00000000号" value="" class="input-text">
                             </div>
                         </div>
-                    </div>
-                    <div class="tabCon"> </div>
+                    <!--</div>-->
                 </div>
                 <div class="row cl">
                     <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
@@ -89,6 +88,6 @@
             increaseArea: '20%'
         });
         // $('.HuiTab').Huitab("#tab-system .tabBar span","#tab-system .tabCon","current","click","0");
-        $('#tab-system').Huitab({index:"{$memu_list.url}"});
+        $('#tab-system').Huitab({index:"{$index}"});
     });
 </script>

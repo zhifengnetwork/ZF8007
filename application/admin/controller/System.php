@@ -18,8 +18,8 @@ class System extends Base
         $this->menu_list = array(
             'base_setting' => ['order'=>0,'url'=>'base_setting','name'=>"基本设置"],
             'safe_setting' => ['order'=>1,'url'=>'safe_setting','name'=>"安全设置"],
-            'email_setting'=> ['order'=>1,'url'=>'email_setting','name'=>"邮箱设置"],
-            'other_setting'=> ['order'=>2,'url'=>'other_setting','name'=>"其他设置"]
+            'email_setting'=> ['order'=>2,'url'=>'email_setting','name'=>"邮箱设置"],
+            'other_setting'=> ['order'=>3,'url'=>'other_setting','name'=>"其他设置"]
         );
 
         $this->assign('menu_list',$this->menu_list);
@@ -31,31 +31,37 @@ class System extends Base
     {
         $type = "base_setting";
         $data = input('post.');
-        dump($data);//die;
+//        dump($data);//die;
 
         $index = $this->menu_list;
-        $this->assign('index',$index);
+        $this->assign('index',$index['base_setting']['order']);
         return $this->fetch();
     }
 
     public function safe_setting()
     {
         $data = input('post.');
-        dump($data);//die;
+//        dump($data);//die;
+        $index = $this->menu_list;
+        $this->assign('index',1);
         return $this->fetch();
     }
 
     public function email_setting()
     {
         $data = input('post.');
-        dump($data);//die;
+//        dump($data);//die;
+        $index = $this->menu_list;
+        $this->assign('index',2);
         return $this->fetch();
     }
 
     public function other_setting()
     {
         $data = input('post.');
-        dump($data);//die;
+//        dump($data);//die;
+        $index = $this->menu_list;
+        $this->assign('index',3);
         return $this->fetch();
     }
 

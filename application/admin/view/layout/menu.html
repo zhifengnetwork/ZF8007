@@ -1,41 +1,59 @@
 <aside class="Hui-aside">
     <div class="menu_dropdown bk_2">
-        <dl id="menu-system">
-            <dt><i class="Hui-iconfont">&#xe62e;</i> 系统管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
-            <dd>
-                <ul>
-                    <li><a href="{:url('admin/system/base_setting')}" title="系统设置">系统设置</a></li>
-                    <li><a href="{:url('admin/system/category')}" title="栏目管理">栏目管理</a></li>
-                    <li><a href="{:url('admin/system/data')}" title="数据字典">数据字典</a></li>
-                    <li><a href="{:url('admin/system/shielding')}" title="屏蔽词">屏蔽词</a></li>
-                    <li><a href="{:url('admin/system/log')}" title="系统日志">系统日志</a></li>
-                </ul>
-            </dd>
-        </dl>
-        <dl id="menu-admin">
-            <dt><i class="Hui-iconfont">&#xe62d;</i> 管理员管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
-            <dd>
-                <ul>
-                    <li><a href="{:url('admin/admin/role')}" title="角色管理">角色管理</a></li>
-                    <li><a href="{:url('admin/admin/permission')}" title="权限管理">权限管理</a></li>
-                    <li><a href="{:url('admin/admin/lists')}" title="管理员列表">管理员列表</a></li>
-                </ul>
-            </dd>
-        </dl>
-        <dl id="menu-member">
-            <dt><i class="Hui-iconfont">&#xe60d;</i> 会员管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
-            <dd>
-                <ul>
-                    <li><a href="{:url('admin/member/lists')}" title="会员列表">会员列表</a></li>
-                    <li><a href="{:url('admin/member/del')}" title="删除的会员">删除的会员</a></li>
-                    <li><a href="{:url('admin/member/level')}" title="等级管理">等级管理</a></li>
-                    <li><a href="{:url('admin/member/scoreoperation')}" title="积分管理">积分管理</a></li>
-                    <li><a href="{:url('admin/member/record_browse')}" title="浏览记录">浏览记录</a></li>
-                    <li><a href="{:url('admin/member/record_download')}" title="下载记录">下载记录</a></li>
-                    <li><a href="{:url('admin/member/record_share')}" title="分享记录">分享记录</a></li>
-                </ul>
-            </dd>
-        </dl>
+        <div class="menu_dropdown bk_2">
+            {if condition="isset($global_menu_list)"}
+            {volist name="global_menu_list" id="vo"}
+            <dl id="{$vo.id}">
+                <dt><i class="Hui-iconfont">&#{$vo.icon};</i> {$vo.name}<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+                {if condition="isset($vo.last) && $vo.last"}
+                <dd>
+                    <ul>
+                        {volist name="vo.last" id="last"}
+                        <li><a href="{$last.url}" title="{$last.name}">{$last.name}</a></li>
+                        {/volist}
+                    </ul>
+                </dd>
+                {/if}
+            </dl>
+            {/volist}
+            {/if}
+        </div>
+        <!--<dl id="menu-system">-->
+            <!--<dt><i class="Hui-iconfont">&#xe62e;</i> 系统管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>-->
+            <!--<dd>-->
+                <!--<ul>-->
+                    <!--<li><a href="{:url('admin/system/base_setting')}" title="系统设置">系统设置</a></li>-->
+                    <!--<li><a href="{:url('admin/system/category')}" title="栏目管理">栏目管理</a></li>-->
+                    <!--<li><a href="{:url('admin/system/data')}" title="数据字典">数据字典</a></li>-->
+                    <!--<li><a href="{:url('admin/system/shielding')}" title="屏蔽词">屏蔽词</a></li>-->
+                    <!--<li><a href="{:url('admin/system/log')}" title="系统日志">系统日志</a></li>-->
+                <!--</ul>-->
+            <!--</dd>-->
+        <!--</dl>-->
+        <!--<dl id="menu-admin">-->
+            <!--<dt><i class="Hui-iconfont">&#xe62d;</i> 管理员管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>-->
+            <!--<dd>-->
+                <!--<ul>-->
+                    <!--<li><a href="{:url('admin/admin/role')}" title="角色管理">角色管理</a></li>-->
+                    <!--<li><a href="{:url('admin/admin/permission')}" title="权限管理">权限管理</a></li>-->
+                    <!--<li><a href="{:url('admin/admin/lists')}" title="管理员列表">管理员列表</a></li>-->
+                <!--</ul>-->
+            <!--</dd>-->
+        <!--</dl>-->
+        <!--<dl id="menu-member">-->
+            <!--<dt><i class="Hui-iconfont">&#xe60d;</i> 会员管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>-->
+            <!--<dd>-->
+                <!--<ul>-->
+                    <!--<li><a href="{:url('admin/member/lists')}" title="会员列表">会员列表</a></li>-->
+                    <!--<li><a href="{:url('admin/member/del')}" title="删除的会员">删除的会员</a></li>-->
+                    <!--<li><a href="{:url('admin/member/level')}" title="等级管理">等级管理</a></li>-->
+                    <!--<li><a href="{:url('admin/member/scoreoperation')}" title="积分管理">积分管理</a></li>-->
+                    <!--<li><a href="{:url('admin/member/record_browse')}" title="浏览记录">浏览记录</a></li>-->
+                    <!--<li><a href="{:url('admin/member/record_download')}" title="下载记录">下载记录</a></li>-->
+                    <!--<li><a href="{:url('admin/member/record_share')}" title="分享记录">分享记录</a></li>-->
+                <!--</ul>-->
+            <!--</dd>-->
+        <!--</dl>-->
         <!--<dl id="menu-article">-->
             <!--<dt><i class="Hui-iconfont">&#xe616;</i> 资讯管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>-->
             <!--<dd>-->
