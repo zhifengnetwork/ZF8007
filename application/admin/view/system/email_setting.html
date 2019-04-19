@@ -14,46 +14,45 @@
             <form action="{:url('admin/system/email_setting')}" method="post" class="form form-horizontal" id="form-article-add">
                 <div id="tab-system" class="HuiTab">
                     <div class="tabBar cl">
-                        <a href="{:url('admin/system/base_setting')}"><span>基本设置</span></a>
-                        <a href="{:url('admin/system/safe_setting')}"><span>安全设置</span></a>
-                        <a href="{:url('admin/system/email_setting')}"><span>邮件设置</span></a>
-                        <a href="{:url('admin/system/other_setting')}"><span>其他设置</span></a>
+                        {foreach name="menu_list" item="vo"}
+                        <a href="/admin/system/{$vo.url}"><span>{$vo.name}</span></a>
+                        {/foreach}
                     </div>
                     <!--<div class="tabCon">-->
                         <div class="row cl">
                             <label class="form-label col-xs-4 col-sm-2">邮件发送模式：</label>
                             <div class="formControls col-xs-8 col-sm-9">
-                                <input type="text" name="email-type" value="" class="input-text">
+                                <input type="text" name="email_type" value="{$data.email_type ?? ''}" class="input-text">
                             </div>
                         </div>
                         <div class="row cl">
                             <label class="form-label col-xs-4 col-sm-2">SMTP服务器：</label>
                             <div class="formControls col-xs-8 col-sm-9">
-                                <input type="text" name="smtp-servers" value="" class="input-text">
+                                <input type="text" name="smtp_servers" value="{$data.smtp_servers ?? ''}" class="input-text">
                             </div>
                         </div>
                         <div class="row cl">
                             <label class="form-label col-xs-4 col-sm-2">SMTP 端口：</label>
                             <div class="formControls col-xs-8 col-sm-9">
-                                <input type="text" name="smtp-port" value="25" class="input-text">
+                                <input type="text" name="smtp_port" value="{$data.smtp_port ?? ''}" class="input-text">
                             </div>
                         </div>
                         <div class="row cl">
                             <label class="form-label col-xs-4 col-sm-2">邮箱帐号：</label>
                             <div class="formControls col-xs-8 col-sm-9">
-                                <input type="text" name="email-name" value="" class="input-text">
+                                <input type="text" name="email_name" value="{$data.email_name ?? ''}" class="input-text">
                             </div>
                         </div>
                         <div class="row cl">
                             <label class="form-label col-xs-4 col-sm-2">邮箱密码：</label>
                             <div class="formControls col-xs-8 col-sm-9">
-                                <input type="password" name="email-password" value="" class="input-text">
+                                <input type="password" name="email_password" value="{$data.email_password ?? ''}" class="input-text">
                             </div>
                         </div>
                         <div class="row cl">
                             <label class="form-label col-xs-4 col-sm-2">收件邮箱地址：</label>
                             <div class="formControls col-xs-8 col-sm-9">
-                                <input type="text" name="email-address" value="" class="input-text">
+                                <input type="text" name="email_address" value="{$data.email_address ?? ''}" class="input-text">
                             </div>
                         </div>
                     <!--</div>-->

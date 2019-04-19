@@ -14,22 +14,22 @@
             <form action="{:url('admin/system/safe_setting')}" method="post" class="form form-horizontal" id="form-article-add">
                 <div id="tab-system" class="HuiTab">
                     <div class="tabBar cl">
-                        <a href="{:url('admin/system/base_setting')}"><span>基本设置</span></a>
-                        <a href="{:url('admin/system/safe_setting')}"><span>安全设置</span></a>
-                        <a href="{:url('admin/system/email_setting')}"><span>邮件设置</span></a>
-                        <a href="{:url('admin/system/other_setting')}"><span>其他设置</span></a>
+                        {foreach name="menu_list" item="vo"}
+                        <a href="/admin/system/{$vo.url}"><span>{$vo.name}</span></a>
+                        {/foreach}
                     </div>
                     <!--<div class="tabCon">-->
                         <div class="row cl">
                             <label class="form-label col-xs-4 col-sm-2">允许访问后台的IP列表：</label>
                             <div class="formControls col-xs-8 col-sm-9">
-                                <textarea class="textarea"></textarea>
+                                <!--<textarea class="textarea"></textarea>-->
+                                <input type="text" name="list_ip" value="{$data.list_ip ?? ''}" class="input-text">
                             </div>
                         </div>
                         <div class="row cl">
                             <label class="form-label col-xs-4 col-sm-2">后台登录失败最大次数：</label>
                             <div class="formControls col-xs-8 col-sm-9">
-                                <input type="text" name="false-ip" value="5" class="input-text">
+                                <input type="text" name="false_ip" value="{$data.false_ip ?? ''}" class="input-text">
                             </div>
                         </div>
                     <!--</div>-->
