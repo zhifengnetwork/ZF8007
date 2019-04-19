@@ -32,6 +32,9 @@ class System extends Base
         $type = "base_setting";
         $data = input('post.');
         dump($data);//die;
+
+        $index = $this->menu_list;
+        $this->assign('index',$index);
         return $this->fetch();
     }
 
