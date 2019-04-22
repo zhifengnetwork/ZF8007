@@ -1,22 +1,24 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: Administrator
+ * Date: 2019/4/22 0022
+ * Time: 17:23
+ */
 
 namespace app\admin\controller;
 use think\Db;
 
-/**
- * 根据采蜜订单自动处理发放蜜糖
- *
- */
-class AutoHappy
+class Happy extends Base
 {
-	/**
-	* 每分钟向接口发送一次请求  将期号大于表中最大期号的数据存起来
-	* 1、查询各个最大的期号
-	* 2、获取接口信息
-	* 3、循环判断是否大于目前最大的期号
-	* 4、将超过的期号存起来
-	* 5、插入日志记录
-	*/
+    /**
+     * 每分钟向接口发送一次请求  将期号大于表中最大期号的数据存起来
+     * 1、查询各个最大的期号
+     * 2、获取接口信息
+     * 3、循环判断是否大于目前最大的期号
+     * 4、将超过的期号存起来
+     * 5、插入日志记录
+     */
     public function happy_is_important(){
         //获取四个最大的期号   1幸运飞艇  2快乐飞艇  3快乐赛车  4快乐时时彩
         $luck_issue=$this->get_max_issue(1);
@@ -64,9 +66,9 @@ class AutoHappy
      */
     public function get_max_issue($type){
         if(in_array($type,array(1,2,3,4))){
-            $max_issue=M('interface_recorder')->where(['type'=>$type])->order('lottery desc')->find();
+            $max_issue=Db::name('interface_recorder')->where(['type'=>$type])->order('lottery_date desc')->find();
             if(isset($max_issue)){
-                return $max_issue['lottery'];
+                return $max_issue['lottery_date'];
             }else{
                 return 1;
             }
@@ -106,8 +108,6 @@ class AutoHappy
         $data['lottery_number']=$lottery_number;
         $data['lottery_time']=$lottery_time;
         $data['add_time']=$add_time;
-        M('interface_recorder')->save($data);
+        Db::name('interface_recorder')->insert($data);
     }
 }
-
-
