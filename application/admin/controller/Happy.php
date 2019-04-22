@@ -68,7 +68,7 @@ class Happy extends Base
         if(in_array($type,array(1,2,3,4))){
             $max_issue=Db::name('interface_recorder')->where(['type'=>$type])->order('lottery_date desc')->find();
             if(isset($max_issue)){
-                return $max_issue['lottery'];
+                return $max_issue['lottery_date'];
             }else{
                 return 1;
             }
