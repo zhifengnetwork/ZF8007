@@ -33,4 +33,8 @@ class Base extends Controller
 
         return $global_menu_list;
     }
+
+    public function ajaxReturn($data,$type = 'json'){
+        exit(json_encode($data));
+    }
 }
