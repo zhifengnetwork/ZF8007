@@ -7,6 +7,8 @@
  */
 namespace app\admin\controller;
 
+use think\Db;
+
 class Member extends Base
 {
     public function _initialize()
@@ -16,17 +18,97 @@ class Member extends Base
 
     public function lists()
     {
+        $list = Db::name('users')->order('id asc')->select();
+        $count = count($list);
+        $this->assign('list',$list);
+        $this->assign('count',$count);
         return $this->fetch();
     }
 
     public function add()
     {
+        $data = input('post.');
+        $act = 'add';
+        $this->assign('act',$act);
+        $this->assign('data',$data);
         return $this->fetch();
+    }
+
+    public function edit()
+    {
+        $user_id = input('get.id/d');
+        $info = Db::name('users')->where('id',$user_id)->find();
+        $act = 'edit';
+        $this->assign('info',$info);
+        $this->assign('act',$act);
+        $this->assign('user_id',$user_id);
+        return $this->fetch();
+    }
+
+    public function handle()
+    {
+        $data = input('post.');//dump($data);die;
+        $return = ['status'=>0,'msg'=>'参数错误']; //初始化返回信息
+        if($data['act'] == 'add'){
+            $is_name = Db::name('users')->where('nickname',$data['username'])->find();
+            if(!empty($is_name)){
+                return json(['status'=>0,'msg'=>'已经有此会员了！']);
+            }
+            $data1 = [
+                'nickname'    => $data['username'],
+                'mobile'=> $data['mobile'],
+                'sex'   => $data['sex'],
+                'email' => $data['email'],
+                'register_time' => time()
+            ];
+            $res = Db::name('users')->insert($data1);
+            if($res) {
+                return json(['status'=> 1, 'msg'=> '添加成功']);
+            }else {
+                return json(['status'=> 0, 'msg'=> '添加失败，数据库未响应']);
+            }
+        }
+        if($data['act'] == 'edit'){
+            $data1 = [
+                'nickname'    => $data['username'],
+                'mobile'=> $data['mobile'],
+                'sex'   => $data['sex'],
+                'email' => $data['email'],
+                'register_time' => time()
+            ];
+            $res = Db::name('users')->where('id',$data['user_id'])->update($data1);
+            if($res) {
+                return json(['status'=> 1, 'msg'=> '添加成功']);
+            }else {
+                return json(['status'=> 0, 'msg'=> '添加失败，数据库未响应']);
+            }
+        }
+
+        if ($data['act'] == 'status') {
+            $status = intval($data['status']);
+            $status = ($status == 1) ? $status : 0;
+            $bool = Db::name('users')->where('id',$data['id'])->update(['status'=>$status]);
+
+            if ($bool) {
+                return json(['code' => 1]);
+            } else {
+                return json(['code' => 0]);
+            }
+        }
+
     }
 
     public function del()
     {
-        return $this->fetch();
+        $id = input('post.id/d');//dump($id);
+        $res = Db::table('zf_users')->where('id',$id)->delete();//dump($id);die;
+        if($res){
+            return json(['code'=>1]);
+        }else {
+            return json(['code'=>0]);
+        }
+//        dump($id);die;
+//        return $this->fetch();
     }
 
     public function level()

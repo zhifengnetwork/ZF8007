@@ -64,7 +64,7 @@ class Admin extends Base
                 'is_super'=> $data['adminRole'],
                 'addtime' => time()
             ];
-            dump($data1);
+//            dump($data1);
 //            die;
             $res = Db::name('admin')->insert($data1);
 //            dump($data);die;

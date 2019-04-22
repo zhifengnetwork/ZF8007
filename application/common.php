@@ -10,3 +10,16 @@
 // +----------------------------------------------------------------------
 
 // 应用公共文件
+
+/**
+ * 加密
+ */
+function pwd_encryption($password = ''){
+    if (!$password) {
+        return false;
+    }
+
+    $pwd = md5(md5($password));
+
+    return $pwd;
+}
