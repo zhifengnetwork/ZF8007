@@ -20,8 +20,9 @@ class Member extends Base
     //会员列表
     public function lists()
     {
-        $list = Db::name('users')->order('id asc')->select();
-        $count = count($list);
+        $page = 10;
+        $list = Db::name('users')->paginate($page);
+        $count = count($list);//dump($count);die;
         $this->assign('list',$list);
         $this->assign('count',$count);
         return $this->fetch();
