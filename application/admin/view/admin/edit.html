@@ -17,35 +17,33 @@
 </head>
 <body>
 <article class="cl pd-20">
-    <form method="post" class="form form-horizontal" id="form_admin_add" target="ajax_a" action="/admin/admin/addHandle">
+    <form method="post" class="form form-horizontal" id="form_admin_add" action="">
         <input type="hidden" name="act" value="{$act}">
         <input type="hidden" name="admin_id" value="{$admin_id ?? ''}">
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>管理员：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="{$data.name ?? ''}" placeholder="" id="adminName" name="adminName">
+                <input type="text" class="input-text" value="{$info.name ?? ''}" placeholder="" id="adminName" name="adminName">
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>初始密码：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="password" class="input-text" autocomplete="off" value="{$data.password ?? ''}" placeholder="密码" id="password" name="password">
+                <input type="password" class="input-text" autocomplete="off" value="{$info.password ?? ''}" placeholder="密码" id="password" name="password">
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>确认密码：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="password" class="input-text" autocomplete="off" value="{$data.password ?? ''}" placeholder="确认新密码" id="password2" name="password2">
+                <input type="password" class="input-text" autocomplete="off" value="{$info.password ?? ''}" placeholder="确认新密码" id="password2" name="password2">
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">角色：</label>
             <div class="formControls col-xs-8 col-sm-9"> <span class="select-box" style="width:150px;">
                 <select class="select" name="adminRole" size="1">
-                    <option value="0">超级管理员</option>
-                    <option value="1">普通管理员</option>
-                    <!--<option value="2">栏目主辑</option>-->
-                    <!--<option value="3">栏目编辑</option>-->
+                    <option value="1" {if condition="$info.is_super eq 1"}selected{/if}>超级管理员</option>
+                    <option value="0" {if condition="$info.is_super eq 0"}selected{/if}>普通管理员</option>
                 </select>
                 </span> </div>
         </div>
@@ -56,7 +54,7 @@
         </div>
     </form>
 </article>
-<iframe name="ajax_a" style="display: none"></iframe>
+<!--<iframe name="ajax_a" style="display: none"></iframe>-->
 {include file='layout/footer' /}
 
 <script type="text/javascript">
@@ -67,85 +65,53 @@ $(function(){
         increaseArea: '20%'
     });
 
-    // $("#form-admin-add").validate({
-        // rules:{
-        //     adminName:{
-        //         required:true,
-        //         minlength:4,
-        //         maxlength:16
-        //     },
-        //     password:{
-        //         required:true,
-        //     },
-        //     password2:{
-        //         required:true,
-        //         equalTo: "#password"
-        //     },
-        //     // adminRole:{
-        //     //     required:true,
-        //     // },
-        // },
-        // onkeyup:false,
-        // focusCleanup:true,
-    //     success:"valid",
-    //     submitHandler:function(form){
-    //         // $(form).ajaxSubmit();
-    //         // var index = parent.layer.getFrameIndex(window.name);
-    //         // parent.$('.btn-refresh').click();
-    //         // parent.layer.close(index);
-    //         var username = $("#adminName").val()
-    //         if (!username) {
-    //             layer.msg('用户名必须填写', { icon: 2, time: 1000 });
-    //             return false;
-    //         }
-    //         $.ajax({
-    //             type: "POST",
-    //             url: "{:url('admin/admin/addHandle')}",
-    //             data: $(form).serialize(),
-    //             // dataType:"json",
-    //             error: function () {
-    //                 layer.alert('服务器繁忙，请联系管理员！');
-    //             },
-    //             success: function (data) {
-    //                 if(data.status == 1) {
-    //                     console.log(data.msg)
-    //                     layer.msg(data.msg, {icon:1, time: 1000},function(){
-    //                         parent.location.reload()
-    //                     });
-    //                     // location.href = "{:url('admin/admin/lists')}";
-    //                 }else {
-    //                     layer.msg(data.msg, {icon: 2, time: 1000});
-    //                 }
-    //             }
-    //         });
-    //     }
-    // });
+    $("#form_admin_add").validate({
+        rules:{
+            adminName:{
+                required:true,
+                minlength:4,
+                maxlength:16
+            },
+            password:{
+                required:true,
+            },
+            password2:{
+                required:true,
+                equalTo: "#password"
+            },
+            // adminRole:{
+            //     required:true,
+            // },
+        },
+        onkeyup:false,
+        focusCleanup:true,
+        success:"valid",
+        submitHandler:function(form){
+            // $(form).ajaxSubmit();
+            // var index = parent.layer.getFrameIndex(window.name);
+            // parent.$('.btn-refresh').click();
+            // parent.layer.close(index);
+            $.ajax({
+                type: "POST",
+                url: "{:url('admin/admin/handle')}",
+                data: $(form).serialize(),
+                success: function (data) {
+                    if(data.status == 1) {
+                        console.log(data.msg)
+                        layer.msg(data.msg, {icon:1, time: 1000},function(){
+                            parent.location.reload()
+                        });
+                    }else {
+                        layer.msg(data.msg, {icon: 2, time: 1000});
+                    }
+                },
+                error: function () {
+                    layer.alert('服务器繁忙，请联系管理员！');
+                }
+            });
+        }
+    });
 });
-
-	function verifyForm() {
-		$.ajax({
-			type: "POST",
-			url: "{:url('admin/admin/addHandle')}",
-			data: $(iframe).serialize(),
-			dataType:"json",
-			error: function () {
-				layer.alert('服务器繁忙，请联系管理员！');
-			},
-			success: function (data) {
-				if(data.status == 1) {
-					layer.msg(data.msg, {icon:1, time: 1000}, function(){
-                        $(form).ajaxSubmit();
-                        var index = parent.layer.getFrameIndex(window.name);
-                        parent.$('.btn-refresh').click();
-                        parent.layer.close(index);
-                    });
-					// location.href = "{:url('admin/admin/lists')}";
-				}else {
-					layer.msg(data.msg, {icon: 2});
-				}
-			}
-		});
-	}
 </script>
 <!--/请在上方写此页面业务相关的脚本-->
 </body>

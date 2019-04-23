@@ -43,12 +43,13 @@ class Admin extends Base
     //管理员编辑
     public function edit()
     {
-        $user_id = input('get.id/d');
-        $info = Db::name('admin')->where('id',$user_id)->find();
+        $admin_id = input('get.id/d');
+        $info = Db::name('admin')->where('id',$admin_id)->find();
+//        dump($info);die;
         $act = 'edit';
         $this->assign('info',$info);
         $this->assign('act',$act);
-        $this->assign('user_id',$user_id);
+        $this->assign('admin_id',$admin_id);
         return $this->fetch();
     }
 
@@ -59,7 +60,7 @@ class Admin extends Base
         if($data['act'] == 'add'){
             $is_name = Db::name('admin')->where('name',$data['adminName'])->find();
             if(!empty($is_name)){
-                return json(['status'=>0,'msg'=>'已经有此会员了！']);
+                return json(['status'=>0,'msg'=>'已经有此管理员了！']);
             }
             $data1 = [
                 'name'    => $data['adminName'],
@@ -81,7 +82,7 @@ class Admin extends Base
                 'is_super'=> $data['adminRole'],
                 'addtime' => time()
             ];
-            $res = Db::name('admin')->where('id',$data['user_id'])->update($data1);
+            $res = Db::name('admin')->where('id',$data['admin_id'])->update($data1);
             if($res) {
                 return json(['status'=> 1, 'msg'=> '添加成功']);
             }else {
@@ -92,7 +93,7 @@ class Admin extends Base
         if ($data['act'] == 'status') {
             $status = intval($data['status']);
             $status = ($status == 1) ? $status : 0;
-            $bool = Db::name('admin')->where('id',$data['id'])->update(['status'=>$status]);
+            $bool = Db::name('admin')->where('id',$data['id'])->update(['is_lock'=>$status]);
 
             if ($bool) {
                 return json(['code' => 1]);
