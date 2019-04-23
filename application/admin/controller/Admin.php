@@ -23,7 +23,7 @@ class Admin extends Base
     //管理员列表
     public function lists()
     {
-        $list = Db::name('admin')->select();
+        $list = Db::name('admin')->paginate(10);
         $count = count($list);
         $this->assign('list',$list);
         $this->assign('count',$count);
