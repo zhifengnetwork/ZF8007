@@ -20,38 +20,42 @@ class Admin extends Base
         return $this->fetch();
     }
 
+    //管理员列表
     public function lists()
     {
         $list = Db::name('admin')->select();
         $count = count($list);
-//        dump($list);//die;
         $this->assign('list',$list);
         $this->assign('count',$count);
         return $this->fetch();
     }
 
+    //添加管理员
     public function add()
     {
-        $admin_id = input('get.id/d');
-        if(!empty($admin_id)){
-            $act = 'edit';
-            $data = Db::name('admin')->where(['id'=>$admin_id])->find();
-
-            $this->assign('admin_id',$admin_id);
-            $this->assign('data',$data);
-//            dump($data);//die;
-        }else {
-            $act = 'add';
-        }
-
+        $data = input('post.');
+        $act = 'add';
         $this->assign('act',$act);
+        $this->assign('data',$data);
         return $this->fetch();
     }
 
-    public function addHandle()
+    //管理员编辑
+    public function edit()
     {
-        $data = input('post.');
+        $admin_id = input('get.id/d');
+        $info = Db::name('admin')->where('id',$admin_id)->find();
+//        dump($info);die;
+        $act = 'edit';
+        $this->assign('info',$info);
+        $this->assign('act',$act);
+        $this->assign('admin_id',$admin_id);
+        return $this->fetch();
+    }
 
+    public function handle()
+    {
+        $data = input('post.');//dump($data);die;
         $return = ['status'=>0,'msg'=>'参数错误']; //初始化返回信息
         if($data['act'] == 'add'){
             $is_name = Db::name('admin')->where('name',$data['adminName'])->find();
@@ -64,12 +68,7 @@ class Admin extends Base
                 'is_super'=> $data['adminRole'],
                 'addtime' => time()
             ];
-            dump($data1);
-//            die;
             $res = Db::name('admin')->insert($data1);
-//            dump($data);die;
-//            dump($res);die;
-//            die;
             if($res) {
                 return json(['status'=> 1, 'msg'=> '添加成功']);
             }else {
@@ -91,6 +90,30 @@ class Admin extends Base
             }
         }
 
+        if ($data['act'] == 'status') {
+            $status = intval($data['status']);
+            $status = ($status == 1) ? $status : 0;
+            $bool = Db::name('admin')->where('id',$data['id'])->update(['is_lock'=>$status]);
+
+            if ($bool) {
+                return json(['code' => 1]);
+            } else {
+                return json(['code' => 0]);
+            }
+        }
+
+    }
+
+    //删除管理员
+    public function del()
+    {
+        $id = input('post.id/d');//dump($id);
+        $res = Db::table('zf_admin')->where('id',$id)->delete();
+        if($res){
+            return json(['code'=>1]);
+        }else {
+            return json(['code'=>0]);
+        }
     }
 
     public function role()

@@ -21,8 +21,8 @@ class System extends Base
         $this->menu_list = array(
             'base_setting' => ['order'=>0,'url'=>'base_setting','name'=>"基本设置"],
 //            'safe_setting' => ['order'=>1,'url'=>'safe_setting','name'=>"安全设置"],
-            'email_setting'=> ['order'=>2,'url'=>'email_setting','name'=>"邮箱设置"],
-            'other_setting'=> ['order'=>3,'url'=>'other_setting','name'=>"其他设置"]
+            'email_setting'=> ['order'=>1,'url'=>'email_setting','name'=>"邮箱设置"],
+            'other_setting'=> ['order'=>2,'url'=>'other_setting','name'=>"其他设置"]
         );
 
         $this->assign('menu_list',$this->menu_list);
@@ -55,29 +55,29 @@ class System extends Base
         return $this->fetch();
     }
 
-    public function safe_setting()
-    {
-        $type = "safe_setting";
-        if($_POST){
-            $info = input('post.');
-            foreach($info as $k=>$v){
-                if(Db::name('config')->where(['type'=>$type,'name'=>$k])->find()){
-                    Db::name('config')->where(['type'=>$type,'name'=>$k])->update(['value'=>$v]);
-                }else{
-                    Db::name('config')->insert(['name'=>$k,'value'=>$v,'type'=>$type]);
-                }
-            }
-        }
+    // public function safe_setting()
+    // {
+    //     $type = "safe_setting";
+    //     if($_POST){
+    //         $info = input('post.');
+    //         foreach($info as $k=>$v){
+    //             if(Db::name('config')->where(['type'=>$type,'name'=>$k])->find()){
+    //                 Db::name('config')->where(['type'=>$type,'name'=>$k])->update(['value'=>$v]);
+    //             }else{
+    //                 Db::name('config')->insert(['name'=>$k,'value'=>$v,'type'=>$type]);
+    //             }
+    //         }
+    //     }
 
-        $info = Db::name('config')->where('type',$type)->select();
-        foreach($info as $v){
-            $data[$v['name']] = $v['value'];
-        }
+    //     $info = Db::name('config')->where('type',$type)->select();
+    //     foreach($info as $v){
+    //         $data[$v['name']] = $v['value'];
+    //     }
 
-        $this->assign('data',$data);
-        $this->assign('index',1);
-        return $this->fetch();
-    }
+    //     $this->assign('data',$data);
+    //     $this->assign('index',1);
+    //     return $this->fetch();
+    // }
 
     public function email_setting()
     {
@@ -99,7 +99,7 @@ class System extends Base
         }
 
         $this->assign('data',$data);
-        $this->assign('index',2);
+        $this->assign('index',1);
         return $this->fetch();
     }
 
@@ -123,7 +123,7 @@ class System extends Base
         }
 
         $this->assign('data',$data);
-        $this->assign('index',3);
+        $this->assign('index',2);
         return $this->fetch();
     }
 

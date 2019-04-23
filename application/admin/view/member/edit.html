@@ -18,25 +18,26 @@
 <article class="cl pd-20">
 	<form action="" method="post" class="form form-horizontal" id="form-member-add">
 		<input type="hidden" name="act" value="{$act ?? ''}">
+		<input type="hidden" name="user_id" value="{$user_id ?? ''}">
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>用户名：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="username" name="username">
+				<input type="text" class="input-text" value="{$info.nickname ?? ''}" placeholder="" id="username" name="username">
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>性别：</label>
 			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
 				<div class="radio-box">
-					<input name="sex" type="radio" id="sex-1" value="0" checked>
+					<input name="sex" type="radio" id="sex-1" value="0" {if condition="$info.sex eq 0"}checked{/if}>
 					<label for="sex-1">男</label>
 				</div>
 				<div class="radio-box">
-					<input name="sex" type="radio" id="sex-2" value="1">
+					<input type="radio" id="sex-2" name="sex" value="1" {if condition="$info.sex eq 1"}checked{/if}>
 					<label for="sex-2">女</label>
 				</div>
 				<div class="radio-box">
-					<input name="sex" type="radio" id="sex-3" value="2">
+					<input type="radio" id="sex-3" name="sex" value="2" {if condition="$info.sex eq 2"}checked{/if}>
 					<label for="sex-3">保密</label>
 				</div>
 			</div>
@@ -44,13 +45,13 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>手机：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="mobile" name="mobile">
+				<input type="text" class="input-text" value="{$info.mobile ?? ''}" placeholder="" id="mobile" name="mobile">
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>邮箱：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" name="email" id="email">
+				<input type="text" class="input-text" value="{$info.email ?? ''}" name="email" id="email">
 			</div>
 		</div>
 		<!--<div class="row cl">-->
@@ -131,7 +132,6 @@ $(function(){
 		}
 	});
 });
-</script> 
-<!--/请在上方写此页面业务相关的脚本-->
+</script>
 </body>
 </html>

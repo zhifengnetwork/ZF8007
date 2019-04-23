@@ -9,6 +9,7 @@ namespace app\admin\controller;
 
 use think\Controller;
 use think\Db;
+use think\Session;
 /**
  * Class Index
  * 后台管理系统首页
@@ -25,11 +26,17 @@ class Index extends Base
 
     public function index()
     {
+        dump(session('admin_id'));//die;
         return $this->fetch();
     }
 
     public function welcome()
     {
         return $this->fetch();
+    }
+    public function logout()
+    {
+        session::clear();
+        $this->redirect('admin/login/index');
     }
 }
