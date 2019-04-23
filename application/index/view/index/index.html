@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>首页</title>
+    <link rel="stylesheet" href="/__STATIC__/css/index.css">
+    <link rel="stylesheet" href="/__STATIC__/css/public.css">
+    <link rel="stylesheet" href="/__STATIC__/css/swiper.css">
+    <link rel="stylesheet" href="/__STATIC__/css/bottom_nav.css">
+    <link rel="stylesheet" href="/__STATIC__/css/header.css">
+    <script src="/__STATIC__/js/rem.js"></script>
+</head>
+<body>
+     <div class="everyColor">
+         <div class="lb_headWrap "><span>时时彩</span></div>
+         <div class="swiperBox">
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                           <img src="/__STATIC__/image/img1@2x.png" alt="">
+                    </div>
+                    <div class="swiper-slide">
+                            <img src="/__STATIC__/image/img1@2x.png" alt="">
+                    </div>
+                    <div class="swiper-slide">
+                            <img src="/__STATIC__/image/img1@2x.png" alt="">
+                    </div>
+                </div>
+                <!-- 如果需要分页器 -->
+                <div class="swiper-pagination"></div>
+            </div>
+         </div>
+         <!-- 公告 -->
+         <div class="announcement ">
+             <img src="/__STATIC__/image/notice.png" alt="" class="notice-i">
+             <div class="notice">
+                    公告:
+                    <span >
+                            限时促销优惠限时促销优惠限时促销优惠限时促销优惠限时促销优惠限时促销优惠限时促销优惠限时促销优惠限时促销优惠限时促销优惠 限时促销优惠限时促销优惠限时促销优惠
+                    </span>
+             </div>
+         </div>
+         <!-- 四宫格 -->
+         <div class="fourGongGe clearfloat">
+             <ul class="clearfloat">
+                 <li class="four-item">
+                     <a href="{:url('index/lottery_list?type=1')}">
+                        <img src="/__STATIC__/image/img2@2x.png" alt="" class="four-icon">
+                        <P class="four-name">幸运飞艇</P>
+                     </a>
+                    </li>
+                 <li class="four-item">
+                     <a href="{:url('Index/index/lottery_list?type=2')}">
+                            <img src="/__STATIC__/image/img3@2x.png" alt="" class="four-icon">
+                            <P class="four-name">快乐飞艇</P>
+                     </a>
+                    </li>
+                 <li class="four-item">
+                     <a href="{:url('index/lottery_list?type=3')}">
+                            <img src="/__STATIC__/image/img4@2x.png" alt="" class="four-icon">
+                            <P class="four-name">快乐赛车</P>
+                     </a>
+                    </li>
+                 <li class="four-item">
+                     <a href="{:url('index/lottery_list?type=4')}">
+                            <img src="/__STATIC__/image/img5@2x.png" alt="" class="four-icon">
+                            <P class="four-name">快乐时时彩</P>
+                     </a>
+                    </li>
+             </ul>
+         </div>
+         <!-- 底部 -->
+         <div class="bottomNavWrap container" id="bottomNavWrap" data-id="0"></div>
+     </div>
+     <script src="/__STATIC__/js/jquery-1.8.3.js"></script>
+     <script src="/__STATIC__/js/swiper.js"></script>
+     <script src="/__STATIC__/js/bottom_nav.js"></script>
+     <script>
+        window.onload = function() {
+            // 首页轮播图
+            var swiper = new Swiper('.swiper-container', {
+                loop: true,
+                pagination: '.swiper-pagination',
+                paginationClickable: true,
+                spaceBetween: 30,
+                autoplay: 3000,
+                autoplayDisableOnInteraction: false
+            });
+        }
+     </script>
+</body>
+</html>

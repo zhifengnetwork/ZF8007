@@ -1,0 +1,103 @@
+/* 
+首页
+*/
+
+
+
+
+
+.swiper-container {
+    height: 4rem;
+    width: 100%;
+}  
+.swiper-slide>img{
+    height: 4rem;
+    width: 100%;
+}
+
+
+.swiperBox .swiper-pagination-bullet{
+    background:#969696;
+    opacity: .8;
+}
+.swiperBox .swiper-pagination-bullet-active {
+    opacity: 1;
+    background: #ffffff;
+}
+
+.lb_headWrap{
+    background: #212332;
+}
+
+.announcement{
+    padding: .14rem .21rem;
+    -moz-box-sizing: content-box;  
+    -webkit-box-sizing: content-box; 
+    -o-box-sizing: content-box; 
+    -ms-box-sizing: content-box; 
+    box-sizing: content-box; 
+    font-size: .26rem;
+    color: #ffffff;
+    height: .4rem;
+    line-height: .4rem;
+    position: relative;
+}
+
+.announcement .notice-i{
+    width: .4rem;
+    height: .4rem;
+    vertical-align: sub;
+    position: absolute;
+    left: .14rem;
+}
+
+.notice{
+    overflow: hidden;
+	text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 5rem;
+    position: absolute;
+    left: .6rem;
+}
+
+.fourGongGe{
+    position: relative;
+    background: #17182d;
+    padding-bottom: 1rem;
+}
+
+.fourGongGe ul{
+    padding:0 .21rem;
+    -moz-box-sizing: content-box;  
+    -webkit-box-sizing: content-box; 
+    -o-box-sizing: content-box; 
+    -ms-box-sizing: content-box; 
+    box-sizing: content-box; 
+}
+
+.fourGongGe ul .four-item{
+    float: left;
+    /* height: 2.85rem; */
+    width: 43.5%;
+    padding: .2rem .23rem ;
+   
+}
+ul .four-item>a{
+    position: relative;
+}
+ul .four-item>a .four-icon{
+    height: 100%;
+    width: 100%;
+}
+
+ul .four-item>a .four-name{
+    position: absolute;
+    bottom: .06rem;
+    font-size: .2rem;
+    color: #ffffff;
+    height: .6rem;
+    width: 100%;
+    text-align: center;
+    line-height: .6rem;
+    background: rgba(0, 0, 0, .5);
+}
