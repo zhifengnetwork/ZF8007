@@ -17,9 +17,9 @@
 </head>
 <body>
 <article class="cl pd-20">
-    <form method="post" class="form form-horizontal" id="form_admin_add" target="ajax_a" action="/admin/admin/addHandle">
+    <form method="post" class="form form-horizontal" id="form_admin_add" action="">
         <input type="hidden" name="act" value="{$act}">
-        <input type="hidden" name="admin_id" value="{$admin_id ?? ''}">
+        <!--<input type="hidden" name="admin_id" value="{$admin_id ?? ''}">-->
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>管理员：</label>
             <div class="formControls col-xs-8 col-sm-9">
@@ -56,7 +56,7 @@
         </div>
     </form>
 </article>
-<iframe name="ajax_a" style="display: none"></iframe>
+<!--<iframe name="ajax_a" style="display: none"></iframe>-->
 {include file='layout/footer' /}
 
 <script type="text/javascript">
@@ -67,82 +67,58 @@ $(function(){
         increaseArea: '20%'
     });
 
-    // $("#form-admin-add").validate({
-        // rules:{
-        //     adminName:{
-        //         required:true,
-        //         minlength:4,
-        //         maxlength:16
-        //     },
-        //     password:{
-        //         required:true,
-        //     },
-        //     password2:{
-        //         required:true,
-        //         equalTo: "#password"
-        //     },
-        //     // adminRole:{
-        //     //     required:true,
-        //     // },
-        // },
-        // onkeyup:false,
-        // focusCleanup:true,
-    //     success:"valid",
-    //     submitHandler:function(form){
-    //         // $(form).ajaxSubmit();
-    //         // var index = parent.layer.getFrameIndex(window.name);
-    //         // parent.$('.btn-refresh').click();
-    //         // parent.layer.close(index);
-    //         var username = $("#adminName").val()
-    //         if (!username) {
-    //             layer.msg('用户名必须填写', { icon: 2, time: 1000 });
-    //             return false;
-    //         }
-    //         $.ajax({
-    //             type: "POST",
-    //             url: "{:url('admin/admin/addHandle')}",
-    //             data: $(form).serialize(),
-    //             // dataType:"json",
-    //             error: function () {
-    //                 layer.alert('服务器繁忙，请联系管理员！');
-    //             },
-    //             success: function (data) {
-    //                 if(data.status == 1) {
-    //                     console.log(data.msg)
-    //                     layer.msg(data.msg, {icon:1, time: 1000},function(){
-    //                         parent.location.reload()
-    //                     });
-    //                     // location.href = "{:url('admin/admin/lists')}";
-    //                 }else {
-    //                     layer.msg(data.msg, {icon: 2, time: 1000});
-    //                 }
-    //             }
-    //         });
-    //     }
-    // });
-});
+    $("#form-admin-add").validate({
+        rules:{
+            adminName:{
+                required:true,
+                minlength:4,
+                maxlength:16
+            },
+            password:{
+                required:true,
+            },
+            password2:{
+                required:true,
+                equalTo: "#password"
+            },
+            // adminRole:{
+            //     required:true,
+            // },
+        },
+        onkeyup:false,
+        focusCleanup:true,
+        success:"valid",
+        submitHandler:function(form){
+            // $(form).ajaxSubmit();
+            // var index = parent.layer.getFrameIndex(window.name);
+            // parent.$('.btn-refresh').click();
+            // parent.layer.close(index);
+            // var username = $("#adminName").val()
+            // if (!username) {
+            //     layer.msg('用户名必须填写', { icon: 2, time: 1000 });
+            //     return false;
+            // }
+            $.ajax({
+                type: "post",
+                url: "{:url('admin/member/handle')}",
+                data: $(form).serialize(),
 
-	function verifyForm() {
-		$.ajax({
-			type: "POST",
-			url: "{:url('admin/admin/addHandle')}",
-			data: $(iframe).serialize(),
-			dataType:"json",
-			error: function () {
-				layer.alert('服务器繁忙，请联系管理员！');
-			},
-			success: function (data) {
-				if(data.status == 1) {
-					layer.msg(data.msg, {icon:1, time: 1000}, function(){
-                        parent.location.reload();
-                    });
-					// location.href = "{:url('admin/admin/lists')}";
-				}else {
-					layer.msg(data.msg, {icon: 2});
-				}
-			}
-		});
-	}
+                success:function(data){
+                    if (data.status == 1) {
+                        layer.msg(data.msg, {icon: 1, time: 1000},function(){
+                            parent.location.reload();
+                        });
+                    } else {
+                        layer.msg(data.msg, {icon: 2, time: 1000});
+                    }
+                },
+                error: function(){
+                    layer.alert("服务器繁忙, 请稍等!");
+                }
+            });
+        }
+    });
+});
 </script>
 <!--/请在上方写此页面业务相关的脚本-->
 </body>

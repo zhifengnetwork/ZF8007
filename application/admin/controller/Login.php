@@ -9,7 +9,7 @@ namespace app\admin\controller;
 
 use think\Db;
 use think\Session;
-use think\Cookie;
+//use think\Cookie;
 use think\captcha\Captcha;
 
 class Login extends Base
@@ -18,10 +18,13 @@ class Login extends Base
     {
         parent::_initialize();
 
-        $admin_name = session('admin_name');
+        $admin_name = session::get('admin_name');
+//        Session::clear();
+//        dump($admin_name);
         if(!empty($admin_name)){
             $url = "http://".$_SERVER['HTTP_HOST']. "/index.php/admin";
             header("refresh:1;url=$url");
+//            $this->redirect('admin/index');
             exit;
         }
 
@@ -40,13 +43,14 @@ class Login extends Base
 
     public function login()
     {
+//        die;
         $data = input('post.');
 
         //判断是否有此用户
         $is_name = Db::name('admin')->where('name',$data['username'])->find();
         if($is_name){
             //判断该管理员是否被锁定
-            $res = Db::name('admin')->where('name',$data['name'])->find();
+            $res = Db::name('admin')->where('name',$data['username'])->find();
             if($res['is_lock'] == 1) {
                 return json(['status' => -1, 'msg' => '该管理员已被禁用']);
             }
@@ -70,7 +74,7 @@ class Login extends Base
         }
     }
 
-    function adminLog($action,$desc)
+    public function adminLog($action,$desc)
     {
         $add['addtime'] = time();
         $add['admin_id'] = session('admin_id');
@@ -81,4 +85,5 @@ class Login extends Base
         Db::name('admin_log')->insert($add);
         return true;
     }
+
 }
