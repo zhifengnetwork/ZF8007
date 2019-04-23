@@ -1,0 +1,205 @@
+/* 
+开奖结果
+*/
+body{
+    touch-action:none;
+}
+
+.everyColor {
+    width: 100%;
+    position: relative;
+    background:#17182d !important;
+}
+
+.lb_headWrap{
+    background:#212332;
+}
+
+
+.history-box{
+    margin-top: .3rem;
+    background:#1f2034;
+}
+
+.history-title{
+    text-align: center;
+    line-height: .7rem;
+    font-size: .3rem;
+    color: #FFFFFF;
+}
+
+.result{
+    font-size: .4rem;
+    color: #cd3238;
+    padding: .28rem 0  0 .36rem;
+}
+
+.history-time{
+    font-size: .26rem;
+    color:#DDDDDD;
+}
+
+.ballBox{
+    height: .56rem;
+    padding:.23rem 0 .23rem .28rem;
+    -moz-box-sizing: content-box;  
+    -webkit-box-sizing: content-box; 
+    -o-box-sizing: content-box; 
+    -ms-box-sizing: content-box; 
+    box-sizing: content-box; 
+}
+
+.ball-ls{
+    display: flex;
+    flex-wrap:nowrap;
+}
+
+.select-color{
+    overflow-x: scroll;
+    overflow-y: hidden;
+    width: 100%;
+    background: #1f2034;
+}
+
+.select{
+   white-space: nowrap;
+   width:44rem;
+   overflow: hidden;
+}
+
+.colorSelect{
+    width: 7.1rem;
+    margin:.2rem;
+    background: #4c4d63;
+    float: left;
+    height: 1.3rem;
+}
+
+.colorSelect:not(:first-child){
+    margin-left:0;
+}
+
+.colorSelect .color-tit{
+    text-align: center;
+    font-size: .3rem;
+    color: #FFFFFF;
+    margin-bottom: .2rem;
+}
+
+.colorSelect ul .color-item{
+    float: left;
+    width: .71rem;
+    color: #FFFFFF;
+    text-align: center;
+}
+
+.ball-ls .ball-item{
+    background: #070818;
+    border-radius: 100%;
+    height: .48rem;
+    width: .50rem;
+    color: #FFFFFF;
+    text-align: center;
+    line-height: .54rem;
+    font-size: .26rem;
+    margin-left: .23rem;
+}
+
+.ball-ls .ball-item:first-child{
+    margin-left: 0;
+}
+
+.result-info {
+    background: #17182d;
+    padding: .32rem 0 .32rem .24rem;
+    overflow: hidden;
+    overflow-x: scroll; 
+    overflow-y: hidden;
+}
+
+.info-periods{
+    float: left;
+    width: 23%;
+    -moz-box-sizing: content-box;  
+    -webkit-box-sizing: content-box; 
+    -o-box-sizing: content-box; 
+    -ms-box-sizing: content-box; 
+    box-sizing: content-box; 
+    display: inline-block;
+}
+
+.info-periods .info-t{
+    background: #1f2034;
+    font-size: .34rem;
+    letter-spacing: .1rem;
+}
+
+.info-periods>ul,.result-list>ul{
+    background: #4c4d63;
+}
+.result-info .info-t,.info-periods>ul .item-per,.result-list .item-soll{
+    width: 100%;
+    height: .64rem;
+    color: #eff0f7;
+    text-align: center;
+    line-height: .64rem;
+    border-bottom: 1px solid #000000;
+}
+
+.info-periods>ul .item-per>span{
+    font-size: .2rem;
+    max-width: 2.7rem;
+    overflow: hidden;
+}
+
+.soll{
+    width: 75.7%;
+    float: left;
+    overflow-y: scroll;
+    display: flex;
+    margin-left: .09rem;
+}
+
+.result-soll{
+    margin-left:.09rem;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+ .result-soll:first-child{
+     margin: 0;
+ }
+
+.result-soll .info-t{
+    width: 3.6rem;
+    background: #1f2034;
+}
+
+.result-list .item-soll{
+    width:100%;
+}
+
+.item-soll>ul .item-soll-qi:first-child{
+    border:0;
+}
+
+.item-soll>ul .item-soll-qi{
+    float: left;
+    width: 16.2%;
+    border-left: 1px solid #000000;
+    height: .64rem;
+    line-height: .64rem;
+}
+
+ul .item-soll-qi .qi-num{
+    width: .44rem;
+    height: .44rem;
+    background: #060835;
+    border-radius: 100%;
+    line-height: .44rem;
+    display: inline-block;
+}
+
+ul .item-soll-qi .qi-num.qi-num-red{
+    background: #ac2c35;
+}
