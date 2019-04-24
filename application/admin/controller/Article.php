@@ -8,6 +8,7 @@
 namespace app\admin\controller;
 
 use think\Db;
+use think\Session;
 
 class Article extends Base
 {
@@ -28,11 +29,74 @@ class Article extends Base
 
     public function add()
     {
+        $act = 'add';
+        $this->assign('act',$act);
         return $this->fetch();
     }
 
     public function edit()
     {
+        $art_id = input('get.id/d');
+        $act = 'edit';
+        $info = Db::name('article')->where('id',$art_id)->find();
+        $this->assign('info',$info);
+        $this->assign('art_id',$art_id);
+        $this->assign('act',$act);
         return $this->fetch();
+    }
+
+    public function handle()
+    {
+        $data = input('post.');
+        //文本内容
+        $content = mb_substr($data['editorValue'],3,-4,'utf-8');
+        $data['editorValue'] = $content;
+//        dump($data);die;
+
+        if ($data['act'] == 'add') {
+            $data1 = [
+                'type' => $data['type'],
+                'article_title' => $data['title'],
+                'content' => $data['editorValue'],
+                'article_id'   => session('admin_id'),
+                'add_time'  => time()
+            ];
+            $res = Db::name('article')->insert($data1);
+            if ($res) {
+                return json(['status'=>1,'msg'=>'添加成功']);
+            }else{
+                return json(['status'=>-1,'msg'=>'添加失败']);
+            }
+        }
+        if ($data['act'] == 'edit') {
+            $data1 = [
+                'type' => $data['type'],
+                'article_title' => $data['title'],
+                'content' => $data['editorValue'],
+                'article_id'   => session('admin_id'),
+                'add_time'  => time()
+            ];
+            $res = Db::name('article')->where('id',$data['art_id'])->update($data1);
+            if ($res) {
+                return json(['status'=>1,'msg'=>'添加成功']);
+            }else{
+                return json(['status'=>-1,'msg'=>'添加失败']);
+            }
+        }
+    }
+
+    public function del()
+    {
+        $art_id = input('post.art_id/d');//dump($art_id);die;
+        if ($art_id) {
+            $res = Db::name('article')->where('id',$art_id)->delete();
+            if ($res) {
+                return json(['status'=>1,'msg'=>'删除成功']);
+            }else {
+                return json(['status'=>-1,'msg'=>'删除失败']);
+            }
+        }else {
+            return json(['status'=>-1,'msg'=>'删除失败']);
+        }
     }
 }
