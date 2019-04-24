@@ -20,9 +20,35 @@ class Member extends Base
     //会员列表
     public function lists()
     {
+        $where['id'] = ['>', 0];
+        $datemin = '';
+        $datemax = '';
+        $seach = isset($_GET['seach']) ? $_GET['seach'] : '';
         $page = 10;
-        $list = Db::name('users')->paginate($page);
-        $count = count($list);//dump($count);die;
+
+        //搜索条件
+        if($seach){
+            $page = 0;
+            $time = " 23:59:59";
+            if($seach['m_conditions']){
+                $m_conditions = str_replace(' ', '', $seach['m_conditions']);
+                $where['nickname|mobile|email'] = ['like',"%$m_conditions%"];
+            }
+            if ($seach['datemin'] && $seach['datemax']) {
+                $datemin = strtotime($seach['datemin']);
+                $datemax = strtotime($seach['datemax'].$time);
+                $where['register_time'] = [['>= time',$datemin],['<= time',$datemax],'and'];
+            } elseif ($seach['datemin']) {
+                $where['register_time'] = ['>= time',strtotime($seach['datemin'])];
+            } elseif ($seach['datemax']) {
+                $where['register_time'] = ['<= time',strtotime($seach['datemax'].$time)];
+            }
+        }
+
+        $list = Db::name('users')->where($where)->paginate($page);//dump($list);die;
+        $count = count($list);
+        $this->assign('seach',$seach);
+
         $this->assign('list',$list);
         $this->assign('count',$count);
         return $this->fetch();
@@ -106,12 +132,16 @@ class Member extends Base
     //删除会员
     public function del()
     {
-        $id = input('post.id/d');//dump($id);
-        $res = Db::table('zf_users')->where('id',$id)->delete();
-        if($res){
-            return json(['code'=>1]);
-        }else {
-            return json(['code'=>0]);
+        $data = input('post.');
+        if ($_POST){
+            $id = json_decode($data['id'], true);
+            $where['id'] = array('in', $id);
+            $res = Db::table('zf_users')->where($where)->delete();
+            if($res){
+                return json(['status'=>1,'msg'=>'删除成功']);
+            }else {
+                return json(['status'=>-1,'msg'=>'删除失败']);
+            }
         }
     }
     /**
