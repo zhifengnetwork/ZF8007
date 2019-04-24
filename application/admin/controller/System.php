@@ -7,7 +7,10 @@
  */
 namespace app\admin\controller;
 
+header('content-type:text/html;charset=utf-8');
+
 use think\Db;
+use think\Request;
 
 class System extends Base
 {
@@ -22,7 +25,8 @@ class System extends Base
             'base_setting' => ['order'=>0,'url'=>'base_setting','name'=>"基本设置"],
 //            'safe_setting' => ['order'=>1,'url'=>'safe_setting','name'=>"安全设置"],
             'email_setting'=> ['order'=>1,'url'=>'email_setting','name'=>"邮箱设置"],
-            'other_setting'=> ['order'=>2,'url'=>'other_setting','name'=>"其他设置"]
+            'pay_setting'=> ['order'=>2,'url'=>'pay_setting','name'=>"支付设置"],
+//            'other_setting'=> ['order'=>2,'url'=>'other_setting','name'=>"其他设置"]
         );
 
         $this->assign('menu_list',$this->menu_list);
@@ -30,6 +34,7 @@ class System extends Base
 
     }
 
+    //基础设置
     public function base_setting()
     {
         $type = "base_setting";
@@ -45,13 +50,14 @@ class System extends Base
         }
 
         $info = Db::name('config')->where('type',$type)->select();
-        foreach($info as $v){
-            $data[$v['name']] = $v['value'];
+        if ($info){
+            foreach($info as $v){
+                $data[$v['name']] = $v['value'];
+            }
+            $this->assign('data',$data);
         }
-//        dump($data);//die;
         $index = $this->menu_list;
         $this->assign('index',$index['base_setting']['order']);
-        $this->assign('data',$data);
         return $this->fetch();
     }
 
@@ -79,6 +85,7 @@ class System extends Base
     //     return $this->fetch();
     // }
 
+    //邮箱设置
     public function email_setting()
     {
         $type = "email_setting";
@@ -94,20 +101,44 @@ class System extends Base
         }
 
         $info = Db::name('config')->where('type',$type)->select();
-        foreach($info as $v){
-            $data[$v['name']] = $v['value'];
+        if($info){
+            foreach($info as $v){
+                $data[$v['name']] = $v['value'];
+            }
+            $this->assign('data',$data);
         }
-
-        $this->assign('data',$data);
         $this->assign('index',1);
         return $this->fetch();
     }
 
-    public function other_setting()
+    //支付设置
+    public function pay_setting(Request $request)
     {
-        $type = "other_setting";
+        $type = "pay_setting";
         if($_POST){
             $info = input('post.');
+            $files = $request->file();
+            $file = [];
+            foreach ($files as $k => $v) {
+                $code = $v->getInfo();
+                array_push($file,$code);
+            }
+//            dump($file);
+            $ali = $file[0];
+            $wechat = $file[1];
+//            $name = $files->getInfo('name');
+//            $exten = substr($name,strrpos($name,'.')); //上传文件后缀名
+//            $img_name = md5(mt_rand(0,100000).time()); //文件名
+            $img_path = 'public/upload/paycode/';
+            if(!is_dir(ROOT_PATH.$img_path)){
+                mkdir(ROOT_PATH.$img_path,0777,true);
+            }
+            foreach ($file as $v){
+//                dump($v['name']);
+                move_uploaded_file($v['name'],ROOT_PATH.$img_path);
+
+            }
+            dump($file);die;
             foreach($info as $k=>$v){
                 if(Db::name('config')->where(['type'=>$type,'name'=>$k])->find()){
                     Db::name('config')->where(['type'=>$type,'name'=>$k])->update(['value'=>$v]);
@@ -118,14 +149,40 @@ class System extends Base
         }
 
         $info = Db::name('config')->where('type',$type)->select();
-        foreach($info as $v){
-            $data[$v['name']] = $v['value'];
+        if ($info){
+            foreach($info as $v){
+                $data[$v['name']] = $v['value'];
+            }
+            $this->assign('data',$data);
         }
-
-        $this->assign('data',$data);
         $this->assign('index',2);
         return $this->fetch();
     }
+
+    //其他设置
+//    public function other_setting()
+//    {
+//        $type = "other_setting";
+//        if($_POST){
+//            $info = input('post.');
+//            foreach($info as $k=>$v){
+//                if(Db::name('config')->where(['type'=>$type,'name'=>$k])->find()){
+//                    Db::name('config')->where(['type'=>$type,'name'=>$k])->update(['value'=>$v]);
+//                }else{
+//                    Db::name('config')->insert(['name'=>$k,'value'=>$v,'type'=>$type]);
+//                }
+//            }
+//        }
+//
+//        $info = Db::name('config')->where('type',$type)->select();
+//        foreach($info as $v){
+//            $data[$v['name']] = $v['value'];
+//        }
+//
+//        $this->assign('data',$data);
+//        $this->assign('index',2);
+//        return $this->fetch();
+//    }
 
     public function category()
     {
