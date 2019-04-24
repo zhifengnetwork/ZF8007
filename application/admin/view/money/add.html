@@ -1,0 +1,134 @@
+<!--_meta 作为公共模版分离出去-->
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <!--[if lt IE 9]>
+	<script type="text/javascript" src="/__STATIC__/lib/html5.js"></script>
+	<script type="text/javascript" src="/__STATIC__/lib/respond.min.js"></script>
+	<![endif]-->
+    <link rel="stylesheet" type="text/css" href="/__STATIC__/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="/__STATIC__/h-ui.admin/css/H-ui.admin.css" />
+    <link rel="stylesheet" type="text/css" href="/__STATIC__/lib/Hui-iconfont/1.0.8/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="/__STATIC__/h-ui.admin/skin/default/skin.css" id="skin" />
+    <link rel="stylesheet" type="text/css" href="/__STATIC__/h-ui.admin/css/style.css" />
+    <!--[if IE 6] -->
+    <script type="text/javascript" src="http://lib.h-ui.net/DD_belatedPNG_0.0.8a-min.js"></script>
+    <script>DD_belatedPNG.fix('*');</script>
+</head>
+
+<body>
+    <article class="cl pd-20">
+        <form method="post" class="form form-horizontal" id="form_admin_add" action="">
+            <input type="hidden" name="id" id="id" value="{$info['id'] ?? ''}">
+            <!--<input type="hidden" name="admin_id" value="{$admin_id ?? ''}">-->
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>套餐名：</label>
+                <div class="formControls col-xs-8 col-sm-6">
+                    <input type="text" class="input-text" value="{if condition=" isset($info)"}{$info.pack_name}{/if}"
+                        placeholder="请填写套餐名" id="name" name="name">
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>套餐时长：</label>
+                <div class="formControls col-xs-8 col-sm-6">
+                    <input type="text" class="input-text" autocomplete="off" value="{if condition="
+                        isset($info)"}{$info.pack_time}{/if}" placeholder="请填写套餐时长" id="time" name="time">
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>套餐金额：</label>
+                <div class="formControls col-xs-8 col-sm-6">
+                    <input type="text" class="input-text" autocomplete="off" value="{if condition="
+                        isset($info)"}{$info.pack_money}{/if}" placeholder="请填写套餐金额" id="money" name="money">
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>返佣：</label>
+                <div class="formControls col-xs-8 col-sm-6">
+                    <input type="text" class="input-text" autocomplete="off" value="{if condition="
+                        isset($info)"}{$info.rebate_money}{/if}" placeholder="请填写返佣金额" id="rebate" 元 name="rebate">
+                </div>
+            </div>
+            <div class="row cl">
+                <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+                    <input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+                </div>
+            </div>
+        </form>
+    </article>
+    <!--<iframe name="ajax_a" style="display: none"></iframe>-->
+    {include file='layout/footer' /}
+
+    <script type="text/javascript">
+        $(function () {
+            $('.skin-minimal input').iCheck({
+                checkboxClass: 'icheckbox-blue',
+                radioClass: 'iradio-blue',
+                increaseArea: '20%'
+            });
+
+            $("#form_admin_add").validate({
+
+                success: "valid",
+
+                submitHandler: function (form) {
+                    var id = $("#id").val()
+                    var name = $("#name").val()
+                    var time = $("#time ").val()
+                    var money = $("#money").val()
+                    var rebate = $("#rebate").val()
+                    if (!name) {
+                        layer.msg('套餐名必须填写', { icon: 2, time: 1000 });
+                        return false;
+                    }
+                    if (!time) {
+                        layer.msg('套餐时长必须填写', { icon: 2, time: 1000 });
+                        return false;
+                    }
+                    if (!money) {
+                        layer.msg('套餐金额必须填写', { icon: 2, time: 1000 });
+                        return false;
+                    }
+                    if (!rebate) {
+                        layer.msg('返佣金额必须填写', { icon: 2, time: 1000 });
+                        return false;
+                    }
+
+                    $.ajax({
+                        type: 'post',
+                        url: "{:url('admin/money/add')}",
+                        data: { 'id': id, 'pack_name': name, 'pack_time': time, 'pack_money': money, 'rebate_money': rebate, },
+
+                        success: function (data) {
+
+                            if (data.status == 1) {
+                                layer.msg(data.msg, { icon: 1, time: 1000 }, function () {
+                                    parent.location.reload()
+                                    // var index = parent.layer.getFrameIndex(window.name);
+                                    // parent.$('.btn-refresh').click();
+                                    // parent.layer.close(index);
+                                    // parent.location.reload()
+                                })
+                            } else {
+                                layer.msg(data.msg, { icon: 2, time: 1000 }, function () {
+
+                                    // var index = parent.layer.getFrameIndex(window.name);
+                                    // parent.$('.btn-refresh').click();
+                                    // parent.layer.close(index);
+                                    // parent.location.reload
+                                })
+                            }
+
+                        },
+
+                    });
+
+                }
+            });
+        });
+    </script>
+    <!--/请在上方写此页面业务相关的脚本-->
+</body>
+
+</html>
