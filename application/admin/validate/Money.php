@@ -19,14 +19,14 @@ class Money extends validate
         // 'group_id'      => 'require',
     ];
     protected $message = [
-        'pack_name.unique' => '已存在此套餐名',
+        'pack_name.unique'           => '已存在此套餐名',
         'pack_name.require'          => '套餐名必填',
         'pack_name.chsAlpha'         => '套餐名只能汉字字母',
         'pack_name.length'           => '套餐名长度2-16位',
         // 'pack_name.unique'           =>  '已存在此套餐名',
         'pack_time.require'          => '请填写套餐时长',
-        'pack_money.require'          => '请填写套餐时长',
-        'rebate_money.require'          => '请填写返佣金额'
+        'pack_money.require'         => '请填写套餐时长',
+        'rebate_money.require'       => '请填写返佣金额'
         // 'password.length' => '密码长度4-16',
         // 'password2.length' => '确认长度4-16',
         // 'name.alphaDash'        => '用户名只能英文和数字',
