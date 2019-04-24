@@ -118,27 +118,28 @@ class System extends Base
         if($_POST){
             $info = input('post.');
             $files = $request->file();
-            $file = [];
-            foreach ($files as $k => $v) {
-                $code = $v->getInfo();
-                array_push($file,$code);
-            }
-//            dump($file);
-            $ali = $file[0];
-            $wechat = $file[1];
-//            $name = $files->getInfo('name');
-//            $exten = substr($name,strrpos($name,'.')); //上传文件后缀名
+            if($files){
+                $file = [];
+                foreach ($files as $k => $v) {
+                    $code = $v->getInfo();
+                    array_push($file,$code);
+                }
+                $file[0]['name'] = 'ali_pay.png';
+                $file[1]['name'] = 'wechat_code.png';
+                $ali = $file[0];
+                $wechat = $file[1];
 //            $img_name = md5(mt_rand(0,100000).time()); //文件名
-            $img_path = 'public/upload/paycode/';
-            if(!is_dir(ROOT_PATH.$img_path)){
-                mkdir(ROOT_PATH.$img_path,0777,true);
-            }
-            foreach ($file as $v){
-//                dump($v['name']);
-                move_uploaded_file($v['name'],ROOT_PATH.$img_path);
+                $img_path = 'public/upload/paycode/';
+                if(!is_dir(ROOT_PATH.$img_path)){
+                    mkdir(ROOT_PATH.$img_path,0777,true);
+                }
+                foreach ($file as $v){
+                    move_uploaded_file($v['tmp_name'],ROOT_PATH.'/'.$img_path.$v['name']);
+                }
+                $info['ali_code'] = ROOT_PATH.'/'.$img_path.$ali['name'];
+                $info['wechat_code'] = ROOT_PATH.'/'.$img_path.$wechat['name'];
 
             }
-            dump($file);die;
             foreach($info as $k=>$v){
                 if(Db::name('config')->where(['type'=>$type,'name'=>$k])->find()){
                     Db::name('config')->where(['type'=>$type,'name'=>$k])->update(['value'=>$v]);
