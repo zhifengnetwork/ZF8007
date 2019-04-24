@@ -34,7 +34,7 @@
                             class="Hui-iconfont">&#xe665;</i> 搜套餐</button>
                 </div>
                 </form>
-                <div class="cl pd-5 bg-1 bk-gray mt-20"> 共有数据：<strong>{//$num}</strong> 条</span> </div>
+                <div class="cl pd-5 bg-1 bk-gray mt-20"> 共有数据：<strong>{$num}</strong> 条</span> </div>
                 <div class="mt-20">
                     <table class="table table-border table-bordered table-hover table-bg table-sort">
                         <thead>
@@ -59,7 +59,14 @@
                                 <td>{$vo.nickname}</td>
                                 <td>{$vo.pack_name}</td>
                                 <td>{$vo.pay_money}</td>
-                                <td>{$vo.pay_code}</td>
+                                <td>
+                                    {empty name="vo.pay_code"}
+                                    <span>无凭证上传</span>
+                                    {else /}
+                                    <a href="#" onclick="member_add('查看凭证','/admin/member/img?id={$vo.id}','500','500')">点击查看</a>
+                                    {/empty}
+                                    
+                                </td>
                                 <td width="40">{:date('Y-m-d,H:i:s',$vo.pay_time)}</td>
                                 <td class="td-status">
                                     {if condition="$vo.pay_status eq 1"}
@@ -70,12 +77,13 @@
                                     <span class="label radius">审核不通过</span>
                                     {/if}
                                 </td>
-                                <!-- <td>拥有至高无上的权利</td> -->
-                                <td class="f-14"><a title="编辑" href="javascript:;"
-                                        onclick="member_add('组别编辑','{:url('admin/money/add',array('id'=>$vo.id))}','500','300')"
-                                        style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> <a title="删除" href="javascript:;"
-                                        onclick="pack_del(this,{$vo.id})" class="ml-5" style="text-decoration:none"><i
-                                            class="Hui-iconfont">&#xe6e2;</i></a></td>
+                                <td class="td-manage" data-id="{$vo.id}">
+                                    {eq name="$vo.pay_status" value="0"}
+                                        <a title="审核" href="javascript:;" onclick="audit('{$vo.id}')" class="ml-5 elementcheck" style="text-decoration:none">
+                                            <i class="Hui-iconfont">&#xe606;</i>
+                                        </a>
+                                    {/eq}
+                                </td>
                             </tr>
                             
                             {/volist}
@@ -94,155 +102,60 @@
     {include file='layout/footer' /}
 
     <script type="text/javascript">
-        // $(function(){
-        // 	// $('.table-sort').dataTable({
-        // 	// 	"aaSorting": [[ 1, "desc" ]],//默认第几个排序
-        // 	// 	"bStateSave": true,//状态保存
-        // 	// 	"aoColumnDefs": [
-        // 	// 	  //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
-        // 	// 	  {"orderable":false,"aTargets":[0,8,9]}// 制定列不参与排序
-        // 	// 	]
-        // 	// });
-        // 	$('.table-sort tbody').on( 'click', 'tr', function () {
-        // 		if ( $(this).hasClass('selected') ) {
-        // 			$(this).removeClass('selected');
-        // 		}
-        // 		else {
-        // 			table.$('tr.selected').removeClass('selected');
-        // 			$(this).addClass('selected');
-        // 		}
-        // 	});
-        // });
-
-        var url = '{:url("admin/member/handle")}'
         /*用户-添加*/
         function member_add(title, url, w, h) {
             layer_show(title, url, w, h);
-        }
-        /*用户-查看*/
-        function member_show(title, url, id, w, h) {
-            layer_show(title, url, w, h);
-        }
-        /*用户-停用*/
-        function member_stop(obj, user_id) {
-            layer.confirm('确认要停用吗？', function (index) {
-                $.ajax({
-                    type: 'POST',
-                    url: url,
-                    dataType: 'json',
-                    data: { 'id': user_id, 'act': "status", 'status': 0 },
-                    success: function (data) {
-                        if (data.code == 1) {
-                            layer.msg('已停用!', { icon: 5, time: 1000 }, function () {
-                                window.location.reload();
-                            });
-                        } else {
-                            layer.msg('停用失败!', { icon: 2, time: 1000 });
-                        }
-                    },
-                    error: function (data) {
-                        layer.alert("服务器繁忙, 请联系管理员!");
-                    },
-                });
-            });
-        }
+        }        
+        function audit(id){
+            
+            url = "/admin/member/audit"
+            layer.open({
+                title:'安全提示',
+                type:1,
+                content:'<div style="padding:15px 0px 10px 20px;font-size:14px">通过审核?</div>',
+                time:5000,
+                closeBtn:1,
+                btn:['通过','不通过','取消'],
 
-        /*用户-启用*/
-        function member_start(obj, user_id) {
-            layer.confirm('确认要启用吗？', function (index) {
-                // 	$(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="member_stop(this,id)" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a>');
-                // 	$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已启用</span>');
-                // 	$(obj).remove();
-                // 	layer.msg('已启用!',{icon: 6,time:1000});
-                // });
-                $.ajax({
-                    type: 'POST',
-                    url: url,
-                    dataType: 'json',
-                    data: { 'id': user_id, 'act': "status", 'status': 1 },
-                    success: function (data) {
-                        if (data.code == 1) {
-                            layer.msg('已启用!', { icon: 6, time: 1000 }, function () {
-                                window.location.reload();
+                //通过
+                yes:function(index,layero){
+                    $.post(url,{'id':id,'pay_status':1},function(data){
+                        layer.close(index);
+                        if(data.code == 1){
+                            layer.msg('审核成功！', {icon: 1, time: 1000},function(){
+                                window.location.replace(location.href);
+                                open_closeAll();
+                             
                             });
-                        } else {
-                            layer.msg('启用失败!', { icon: 2, time: 1000 });
+                        }else{
+                            layer.msg('审核失败！', {icon: 2, anim: 6, time: 1000});
                         }
-                    },
-                    error: function (data) {
-                        layer.alert("服务器繁忙, 请联系管理员!");
-                    },
-                });
-            });
-        }
-        /*用户-编辑*/
-        function member_edit(title, url, id, w, h) {
-            layer_show(title, url, w, h);
-        }
-        /*密码-修改*/
-        function change_password(title, url, id, w, h) {
-            layer_show(title, url, w, h);
-        }
-        /*用户-删除*/
-        function pack_del(obj, id) {
-            layer.confirm('确认要删除吗？', function (index) {
-                $.ajax({
-                    type: "post",
-                    url: '{:url("admin/money/del")}',
-                    dataType: "json",
-                    data: { 'id':id,'act':'del' },
-                    success: function (data) {
-                        if (data.code == 1) {
-                            $(obj).parents("tr").remove();
-                            layer.msg('删除成功', { icon: 1, time: 1000 });
-                        } else {
-                            layer.msg('删除失败', { icon: 2, time: 1000 });
+                    });
+                },
+                //不通过
+                btn2:function(index,layero){
+                    $.post(url,{'id':id,'pay_status':2},function(data){
+                        layer.close(index);
+                        if(data.code == 1){
+                            layer.msg('审核成功！', {icon: 1, time: 1000},function(){
+                                window.location.replace(location.href);
+                                open_closeAll();
+                            });
+                        }else{
+                            layer.msg('审核失败！', {icon: 2, anim: 6, time: 1000});
                         }
-                    },
-                    error: function (data) {
-                        layer.alert('服务器繁忙, 请联系管理员!');
-                    }
-                });
-                // $(obj).parents("tr").remove();
-                // layer.msg('已删除!',{icon:1,time:1000});
-            });
-        }
+                    });
+                },
+                //取消
+                btn3:function(index,layero){
+                    layer.close(index);
+                },
+                cancel:function(){
+                    layer.close();
+                }
+            })
+        }            
 
-			function datadel() {
-				id = document.getElementsByName("pack_id");
-				check_val = [];
-				for (k in id) {
-					if (id[k].checked) {
-						check_val.push(id[k].value);
-					}
-				}
-				console.log(check_val);
-				if (check_val.length == 0) {
-					layer.alert("你还没有选择!");
-				} else {
-					check_val = JSON.stringify(check_val);
-					layer.confirm('确认要删除吗？', function (index) {
-						$.ajax({
-							type: 'POST',
-							url: "{:url('admin/money/del')}",
-							data: { 'id': check_val, 'act': "batchdel" },
-							dataType: 'json',
-							success: function (data) {
-								if (data.status == 1) {
-									layer.msg(data.msg, { icon: 1, time: 1000 }, function () {
-										window.location.reload();
-									});
-								} else {
-									layer.msg(data.msg, { icon: 2, time: 1000 });
-								}
-							},
-							error: function () {
-								layer.alert("服务器繁忙, 请联系管理员!");
-							},
-						});
-					});
-				}
-			}        
     </script>
     <!--/请在上方写此页面业务相关的脚本-->
 </body>
