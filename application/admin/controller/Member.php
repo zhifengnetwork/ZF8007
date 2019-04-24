@@ -114,6 +114,25 @@ class Member extends Base
             return json(['code'=>0]);
         }
     }
+    /**
+     * 用户支付详情
+     */
+    public function pay_check(){
+        // $list = Db::name('user_pay_log')
+        // ->alias('p')
+        // ->jion('users u',)
+        // ->select();
+        $list = Db::name('user_pay_log')
+                ->alias('p')
+                ->join('users u', 'u.id = p.user_id')
+                ->join('package pa', 'pa.id = p.package_id')
+                ->field( 'p.*,u.nickname,pa.pack_name')
+                ->select();
+        
+        dump($list);
+        $this->assign('list',$list);
+        return $this->fetch();
+    }
 
     public function level()
     {

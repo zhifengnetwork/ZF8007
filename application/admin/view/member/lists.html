@@ -27,10 +27,10 @@
 							<th width="80">ID</th>
 							<th width="100">用户名</th>
 							<th width="40">性别</th>
-							<th width="90">手机</th>
-							<th width="150">邮箱</th>
-							<!--<th width="">地址</th>-->
-							<th width="130">加入时间</th>
+							<th width="200">手机</th>
+							<th width="200">邮箱</th>
+							<th width="80">套餐结束时间</th>
+							<th width="200">加入时间</th>
 							<th width="70">状态</th>
 							<th width="100">操作</th>
 						</tr>
@@ -48,7 +48,7 @@
 							</td>
 							<td>{$vo.mobile}</td>
 							<td>{$vo.email}</td>
-							<!--<td class="text-l">北京市 海淀区</td>-->
+							<td >{$vo.end_time|date="Y-m-d H:i:s",###}</td>
 							<td>{$vo.register_time|date="Y-m-d H:i:s",###}</td>
 							<td class="td-status">
 								{if condition="$vo.status eq 1"}

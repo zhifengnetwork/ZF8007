@@ -28,7 +28,7 @@
                     value="{$seach.datemax|date='Y-m-d H:i:s',###}" {else/} value="" {/if} id="datemax" name="seach[datemax]"
                     class="input-text Wdate" style="width:180px;">
                 <input type="text" class="input-text" style="width:250px"
-                    value="{if condition='isset($seach.m_conditions)'}{$seach.m_conditions}{/if}" placeholder="输入管理员名称"
+                    value="{if condition='isset($seach.m_conditions)'}{$seach.m_conditions}{/if}" placeholder="输入套餐名称"
                     id="m_conditions" name="seach[m_conditions]">
                     <button type="submit" class="btn btn-success radius" id="" name=""><i
                             class="Hui-iconfont">&#xe665;</i> 搜套餐</button>
@@ -45,8 +45,8 @@
                             <tr class="text-c">
                                 <th width="25"><input type="checkbox" name="" value=""></th>
                                 <th width="80">ID</th>
-                                <th width="100">套餐名字</th>
-                                <th width="40">套餐金额</th>
+                                <th width="80">套餐名字</th>
+                                <th width="80">套餐金额</th>
                                 <th width="90">套餐时长</th>
                                 <th width="150">添加时间</th>
                                 <!--<th width="">地址</th>-->
@@ -55,13 +55,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {volist name="list" id="vo"}
+                            {volist name="list" id="vo" }
                             <tr class="text-c">
                                 <td><input type="checkbox" value="{$vo.id}" name="pack_id"></td>
                                 <td>{$vo.id}</td>
                                 <td>{$vo.pack_name}</td>
-                                <td>{$vo.pack_name}</td>
-                                <td>{$vo.pack_name}</td>
+                                <td>{$vo.pack_money}</td>
+                                <td>{$vo.pack_time}</td>
                                 <td width="40">{:date('Y-m-d,H:i:s',$vo.add_time)}</td>
                                 <td>{$vo.rebate_money}</td>
                                 <!-- <td>拥有至高无上的权利</td> -->
@@ -73,8 +73,13 @@
                             </tr>
                             
                             {/volist}
+                            
                         </tbody>
                     </table>
+                    {$list->render()}
+                    {empty name="list"}
+                    <p style="text-align: center;height: 75px;line-height: 75px">暂无数据</p>
+                    {/empty}
                 </div>
             </article>
         </div>

@@ -16,7 +16,11 @@
     <script type="text/javascript" src="http://lib.h-ui.net/DD_belatedPNG_0.0.8a-min.js"></script>
     <script>DD_belatedPNG.fix('*');</script>
 </head>
-
+<style>
+  .unit{
+     display: flex;
+  }
+</style>
 <body>
     <article class="cl pd-20">
         <form method="post" class="form form-horizontal" id="form_admin_add" action="">
@@ -31,23 +35,23 @@
             </div>
             <div class="row cl">
                 <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>套餐时长：</label>
-                <div class="formControls col-xs-8 col-sm-6">
+                <div class="formControls col-xs-8 col-sm-6 unit">
                     <input type="text" class="input-text" autocomplete="off" value="{if condition="
-                        isset($info)"}{$info.pack_time}{/if}" placeholder="请填写套餐时长" id="time" name="time">
+                        isset($info)"}{$info.pack_time}{/if}" placeholder="请填写套餐时长" id="time" name="time"><span style="padding: 5px;">天</span>
                 </div>
             </div>
             <div class="row cl">
                 <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>套餐金额：</label>
-                <div class="formControls col-xs-8 col-sm-6">
+                <div class="formControls col-xs-8 col-sm-6 unit">
                     <input type="text" class="input-text" autocomplete="off" value="{if condition="
-                        isset($info)"}{$info.pack_money}{/if}" placeholder="请填写套餐金额" id="money" name="money">
+                        isset($info)"}{$info.pack_money}{/if}" placeholder="请填写套餐金额" id="money" name="money"><span style="padding: 5px;">元</span>
                 </div>
             </div>
             <div class="row cl">
                 <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>返佣：</label>
-                <div class="formControls col-xs-8 col-sm-6">
+                <div class="formControls col-xs-8 col-sm-6 unit">
                     <input type="text" class="input-text" autocomplete="off" value="{if condition="
-                        isset($info)"}{$info.rebate_money}{/if}" placeholder="请填写返佣金额" id="rebate" 元 name="rebate">
+                        isset($info)"}{$info.rebate_money}{/if}" placeholder="请填写返佣金额" id="rebate" 元 name="rebate"><span style="padding: 5px;">元</span>
                 </div>
             </div>
             <div class="row cl">

@@ -18,7 +18,7 @@ class Money extends Base
     /**
      * 套餐列表 
      */
-    public function list(){
+    public function lists(){
         $seach = isset($_GET['seach']) ? $_GET['seach'] : '';
         $m_conditions   = isset($seach['m_conditions']) ? $seach['m_conditions'] : '';
         $datemin        = isset($seach['datemin']) ? $seach['datemin'] : '';
@@ -36,7 +36,7 @@ class Money extends Base
             $this->assign('seach', $seach); 
         }
         // 列出数据
-        $list = Db::name('package')->where($where)->order('add_time desc')->paginate(15, false, ['query' => request()->param()]);
+        $list = Db::name('package')->where($where)->order('add_time desc')->paginate(10, false, ['query' => request()->param()]);
         $num = count($list);
         
         $this->assign('num', $num); 
