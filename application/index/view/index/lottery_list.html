@@ -24,7 +24,7 @@
                 <div class="result">
                 <p class="history-result">{$typed}开奖结果</p>
                 <p class="history-time">{$list.0.lottery_time}</p>
-                    <input type="hidden" id="lottery_number" value="{$list.0.lottery_number}" />
+                    <input type="hidden" id="lottery_date" value="{$list.0.lottery_date}" />
                 </div>
                 <div class="ballBox">
                     <ul class="ball-ls clearfloat">
@@ -53,7 +53,7 @@
                 <div class="result-info clearfloat">
                       <div class="info-periods">
                           <p class="info-t">期数</p>
-                          <ul>
+                          <ul id="lottery_date_str">
                               {foreach name="list" item="li"}
                                   <li class="item-per">
                                       <span>{$li.lottery_date}</span>
@@ -66,7 +66,7 @@
                           <div class="result-soll champion">
                               <p class="info-t">{$l}</p>
                               <div class="result-list">
-                                  <ul>
+                                  <ul id="lottery_number_{$l}">
                                       {volist name="list" id="vl"}
                                       <li class="item-soll">
                                           <ul class="clearfloat">
@@ -204,31 +204,73 @@
 
                }
            });
-           var min=0;
-           var max=1;
+           // var min=0;
+           // var max=1;
            function get_new_lottery(){
-                var lottery_number=$("#lottery_number").val();
+                var lottery_number=$("#lottery_date").val();
                 var type={$type};
+                // console.log(lottery_number);
                 if(type>0 && lottery_number>0){
                     $.ajax({
                         type: "POST",
                         url: '{:url(\'index/new_lottery\')}',
                         cache: false,
                         data: {
-                            num: page,is_ajax:1,type:type
+                            lottery_date: lottery_number,type:type
                         },
                         dataType: 'json',
                         success: function(data) {
+                            var str_date='';//新的期数
 
+                            var str_news='';//最新的数据
+                            // console.log(data)
+                            if(data && data.lottery_time !=''){
+                                //替换最新的时间
+                                $(".history-time").html(data.lottery_time);
+                                //替换最新的期号
+                                $("#lottery_date").val(data.lottery_date);
+                                //替换最新的数据
+                                for(var i=0;i<10;i++){
+                                    str_news+='<li class="ball-item">'+data.lottery_number[i]+'</li>';
+                                }
+                                $(".ball-ls").html(str_news);
+                                //在最前面添加一个期号
+                                str_date+='<li class="item-per">';
+                                str_date+='<span>'+data.lottery_date+'</span></li>';
+                                $('#lottery_date_str').prepend(str_date);
+                                //在最前面添加数字
+                                var l=1;
+                                for(var k in data.lottery_color){
+                                    var str_number='';//新的数字
+                                    var p=k.replace("oo","");
+                                    str_number+='<li class="item-soll">';
+                                    str_number+='<ul class="clearfloat">';
+                                    str_number+='<li class="item-soll-qi"><div class="qi-num one" style="background-color:#'+data.lottery_color[k][0]+'">'+p+'</div></li>';
+                                    str_number+='<li class="item-soll-qi"><div class="qi-num two" style="background-color:#'+data.lottery_color[k][1]+'">'+p+'</div></li>';
+                                    str_number+='<li class="item-soll-qi"><div class="qi-num three" style="background-color:#'+data.lottery_color[k][2]+'">'+p+'</div></li>';
+                                    str_number+='<li class="item-soll-qi"><div class="qi-num four" style="background-color:#'+data.lottery_color[k][3]+'">'+p+'</div></li>';
+                                    str_number+='<li class="item-soll-qi"><div class="qi-num five" style="background-color:#'+data.lottery_color[k][4]+'">'+p+'</div></li>';
+                                    str_number+='<li class="item-soll-qi"><div class="qi-num six" style="background-color:#'+data.lottery_color[k][5]+'">'+p+'</div></li>';
+                                    str_number+='</ul></li>';
+                                    $("#lottery_number_"+l).prepend(str_number);
+                                    l++;
+                                }
+                                // Object.keys(data.lottery_color).forEach(function(key){
+                                //
+                                //     console.log(key,data.lottery_color[key]);
+                                //
+                                // });
+                            }
                         }
                     })
                 }
-               if(min<max){
+               // if(min<max){
                    setTimeout(get_new_lottery,10000);
-               }
+               // }
            }
-           setTimeout(get_new_lottery,10000);
-
+           $(function() {
+               setTimeout(get_new_lottery, 10000);
+           })
        </script>
 </body>
 </html>

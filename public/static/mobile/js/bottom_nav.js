@@ -6,8 +6,8 @@ var bottomTabArrOne = [
 	// "../../img/public/bottom_nav/example1_1.png",
 	// "../../img/public/bottom_nav/purchase2_1.png",
 	// "../../img/public/bottom_nav/my3_1.png"
-	"../image/home-w@2x.png",
-	"../image/wo-w@2x.png",
+	"/public/static/mobile/image/home-w@2x.png",
+	"/public/static/mobile/image/wo-w@2x.png",
 ];
 /*底部nav切换(已-点击)_按循序*/
 var bottomTabArrTwo = [
@@ -15,8 +15,8 @@ var bottomTabArrTwo = [
 	// "../../img/public/bottom_nav/example1_2.png",
 	// "../../img/public/bottom_nav/purchase2_2.png",
 	// "../../img/public/bottom_nav/my3_2.png"
-	"../image/home-r@2x.png",
-	"../image/wo-r@2x.png",
+	"/public/static/mobile/image/home-r@2x.png",
+	"/public/static/mobile/image/wo-r@2x.png",
 ];
 /*图标的大小_按循序（不设置默认）*/
 var iconWH = [
@@ -35,8 +35,8 @@ var buttonNavTitle = [
 var buttonNavUrl = [];
 /*未-登陆路径*/
 var loginFalse = [
-	"'../html/index.html'",
-	"'../html/mycenter.html'",
+	"'/index/index/index.html'",
+	"'/index/user/mycenter.html'",
 ]
 /*已-登陆路径*/
 var loginTrue = [

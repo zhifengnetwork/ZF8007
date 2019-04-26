@@ -45,7 +45,6 @@ class Base extends Controller
      */
     public function ajaxReturn($data)
     {
-        
         exit(json_encode($data));
     }
 }
