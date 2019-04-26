@@ -5,7 +5,9 @@
 
 
 
-
+.everyColor {
+	background: #212332;
+}
 .swiper-container {
     height: 4rem;
     width: 100%;
@@ -55,7 +57,7 @@
     overflow: hidden;
 	text-overflow: ellipsis;
     white-space: nowrap;
-    max-width: 5rem;
+    max-width: 6.6rem;
     position: absolute;
     left: .6rem;
 }

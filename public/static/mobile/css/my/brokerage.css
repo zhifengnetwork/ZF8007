@@ -1,0 +1,76 @@
+.content .name_wrap {
+	padding: .3rem .24rem;
+}
+.content .name_wrap .name {
+	background-color: #1f2034;
+	border-radius: 6px;
+	line-height: .9rem;
+	text-align: center;
+}
+.content .name_wrap .name span {
+	font-size: .34rem;
+	color: #eff0f7;
+}
+.content .name_wrap .name span:nth-child(2) {
+	margin-left: .25rem;
+}
+
+.content .det_wrap {
+	margin: 0 .24rem .3rem;
+	border-radius: 6px;
+}
+.content .det_wrap .dets {
+	padding: .3rem .11rem;
+	background-color: #1f2034;
+	text-align: center;
+}
+.content .det_wrap .der {
+	border-bottom: 1px solid #30314a;
+}
+.content .det_wrap .dets p:nth-child(1) {
+	font-size: .34rem;
+	color: #cd3238;
+	line-height: .55rem;
+}
+.content .det_wrap .dets p:nth-child(2) {
+	font-size: .3rem;
+	color: #fff;
+	line-height: .45rem;
+}
+
+.content .list_wrap {
+	padding: 0 .35rem;
+}
+.content .list_wrap h2 {
+	padding: 0 0 .3rem;
+	font-size: .34rem;
+	color: #fff;
+}
+.item {
+	border-bottom: 1px solid #30314a;
+}
+.content .list_wrap .item span {
+	display: inline-block;
+	width: 32%;
+	height: .85rem;
+	color: #fff;
+	font-size: .3rem;
+	text-align: center;
+	line-height: .85rem;
+}
+.content .list_wrap .data_wrap .data div {
+	display: inline-block;
+	width: 32%;
+	height: .55rem;
+	font-size: .28rem;
+	color: #fff;
+	text-align: center;
+	line-height: .55rem;
+}
+.content .list_wrap p {
+	display: none;
+	margin-top: 1rem;
+	font-size: .3rem;
+	color: #515274;
+	text-align: center;
+}

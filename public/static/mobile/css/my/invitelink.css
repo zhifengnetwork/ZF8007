@@ -1,0 +1,45 @@
+.content .det_wrap {
+	padding: .35rem .8rem;
+	margin: .7rem .25rem 0;
+	background: #1f2034;
+}
+
+.content .det_wrap .info div {
+	display: inline-block;
+	vertical-align: top;
+}
+.content .det_wrap .info .img img {
+	width: 1rem;
+	height: 1rem;
+	border-radius: 50%;
+}
+.content .det_wrap .info .nome_wrap {
+	margin: .35rem 0 0;
+	font-size: .28rem;
+	color: #f9f7fb;;
+}
+.content .det_wrap .info .nome_wrap span {
+	margin-left: .25rem;
+}
+
+.content .det_wrap .share {
+	margin-top: .45rem;
+	padding: .35rem .45rem;
+	background: #24263d;
+	color: #f9f7fb;
+	border-radius: 6px;
+}
+.content .det_wrap .share .ur {
+	text-align: center;
+	line-height: .85rem;
+}
+.content .det_wrap .share a {
+	margin: .35rem auto;
+	display: block;
+	width: 1.4rem;
+	height: .46rem;
+	background: #ac2c35;
+	border-radius: 6px;
+	text-align: center;
+	line-height: .46rem;
+}
