@@ -21,11 +21,12 @@
             <!---->
             <div class="content">
             	<div class="shortcut">
-            		<!--手机号-->
+					<form action="" method="POST">
+					<!--手机号-->
             		<div class="mobile">
             			<div class="mark">手机号:</div>
             			<div class="inp">
-                            <input class="text phone" type="text" placeholder="请输入手机号/邮箱/用户名" />
+                            <input class="text phone" name="mobile" id="mobile" type="text" placeholder="请输入手机号/邮箱/用户名" />
                             <input type="hidden" name="sms_type" value="1" id="sms_type_id">
             			</div>
             		</div>
@@ -33,7 +34,7 @@
             		<div class="mobile">
             			<div class="mark">验证码:</div>
             			<div class="inp">
-            				<input class="text" type="number" placeholder="请输入短信验证码" />
+            				<input class="text" type="number" name="code" id="code" placeholder="请输入短信验证码" />
             				<input class="gain" type="button" id="btn" value="获取验证码" onclick="settime(this)" />
             			</div>
             		</div>
@@ -41,11 +42,11 @@
             		<div class="mobile">
             			<div class="mark">设置密码:</div>
             			<div class="inp">
-            				<input class="text" type="number" placeholder="数字+字母或符号" />
+            				<input class="text" type="password" name="password" id="password" placeholder="数字+字母或符号" />
             			</div>
             		</div>
             	</div>
-            	
+				</form>
             	<!--注册按钮-->
             	<a class="signin_btn">提交注册</a>
             </div>
@@ -91,7 +92,7 @@
                 return false
             }
             var sms_type = $('#sms_type_id').val();
-            // layer.msg(111); return false;
+
             // 获取验证码
             var flag = true;
             $.ajax({
@@ -116,7 +117,45 @@
             // return condition.phonestate=true
         })
 
+        $('.signin_btn').click(function(){
+			var mobile = $("#mobile").val();
+			var code = $("#code").val();
+			var sms_type = $("#sms_type_id").val();
+			var password = $("#password").val();
+			if (!mobile) {
+				layer.msg('手机不能为空!', { time: 1000 }, function () {
 
+				});
+				return false
+			}
+			if (!code) {
+				layer.msg('验证码不能为空!', { time: 1000 }, function () {
+
+				});
+				return false
+			}
+			if (!password) {
+				layer.msg('密码不能为空!', { time: 1000 }, function () {
+
+				});
+				return false
+			}			
+			
+            $.ajax({
+                url: '/index/login/re_commit',
+                type: 'post',
+                dataType: 'json',
+                data: $("form").serialize(),
+                success: function (msg) {
+                    if (msg.code == 0) {
+                        layer.msg(msg.msg);
+                        return false;
+                    }else{
+						window.location.replace(msg.url);
+					}
+                }
+            });
+		})
         </script>
 	</body>
 </html>
