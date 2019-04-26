@@ -22,358 +22,32 @@
             <div class="history-box">
                 <p class="history-title">历史记录</p>
                 <div class="result">
-                <p class="history-result">{$type}开奖结果</p>
+                <p class="history-result">{$typed}开奖结果</p>
                 <p class="history-time">{$list.0.lottery_time}</p>
+                    <input type="hidden" id="lottery_number" value="{$list.0.lottery_number}" />
                 </div>
                 <div class="ballBox">
                     <ul class="ball-ls clearfloat">
                         {foreach name="list.0.lottery_number" item="number"}
                             <li class="ball-item">{$number}</li>
                         {/foreach}
-                        <!--<li class="ball-item">4</li>-->
-                        <!--<li class="ball-item">5</li>-->
-                        <!--<li class="ball-item">8</li>-->
-                        <!--<li class="ball-item">3</li>-->
-                        <!--<li class="ball-item">5</li>-->
-                        <!--<li class="ball-item">8</li>-->
-                        <!--<li class="ball-item">7</li>-->
-                        <!--<li class="ball-item">9</li>-->
-                        <!--<li class="ball-item">2</li>-->
                     </ul>
                 </div>
                 <div class="select-color">
                 <div class=" select clearfloat">
-                    <div class="colorSelect">
-                               <P class="color-tit">第一组</P>
-                                <ul class="clearfloat tt">
+                    {volist name="all_color" id="va" length="6" key="k"}
+                        <div class="colorSelect">
+                            <P class="color-tit">第{$k}组</P>
+                            <ul class="clearfloat tt">
+                                {volist name="all_color" id="ac" key="l"}
+                                <?php $j=($k-1)*10+$l;?>
                                     <li class="color-item" >
-                                        <input class="jscolor {valueElement:valueSpan1,value:'',width:101,closable:true,closeText:'关闭'}"
-                                        style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="1"
-                                        >
-                                        <input type="hidden" value="" id="valueSpan1" onchange="color(this)">
+                                        <input class="jscolor {valueElement:valueSpan<?php echo ($k-1)*10+$l;?>,value:'',width:101,closable:true,closeText:'关闭'}" style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center;background-color:#{$ac[$k-1]}" disabled value="{if condition='($type eq 4) and ($l eq 10)'}0{else /}{$l}{/if}"><input type="hidden" value="{$ac[$k-1]}" id="valueSpan{$j}" onchange="color(this)" >
                                     </li>
-                                    <li class="color-item">
-                                        <input class="jscolor {valueElement:valueSpan2,value:'',width:101,closable:true,closeText:'关闭',}"
-                                        style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="2">
-                                        <input type="hidden" value="" id="valueSpan2" onchange="color(this)">
-                                    </li>
-                                    <li class="color-item">
-                                        <input class="jscolor {valueElement:valueSpan3,value:'',width:101,closable:true,closeText:'关闭',}"
-                                        style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="3">
-                                        <input type="hidden" value="" id="valueSpan3" onchange="color(this)">
-                                    </li>
-                                    <li class="color-item">
-                                        <input class="jscolor {valueElement:valueSpan4,value:'',width:101,closable:true,closeText:'关闭',}"
-                                        style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="4">
-                                        <input type="hidden" value="" id="valueSpan4" onchange="color(this)">
-                                    </li>
-                                    <li class="color-item">
-                                        <input class="jscolor {valueElement:valueSpan5,value:'',width:101,closable:true,closeText:'关闭',}"
-                                        style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="5">
-                                        <input type="hidden" value="" id="valueSpan5" onchange="color(this)">
-                                    </li>
-                                    <li class="color-item">
-                                        <input class="jscolor {valueElement:valueSpan6,value:'',width:101,closable:true,closeText:'关闭',}"
-                                        style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="6">
-                                        <input type="hidden" value="" id="valueSpan6" onchange="color(this)">
-                                    </li>
-                                    <li class="color-item">
-                                        <input class="jscolor {valueElement:valueSpan7,value:'',width:101,closable:true,closeText:'关闭',}"
-                                        style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="7">
-                                        <input type="hidden" value="" id="valueSpan7" onchange="color(this)">
-                                    </li>
-                                    <li class="color-item">
-                                        <input class="jscolor {valueElement:valueSpan8,value:'',width:101,closable:true,closeText:'关闭',}"
-                                        style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="8">
-                                        <input type="hidden" value="" id="valueSpan8" onchange="color(this)">
-                                    </li>
-                                    <li class="color-item">
-                                        <input class="jscolor {valueElement:valueSpan9,value:'',width:101,closable:true,closeText:'关闭',}"
-                                        style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="9">
-                                        <input type="hidden" value="" id="valueSpan9" onchange="color(this)">
-                                    </li>
-                                    <li class="color-item">
-                                        <input class="jscolor {valueElement:valueSpan10,value:'',width:101,closable:true,closeText:'关闭',}"
-                                        style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled {if condition="$type eq '快乐时时彩'"} value="0" {else /} value="10" {/if} >
-                                        <input type="hidden" value="" id="valueSpan10" onchange="color(this)">
-                                    </li>
-                                </ul>
-                    </div>
-                    <div class="colorSelect">
-                            <P class="color-tit">第二组</P>
-                            <ul class="clearfloat">
-                                    <li class="color-item">
-                                        <input class="jscolor {valueElement:valueSpan11,value:'',width:101,closable:true,closeText:'关闭',}"
-                                        style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="1">
-                                        <input type="hidden" value="" id="valueSpan11" onchange="color1(this)">
-                                    </li>
-                                    <li class="color-item">
-                                        <input class="jscolor {valueElement:valueSpan12,value:'',width:101,closable:true,closeText:'关闭',}"
-                                        style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="2">
-                                        <input type="hidden" value="" id="valueSpan12" onchange="color1(this)">
-                                    </li>
-                                    <li class="color-item">
-                                        <input class="jscolor {valueElement:valueSpan13,value:'',width:101,closable:true,closeText:'关闭',}"
-                                        style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="3">
-                                        <input type="hidden" value="" id="valueSpan13" onchange="color1(this)">
-                                    </li>
-                                    <li class="color-item">
-                                        <input class="jscolor {valueElement:valueSpan14,value:'',width:101,closable:true,closeText:'关闭',}"
-                                        style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="4">
-                                        <input type="hidden" value="" id="valueSpan14" onchange="color1(this)">
-                                    </li>
-                                    <li class="color-item">
-                                        <input class="jscolor {valueElement:valueSpan15,value:'',width:101,closable:true,closeText:'关闭',}"
-                                        style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="5">
-                                        <input type="hidden" value="" id="valueSpan15" onchange="color1(this)">
-                                    </li>
-                                    <li class="color-item">
-                                        <input class="jscolor {valueElement:valueSpan16,value:'',width:101,closable:true,closeText:'关闭',}"
-                                        style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="6">
-                                        <input type="hidden" value="" id="valueSpan16" onchange="color1(this)">
-                                    </li>
-                                    <li class="color-item">
-                                        <input class="jscolor {valueElement:valueSpan17,value:'',width:101,closable:true,closeText:'关闭',}"
-                                        style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="7">
-                                        <input type="hidden" value="" id="valueSpan17" onchange="color1(this)">
-                                    </li>
-                                    <li class="color-item">
-                                        <input class="jscolor {valueElement:valueSpan18,value:'',width:101,closable:true,closeText:'关闭',}"
-                                        style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="8">
-                                        <input type="hidden" value="" id="valueSpan18" onchange="color1(this)">
-                                    </li>
-                                    <li class="color-item">
-                                        <input class="jscolor {valueElement:valueSpan19,value:'',width:101,closable:true,closeText:'关闭',}"
-                                        style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="9">
-                                        <input type="hidden" value="" id="valueSpan19" onchange="color1(this)">
-                                    </li>
-                                    <li class="color-item">
-                                        <input class="jscolor {valueElement:valueSpan20,value:'',width:101,closable:true,closeText:'关闭',}"
-                                        style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled {if condition="$type eq '快乐时时彩'"} value="0" {else /} value="10" {/if} >
-                                        <input type="hidden" value="" id="valueSpan20" onchange="color1(this)">
-                                    </li>
-                                </ul>
-                    </div>
-                    <div class="colorSelect">
-                        <P class="color-tit">第三组</P>
-                        <ul class="clearfloat">
-                                <li class="color-item">
-                                    <input class="jscolor {valueElement:valueSpan21,value:'',width:101,closable:true,closeText:'关闭',}"
-                                    style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="1">
-                                    <input type="hidden" value="" id="valueSpan21" onchange="color2(this)">
-                                </li>
-                                <li class="color-item">
-                                    <input class="jscolor {valueElement:valueSpan22,value:'',width:101,closable:true,closeText:'关闭',}"
-                                    style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="2">
-                                    <input type="hidden" value="" id="valueSpan22" onchange="color2(this)">
-                                </li>
-                                <li class="color-item">
-                                    <input class="jscolor {valueElement:valueSpan23,value:'',width:101,closable:true,closeText:'关闭',}"
-                                    style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="3">
-                                    <input type="hidden" value="" id="valueSpan23" onchange="color2(this)">
-                                </li>
-                                <li class="color-item">
-                                    <input class="jscolor {valueElement:valueSpan24,value:'',width:101,closable:true,closeText:'关闭',}"
-                                    style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="4">
-                                    <input type="hidden" value="" id="valueSpan24" onchange="color2(this)">
-                                </li>
-                                <li class="color-item">
-                                    <input class="jscolor {valueElement:valueSpan25,value:'',width:101,closable:true,closeText:'关闭',}"
-                                    style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="5">
-                                    <input type="hidden" value="" id="valueSpan25" onchange="color2(this)">
-                                </li>
-                                <li class="color-item">
-                                    <input class="jscolor {valueElement:valueSpan26,value:'',width:101,closable:true,closeText:'关闭',}"
-                                    style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="6">
-                                    <input type="hidden" value="" id="valueSpan26" onchange="color2(this)">
-                                </li>
-                                <li class="color-item">
-                                    <input class="jscolor {valueElement:valueSpan27,value:'',width:101,closable:true,closeText:'关闭',}"
-                                    style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="7">
-                                    <input type="hidden" value="" id="valueSpan27" onchange="color2(this)">
-                                </li>
-                                <li class="color-item">
-                                    <input class="jscolor {valueElement:valueSpan28,value:'',width:101,closable:true,closeText:'关闭',}"
-                                    style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="8">
-                                    <input type="hidden" value="" id="valueSpan28" onchange="color2(this)">
-                                </li>
-                                <li class="color-item">
-                                    <input class="jscolor {valueElement:valueSpan29,value:'',width:101,closable:true,closeText:'关闭',}"
-                                    style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="9">
-                                    <input type="hidden" value="" id="valueSpan29" onchange="color2(this)">
-                                </li>
-                                <li class="color-item">
-                                    <input class="jscolor {valueElement:valueSpan30,value:'',width:101,closable:true,closeText:'关闭',}"
-                                    style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled {if condition="$type eq '快乐时时彩'"} value="0" {else /} value="10" {/if} >
-                                    <input type="hidden" value="" id="valueSpan30" onchange="color2(this)">
-                                </li>
+                                {/volist}
                             </ul>
-                    </div>
-                    <div class="colorSelect">
-                    <P class="color-tit">第四组</P>
-                    <ul class="clearfloat">
-                            <li class="color-item">
-                                <input class="jscolor {valueElement:valueSpan31,value:'',width:101,closable:true,closeText:'关闭',}"
-                                style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="1">
-                                <input type="hidden" value="" id="valueSpan31" onchange="color3(this)">
-                            </li>
-                            <li class="color-item">
-                                <input class="jscolor {valueElement:valueSpan32,value:'',width:101,closable:true,closeText:'关闭',}"
-                                style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="2">
-                                <input type="hidden" value="" id="valueSpan32" onchange="color3(this)">
-                            </li>
-                            <li class="color-item">
-                                <input class="jscolor {valueElement:valueSpan33,value:'',width:101,closable:true,closeText:'关闭',}"
-                                style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="3">
-                                <input type="hidden" value="" id="valueSpan33" onchange="color3(this)">
-                            </li>
-                            <li class="color-item">
-                                <input class="jscolor {valueElement:valueSpan34,value:'',width:101,closable:true,closeText:'关闭',}"
-                                style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="4">
-                                <input type="hidden" value="" id="valueSpan34" onchange="color3(this)">
-                            </li>
-                            <li class="color-item">
-                                <input class="jscolor {valueElement:valueSpan35,value:'',width:101,closable:true,closeText:'关闭',}"
-                                style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="5">
-                                <input type="hidden" value="" id="valueSpan35" onchange="color3(this)">
-                            </li>
-                            <li class="color-item">
-                                <input class="jscolor {valueElement:valueSpan36,value:'',width:101,closable:true,closeText:'关闭',}"
-                                style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="6">
-                                <input type="hidden" value="" id="valueSpan36" onchange="color3(this)">
-                            </li>
-                            <li class="color-item">
-                                <input class="jscolor {valueElement:valueSpan37,value:'',width:101,closable:true,closeText:'关闭',}"
-                                style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="7">
-                                <input type="hidden" value="" id="valueSpan37" onchange="color3(this)">
-                            </li>
-                            <li class="color-item">
-                                <input class="jscolor {valueElement:valueSpan38,value:'',width:101,closable:true,closeText:'关闭',}"
-                                style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="8">
-                                <input type="hidden" value="" id="valueSpan38" onchange="color3(this)">
-                            </li>
-                            <li class="color-item">
-                                <input class="jscolor {valueElement:valueSpan39,value:'',width:101,closable:true,closeText:'关闭',}"
-                                style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="9">
-                                <input type="hidden" value="" id="valueSpan39" onchange="color3(this)">
-                            </li>
-                            <li class="color-item">
-                                <input class="jscolor {valueElement:valueSpan40,value:'',width:101,closable:true,closeText:'关闭',}"
-                                style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled {if condition="$type eq '快乐时时彩'"} value="0" {else /} value="10" {/if} >
-                                <input type="hidden" value="" id="valueSpan40" onchange="color3(this)">
-                            </li>
-                        </ul>
-                   </div>
-                   <div class="colorSelect">
-                    <P class="color-tit">第五组</P>
-                    <ul class="clearfloat">
-                            <li class="color-item">
-                                <input class="jscolor {valueElement:valueSpan41,value:'',width:101,closable:true,closeText:'关闭',}"
-                                style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="1">
-                                <input type="hidden" value="" id="valueSpan41" onchange="color4(this)">
-                            </li>
-                            <li class="color-item">
-                                <input class="jscolor {valueElement:valueSpan42,value:'',width:101,closable:true,closeText:'关闭',}"
-                                style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="2">
-                                <input type="hidden" value="" id="valueSpan42" onchange="color4(this)">
-                            </li>
-                            <li class="color-item">
-                                <input class="jscolor {valueElement:valueSpan43,value:'',width:101,closable:true,closeText:'关闭',}"
-                                style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="3">
-                                <input type="hidden" value="" id="valueSpan43" onchange="color4(this)">
-                            </li>
-                            <li class="color-item">
-                                <input class="jscolor {valueElement:valueSpan44,value:'',width:101,closable:true,closeText:'关闭',}"
-                                style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="4">
-                                <input type="hidden" value="" id="valueSpan44" onchange="color4(this)">
-                            </li>
-                            <li class="color-item">
-                                <input class="jscolor {valueElement:valueSpan45,value:'',width:101,closable:true,closeText:'关闭',}"
-                                style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="5">
-                                <input type="hidden" value="" id="valueSpan45" onchange="color4(this)">
-                            </li>
-                            <li class="color-item">
-                                <input class="jscolor {valueElement:valueSpan46,value:'',width:101,closable:true,closeText:'关闭',}"
-                                style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="6">
-                                <input type="hidden" value="" id="valueSpan46" onchange="color4(this)">
-                            </li>
-                            <li class="color-item">
-                                <input class="jscolor {valueElement:valueSpan47,value:'',width:101,closable:true,closeText:'关闭',}"
-                                style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="7">
-                                <input type="hidden" value="" id="valueSpan47" onchange="color4(this)">
-                            </li>
-                            <li class="color-item">
-                                <input class="jscolor {valueElement:valueSpan48,value:'',width:101,closable:true,closeText:'关闭',}"
-                                style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="8">
-                                <input type="hidden" value="" id="valueSpan48" onchange="color4(this)">
-                            </li>
-                            <li class="color-item">
-                                <input class="jscolor {valueElement:valueSpan49,value:'',width:101,closable:true,closeText:'关闭',}"
-                                style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="9">
-                                <input type="hidden" value="" id="valueSpan49" onchange="color4(this)">
-                            </li>
-                            <li class="color-item">
-                                <input class="jscolor {valueElement:valueSpan50,value:'',width:101,closable:true,closeText:'关闭',}"
-                                style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled {if condition="$type eq '快乐时时彩'"} value="0" {else /} value="10" {/if} >
-                                <input type="hidden" value="" id="valueSpan50" onchange="color4(this)">
-                            </li>
-                        </ul>
-                   </div>
-                   <div class="colorSelect">
-                    <P class="color-tit">第六组</P>
-                    <ul class="clearfloat">
-                            <li class="color-item">
-                                <input class="jscolor {valueElement:valueSpan51,value:'',width:101,closable:true,closeText:'关闭',}"
-                                style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="1">
-                                <input type="hidden" value="" id="valueSpan51" onchange="color5(this)">
-                            </li>
-                            <li class="color-item">
-                                <input class="jscolor {valueElement:valueSpan52,value:'',width:101,closable:true,closeText:'关闭',}"
-                                style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="2">
-                                <input type="hidden" value="" id="valueSpan52" onchange="color5(this)">
-                            </li>
-                            <li class="color-item">
-                                <input class="jscolor {valueElement:valueSpan53,value:'',width:101,closable:true,closeText:'关闭',}"
-                                style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="3">
-                                <input type="hidden" value="" id="valueSpan53" onchange="color5(this)">
-                            </li>
-                            <li class="color-item">
-                                <input class="jscolor {valueElement:valueSpan54,value:'',width:101,closable:true,closeText:'关闭',}"
-                                style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="4">
-                                <input type="hidden" value="" id="valueSpan54" onchange="color5(this)">
-                            </li>
-                            <li class="color-item">
-                                <input class="jscolor {valueElement:valueSpan55,value:'',width:101,closable:true,closeText:'关闭',}"
-                                style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="5">
-                                <input type="hidden" value="" id="valueSpan55" onchange="color5(this)">
-                            </li>
-                            <li class="color-item">
-                                <input class="jscolor {valueElement:valueSpan56,value:'',width:101,closable:true,closeText:'关闭',}"
-                                style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="6">
-                                <input type="hidden" value="" id="valueSpan56" onchange="color5(this)">
-                            </li>
-                            <li class="color-item">
-                                <input class="jscolor {valueElement:valueSpan57,value:'',width:101,closable:true,closeText:'关闭',}"
-                                style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="7">
-                                <input type="hidden" value="" id="valueSpan57" onchange="color5(this)">
-                            </li>
-                            <li class="color-item">
-                                <input class="jscolor {valueElement:valueSpan58,value:'',width:101,closable:true,closeText:'关闭',}"
-                                style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="8">
-                                <input type="hidden" value="" id="valueSpan58" onchange="color5(this)">
-                            </li>
-                            <li class="color-item">
-                                <input class="jscolor {valueElement:valueSpan59,value:'',width:101,closable:true,closeText:'关闭',}"
-                                style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled value="9">
-                                <input type="hidden" value="" id="valueSpan59" onchange="color5(this)">
-                            </li>
-                            <li class="color-item">
-                                <input class="jscolor {valueElement:valueSpan60,value:'',width:101,closable:true,closeText:'关闭',}"
-                                style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center" disabled {if condition="$type eq '快乐时时彩'"} value="0" {else /} value="10" {/if} >
-                                <input type="hidden" value="" id="valueSpan60" onchange="color5(this)">
-                            </li>
-                        </ul>
-                   </div>
+                        </div>
+                    {/volist}
                 </div>
                  </div>
                 <div class="result-info clearfloat">
@@ -393,347 +67,29 @@
                               <p class="info-t">{$l}</p>
                               <div class="result-list">
                                   <ul>
-                                      {volist name="list" id="vl" key="k"}
+                                      {volist name="list" id="vl"}
                                       <li class="item-soll">
-                                          <ul class="clearfloat" {$k--}>
-                                              <li class="item-soll-qi"><div class="qi-num one">{$vl.lottery_number[$k]}</div></li>
-                                              <li class="item-soll-qi"><div class="qi-num two">{$vl.lottery_number[$k]}</div></li>
-                                              <li class="item-soll-qi"><div class="qi-num three">{$vl.lottery_number[$k]}</div></li>
-                                              <li class="item-soll-qi"><div class="qi-num four">{$vl.lottery_number[$k]}</div></li>
-                                              <li class="item-soll-qi"><div class="qi-num five">{$vl.lottery_number[$k]}</div></li>
-                                              <li class="item-soll-qi"><div class="qi-num six">{$vl.lottery_number[$k]}</div></li>
+                                          <ul class="clearfloat">
+                                              <li class="item-soll-qi"><div class="qi-num one" style="background-color:#{$vl.lottery_color[$vl.lottery_number[$l-1]][0]}">{$vl.lottery_number[$l-1]}</div></li>
+                                              <li class="item-soll-qi"><div class="qi-num two" style="background-color:#{$vl.lottery_color[$vl.lottery_number[$l-1]][1]}">{$vl.lottery_number[$l-1]}</div></li>
+                                              <li class="item-soll-qi"><div class="qi-num three" style="background-color:#{$vl.lottery_color[$vl.lottery_number[$l-1]][2]}">{$vl.lottery_number[$l-1]}</div></li>
+                                              <li class="item-soll-qi"><div class="qi-num four" style="background-color:#{$vl.lottery_color[$vl.lottery_number[$l-1]][3]}">{$vl.lottery_number[$l-1]}</div></li>
+                                              <li class="item-soll-qi"><div class="qi-num five" style="background-color:#{$vl.lottery_color[$vl.lottery_number[$l-1]][4]}">{$vl.lottery_number[$l-1]}</div></li>
+                                              <li class="item-soll-qi"><div class="qi-num six" style="background-color:#{$vl.lottery_color[$vl.lottery_number[$l-1]][5]}">{$vl.lottery_number[$l-1]}</div></li>
                                           </ul>
                                       </li>
                                       {/volist}
-                                      <!--<li class="item-soll">-->
-                                          <!--<ul class="clearfloat">-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num one">3</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num two">6</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num three">2</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num four">5</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num five">5</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num six">5</div></li>-->
-                                          <!--</ul>-->
-                                      <!--</li>-->
-                                      <!--<li class="item-soll">-->
-                                          <!--<ul class="clearfloat">-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num one">1</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num two">5</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num three">6</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num four">5</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num five">5</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num six">5</div></li>-->
-                                          <!--</ul>-->
-                                      <!--</li>-->
-                                      <!--<li class="item-soll">-->
-                                          <!--<ul class="clearfloat">-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num one">2</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num two">9</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num three">7</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num four">5</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num five">5</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num six">5</div></li>-->
-                                          <!--</ul>-->
-                                      <!--</li>-->
-                                      <!--<li class="item-soll">-->
-                                          <!--<ul class="clearfloat">-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num one">6</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num two">8</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num three">9</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num four">5</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num five">5</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num six">5</div></li>-->
-                                          <!--</ul>-->
-                                      <!--</li>-->
-                                      <!--<li class="item-soll">-->
-                                          <!--<ul class="clearfloat">-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num one">8</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num two">4</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num three">7</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num four">5</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num five">5</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num six">5</div></li>-->
-                                          <!--</ul>-->
-                                      <!--</li>-->
-                                      <!--<li class="item-soll">-->
-                                          <!--<ul class="clearfloat">-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num one">10</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num two">6</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num three">5</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num four">6</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num five">4</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num six">2</div></li>-->
-                                          <!--</ul>-->
-                                      <!--</li>-->
-                                      <!--<li class="item-soll">-->
-                                          <!--<ul class="clearfloat">-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num one">9</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num two">7</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num three">5</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num four">3</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num five">6</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num six">8</div></li>-->
-                                          <!--</ul>-->
-                                      <!--</li>-->
-                                      <!--<li class="item-soll">-->
-                                          <!--<ul class="clearfloat">-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num one">8</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num two">8</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num three">4</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num four">6</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num five">8</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num six">9</div></li>-->
-                                          <!--</ul>-->
-                                      <!--</li>-->
-                                      <!--<li class="item-soll">-->
-                                          <!--<ul class="clearfloat">-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num one">7</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num two">1</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num three">9</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num four">8</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num five">6</div></li>-->
-                                              <!--<li class="item-soll-qi"><div class="qi-num six">4</div></li>-->
-                                          <!--</ul>-->
-                                      <!--</li>-->
                                   </ul>
                               </div>
                           </div>
                           {/volist}
-
-
-                      <!--<div class="result-soll runner-up">-->
-                            <!--<p class="info-t">亚军</p>-->
-                            <!--<div class="result-list">-->
-                                    <!--<ul>-->
-                                            <!--<li class="item-soll">-->
-                                                <!--<ul class="clearfloat">-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num one">5</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num two">3</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num three">4</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num four">5</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num five">5</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num six">5</div></li>-->
-                                                <!--</ul>-->
-                                            <!--</li>-->
-                                            <!--<li class="item-soll">-->
-                                                   <!--<ul class="clearfloat">-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num one">3</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num two">6</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num three">2</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num four">5</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num five">5</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num six">5</div></li>-->
-                                                       <!--</ul>-->
-                                            <!--</li>-->
-                                            <!--<li class="item-soll">-->
-                                                   <!--<ul class="clearfloat">-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num one">1</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num two">5</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num three">6</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num four">5</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num five">5</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num six">5</div></li>-->
-                                                       <!--</ul>-->
-                                            <!--</li>-->
-                                            <!--<li class="item-soll">-->
-                                                 <!--<ul class="clearfloat">-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num one">2</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num two">9</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num three">7</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num four">5</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num five">5</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num six">5</div></li>-->
-                                                       <!--</ul>-->
-                                            <!--</li>-->
-                                            <!--<li class="item-soll">-->
-                                                 <!--<ul class="clearfloat">-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num one">6</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num two">8</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num three">9</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num four">5</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num five">5</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num six">5</div></li>-->
-                                                       <!--</ul>-->
-                                            <!--</li>-->
-                                            <!--<li class="item-soll">-->
-                                                 <!--<ul class="clearfloat">-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num one">8</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num two">4</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num three">7</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num four">5</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num five">5</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num six">5</div></li>-->
-                                                       <!--</ul>-->
-                                            <!--</li>-->
-                                            <!--<li class="item-soll">-->
-                                                 <!--<ul class="clearfloat">-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num one">10</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num two">6</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num three">5</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num four">6</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num five">4</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num six">2</div></li>-->
-                                                       <!--</ul>-->
-                                            <!--</li>-->
-                                            <!--<li class="item-soll">-->
-                                                 <!--<ul class="clearfloat">-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num one">9</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num two">7</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num three">5</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num four">3</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num five">6</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num six">8</div></li>-->
-                                                       <!--</ul>-->
-                                            <!--</li>-->
-                                            <!--<li class="item-soll">-->
-                                                 <!--<ul class="clearfloat">-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num one">8</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num two">8</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num three">4</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num four">6</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num five">8</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num six">9</div></li>-->
-                                                       <!--</ul>-->
-                                            <!--</li>-->
-                                            <!--<li class="item-soll">-->
-                                                 <!--<ul class="clearfloat">-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num one">7</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num two">1</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num three">9</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num four">8</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num five">6</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num six">4</div></li>-->
-                                                       <!--</ul>-->
-                                            <!--</li>-->
-                                        <!--</ul>-->
-                            <!--</div>    -->
-                      <!--</div>-->
-                      <!--<div class="result-soll third">-->
-                            <!--<p class="info-t">季军</p>-->
-                            <!--<div class="result-list">-->
-                                    <!--<ul>-->
-                                            <!--<li class="item-soll">-->
-                                                <!--<ul class="clearfloat">-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num one">5</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num two">3</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num three">4</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num four">5</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num five">5</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num six">5</div></li>-->
-                                                <!--</ul>-->
-                                            <!--</li>-->
-                                            <!--<li class="item-soll">-->
-                                                   <!--<ul class="clearfloat">-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num one">3</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num two">6</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num three">2</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num four">5</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num five">5</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num six">5</div></li>-->
-                                                       <!--</ul>-->
-                                            <!--</li>-->
-                                            <!--<li class="item-soll">-->
-                                                   <!--<ul class="clearfloat">-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num one">1</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num two">5</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num three">6</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num four">5</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num five">5</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num six">5</div></li>-->
-                                                       <!--</ul>-->
-                                            <!--</li>-->
-                                            <!--<li class="item-soll">-->
-                                                 <!--<ul class="clearfloat">-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num one">2</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num two">9</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num three">7</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num four">5</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num five">5</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num six">5</div></li>-->
-                                                       <!--</ul>-->
-                                            <!--</li>-->
-                                            <!--<li class="item-soll">-->
-                                                 <!--<ul class="clearfloat">-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num one">6</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num two">8</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num three">9</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num four">5</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num five">5</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num six">5</div></li>-->
-                                                       <!--</ul>-->
-                                            <!--</li>-->
-                                            <!--<li class="item-soll">-->
-                                                 <!--<ul class="clearfloat">-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num one">8</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num two">4</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num three">7</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num four">5</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num five">5</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num six">5</div></li>-->
-                                                       <!--</ul>-->
-                                            <!--</li>-->
-                                            <!--<li class="item-soll">-->
-                                                 <!--<ul class="clearfloat">-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num one">10</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num two">6</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num three">5</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num four">6</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num five">4</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num six">2</div></li>-->
-                                                       <!--</ul>-->
-                                            <!--</li>-->
-                                            <!--<li class="item-soll">-->
-                                                 <!--<ul class="clearfloat">-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num one">9</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num two">7</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num three">5</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num four">3</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num five">6</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num six">8</div></li>-->
-                                                       <!--</ul>-->
-                                            <!--</li>-->
-                                            <!--<li class="item-soll">-->
-                                                 <!--<ul class="clearfloat">-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num one">8</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num two">8</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num three">4</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num four">6</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num five">8</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num six">9</div></li>-->
-                                                       <!--</ul>-->
-                                            <!--</li>-->
-                                            <!--<li class="item-soll">-->
-                                                 <!--<ul class="clearfloat">-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num one">7</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num two">1</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num three">9</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num four">8</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num five">6</div></li>-->
-                                                           <!--<li class="item-soll-qi"><div class="qi-num six">4</div></li>-->
-                                                       <!--</ul>-->
-                                            <!--</li>-->
-                                        <!--</ul>-->
-                            <!--</div>    -->
-                      <!--</div>-->
                     </div>
                 </div>
             </div>
         </div>
         <script src="/__STATIC__/js/jquery-1.8.3.js"></script>
         <script src="/__STATIC__/js/public.js"></script>
-        <script>
-                // console.log($(".one"))   //每一组第一列
-                // console.log($('.two'))   //每一组第二列
-                // console.log($('.three')) //每一组第三列
-                // console.log($(".four"))  //每一组第四列
-                // console.log($('.five'))  //每一组第五列
-                // console.log($('.six'))   //每一组第六列
-                // $(".one").each((element,i)=> {
-                //     console.log(i)
-                // });
-           
-        </script>
-        <script>
+        <script type="text/javascript">
            function colo(e,z){
             var val = $(e).prev().attr('value')
                 var s = $(e).attr('value')
@@ -746,27 +102,54 @@
             //    第一列
             function color(e){
                 colo(e,$(".one"))
+                corresponding_color(1,$(e).prev().val(),$(e).val())
             }
             //   第二列
             function color1(e){
                 colo(e,$(".two"))
+                corresponding_color(2,$(e).prev().val(),$(e).val())
             }
             //   第三列
             function color2(e){
                 colo(e,$(".three"))
+                corresponding_color(3,$(e).prev().val(),$(e).val())
             }
             //   第四列
             function color3(e){
                 colo(e,$(".four"))
+                corresponding_color(4,$(e).prev().val(),$(e).val())
             }
             //   第五列
             function color4(e){
                 colo(e,$(".five"))
+                corresponding_color(5,$(e).prev().val(),$(e).val())
             }
             //   第六列
             function color5(e){
                 colo(e,$(".six"))
+                corresponding_color(6,$(e).prev().val(),$(e).val())
             }
+            //将颜色对应的存起来
+           function corresponding_color(group,num,color) {
+               console.log(group+'```'+num+'````'+color)
+               if(num>0 && color !=''){
+                   var type={$type};
+                   $.ajax({
+                       type: "POST",
+                       url: '{:url(\'index/lottery_color\')}',
+                       cache: false,
+                       data: {
+                           num: num,group:group,type:type,color:color
+                       },
+                       dataType: 'json',
+                       success: function(data){
+                           if (data.status==1){
+                               //要不要提示颜色变更成功之类的
+                           }
+                       }
+                   })
+               }
+           }
 
            /*此处参数是判断是否重复的请求 避免数据多加载*/
            var loadingdelay = true;
@@ -777,17 +160,18 @@
                var h = $(document).height();
                /*可视窗口的高度*/
                var wh = $(window).height();
-               console.log('一直在滚动！');
+               // console.log('一直在滚动！');
                if($(window).scrollTop() >= h - wh - 50 && loadingdelay) {
                    loadingdelay = false;
-                   console.log(page);
+                   // console.log(page);
                    //发送Ajax
+                   var type={$type};
                    $.ajax({
                        type: "POST",
-                       url: '{:url(\'index/ajax_lottery_list\')}',
+                       url: '{:url(\'index/lottery_list\')}',
                        cache: false,
                        data: {
-                           page: page,is_ajax:1
+                           num: page,is_ajax:1,type:type
                        },
                        dataType: 'json',
                        success: function(data) {
@@ -820,6 +204,31 @@
 
                }
            });
+           var min=0;
+           var max=1;
+           function get_new_lottery(){
+                var lottery_number=$("#lottery_number").val();
+                var type={$type};
+                if(type>0 && lottery_number>0){
+                    $.ajax({
+                        type: "POST",
+                        url: '{:url(\'index/new_lottery\')}',
+                        cache: false,
+                        data: {
+                            num: page,is_ajax:1,type:type
+                        },
+                        dataType: 'json',
+                        success: function(data) {
+
+                        }
+                    })
+                }
+               if(min<max){
+                   setTimeout(get_new_lottery,10000);
+               }
+           }
+           setTimeout(get_new_lottery,10000);
+
        </script>
 </body>
 </html>
