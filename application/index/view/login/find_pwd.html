@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>找回密码</title>
+		<script type="text/javascript" src="/__STATIC__/js/rem.js" ></script>
+		<link rel="stylesheet" type="text/css" href="/__STATIC__/css/public.css"/>
+		<link rel="stylesheet" type="text/css" href="/__STATIC__/css/header.css"/>
+		<link rel="stylesheet" type="text/css" href="/__STATIC__/css/my/password.css"/>
+    </head>
+    <style>
+     .next_btn1{
+        margin: 1.2rem auto .4rem;
+        width: 5.2rem;
+        height: .8rem;
+        background-color: #14bd64;
+        border-radius: 8px;
+        font-size: .34rem;
+        letter-spacing: 1px;
+        color: #fff;
+        text-align: center;
+        line-height: .8rem;
+     }    
+    </style>
+	<body>
+		<div class="everyColor">
+			<div class="lb_headWrap">
+				<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+                    <img class="lb_headWrap_return_img" src="/__STATIC__/image/back@2x.png"/> 
+                </p>
+				<span>找回密码</span>
+            </div>
+            <!---->
+            <form action="" method="POST">
+            <div class="content">
+            	<div class="shortcut shor">
+            		<!--账号名-->
+            		<div class="mobile">
+            			<div class="mark">账号名:</div>
+            			<div class="inp">
+                            <input type="hidden" name="status" value="1" id="status">
+                            <input type="hidden" name="sms_type" value="3" id="sms_type_id">
+                            <input class="text phone" type="text" name="mobile" id="mobile" placeholder="请输入手机号/邮箱/用户名" />
+            			</div> 
+            		</div>
+            		<!--验证码-->
+            		<div class="mobile">
+            			<div class="mark">验证码:</div>
+            			<div class="inp">
+            				<input class="text" type="number" name="code" id="code" placeholder="请输入短信验证码" />
+            				<input class="gain" type="button" id="btn" value="获取验证码" onclick="settime(this)" />
+            			</div>
+            		</div>
+            	</div>
+            	<div class="shortcut show">
+            		<div class="has">
+            			<span>已绑账号:</span>
+                        <span id="user">152*****17</span>
+                        <input type="hidden" name="mb" id="mb" value="">
+            		</div>
+            		<!--新密码-->
+            		<div class="mobile">
+            			<div class="mark">新密码:</div>
+            			<div class="inp">
+            				<input class="text" type="password" name="password" id="password" placeholder="请输入新密码" />
+            			</div>
+            		</div>
+            		<!--重复密码-->
+            		<div class="mobile">
+            			<div class="mark">重复密码:</div>
+            			<div class="inp">
+            				<input class="text" type="password" name="re_password" id="re_password" placeholder="请重复密码" />
+            			</div>
+            		</div>
+            	</div>
+            </form>
+            	<!--下一步/完成按钮-->
+                <a class="next_btn">下一步</a>
+                <a class="next_btn1" style="display:none">完成</a>
+            </div>
+        </div>
+        
+        <script src="/__STATIC__/js/jquery-1.8.3.js"></script>
+        <script src="/__STATIC__/js/public.js"></script>
+        <script type="text/javascript" src="/public/static/admin/lib/layer/2.4/layer.js"></script>
+        <script>
+        	//获取验证码
+ 			var countdown=60; 
+			function settime(val) { 
+				if (countdown == 0) { 
+					val.removeAttribute("disabled");    
+					val.value="免费获取验证码"; 
+					countdown = 60; 
+				} else { 
+					val.setAttribute("disabled", true); 
+					val.value="重新发送(" + countdown + ")"; 
+					countdown--; 
+				} 
+				setTimeout(function() { 
+					settime(val) 
+				},1000) 
+			}
+			
+			$(function(){
+				//点击下一步按钮
+				$('.next_btn').on('click',function(){
+                    var mobile = $("#mobile").val();
+                    var code = $("#code").val();
+                    var sms_type = $("#sms_type_id").val();
+                    var status = $('#status').val()
+                    if(status == 1){
+                        if (!mobile) {
+                            layer.msg('手机不能为空!', { time: 1000 }, function () {
+
+                            });
+                            return false
+                        }
+                        if (!code) {
+                            layer.msg('验证码不能为空!', { time: 1000 }, function () {
+
+                            });
+                            return false
+                        }                                                
+                        $.ajax({
+                            url: '/index/login/find_commit',
+                            type: 'post',
+                            dataType: 'json',
+                            data: { 'mobile': mobile, 'code': code, 'sms_type': sms_type,'status':status },
+                            success: function (msg) {
+                                if (msg.code == 0) {
+                                    layer.msg(msg.msg);
+                                    return false;
+                                } else {
+                                    $('.shor').hide();
+                                    $('.show').show();
+                                    $('#status').val(2)
+                                    var str2 = msg.mobile.substr(0, 3) + "****" + msg.mobile.substr(7);
+                                    $('#user').html(str2)
+                                    $('#mb').val(msg.mobile)
+                                    $('.next_btn').html('完成');
+                                }
+                            }
+                        });                      
+                    }else{
+                        var mobile   = $('#mb').val() 
+                        var password = $('#password').val()
+                        var re_password = $('#re_password').val()
+                        var status = $('#status').val()
+
+                        if (!password) {
+                            layer.msg('密码不能为空!', { time: 1000 }, function () {
+
+                            });
+                            return false
+                        } 
+                        if (!password) {
+                            layer.msg('确认密码不能为空!', { time: 1000 }, function () {
+
+                            });
+                            return false
+                        }
+                        if(password != re_password){
+                            layer.msg('两次密码输入不一致!', { time: 1000 }, function () {
+
+                            });
+                            return false                               
+                        }
+
+                        $.ajax({
+                            url: '/index/login/find_commit',
+                            type: 'post',
+                            dataType: 'json',
+                            data: { 'mobile1': mobile, 'password': password, 're_password': re_password,'status':status },
+                            success: function (msg) {
+                                if (msg.code == 0) {
+                                    layer.msg(msg.msg);
+                                    return false;
+                                } else {
+                                    layer.msg(msg.msg, { time: 1000 }, function () {
+                                         window.location.reload();
+                                    });
+                                    return false    
+                                }
+                            }
+                        });
+                    }
+                    
+				})
+			})
+
+            // //发送验证码
+            $("#btn").click(function () {
+                var reg = /^1[34578]\d{9}$/;  /*用户手机号*/
+                var phone = $(".phone");
+                var phoneS = $(".phone").val();
+                if (phone.val() == "") {
+                    layer.msg('手机不能为空!', { time: 1000 }, function () {
+
+                    });
+                    return false
+                }
+                if (!reg.test(phone.val())) {
+                    layer.msg('请输入正确的手机号!', { time: 1000 }, function () {
+
+                    });
+                    return false
+                }
+                var sms_type = $('#sms_type_id').val();
+
+                // 获取验证码
+                var flag = true;
+                $.ajax({
+                    url: '/index/login/getPhoneVerify',
+                    type: 'post',
+                    dataType: 'json',
+                    data: { 'phone': phoneS, 'sms_type': sms_type },
+                    success: function (msg) {
+                        if (msg.code == 0) {
+                            layer.msg(msg.msg);
+                            flag = false;
+                            return false;
+                        }
+                    }
+                });
+                if (flag) {
+                    layer.msg('已发送');
+                }
+            })
+            
+        </script>
+	</body>
+</html>

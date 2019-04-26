@@ -17,7 +17,16 @@ class Login extends Base
     public function register(){
         return $this->fetch();
     }
-    
+
+    /**
+     * 找回密码
+     */
+    public function find_pwd(){
+        return $this->fetch();
+    }
+    /**
+     * 获取验证码
+     */
     public function getPhoneVerify(){
         $param = input('post.');
         $sms_type = intval($param['sms_type']);
@@ -28,7 +37,9 @@ class Login extends Base
         $res = getPhoneCode($data);
         return json($res);
     }
-
+    /**
+     * 注册逻辑
+     */
     public function re_commit(){
         $data = input('post.');
         if($_POST){
@@ -66,6 +77,9 @@ class Login extends Base
            }        
         }
     }
+    /**
+     * 登录逻辑
+     */
     public function login_commit()
     {
         $data = input('post.'); 
@@ -75,28 +89,12 @@ class Login extends Base
 
             if($data['check'] == 1){
                 $val = 'mobile';
-                if (empty($data['mobile'])) {
-                    return array('code' => 0, 'msg' => '请输入手机号');
-                }
-                $check_phone = check_mobile_number($data['mobile']);
-                if (!$check_phone) {
-                    return array('code' => 0, 'msg' => '手机号格式不正确');
-                }                
-                if(!$data['code']){
-                    return array('code' => 0, 'msg' => '请输入验证码');
-                }
-                // 验证码
-                // $checkData['sms_type'] = $data['sms_type'];
-                // $checkData['code'] = $data['code'];
-                // $checkData['phone'] = $data['mobile'];
-                // $res = checkPhoneCode($checkData);
-                // if ($res['code'] == 0) {
-                //     return json(['code' => 0, 'msg' => $res['msg']]);
-                // }
+                $err = $this->check_mobile($data);
+                if ($err) return json($err);
             }else{
                 $val = 'mobile1';
                 $LoginValidate = Loader::Validate('Login');
-                if (!$LoginValidate->check($data)) {
+                if (! $LoginValidate->scene( 'login_commit')->check($data)) {
                     $baocuo = $LoginValidate->getError();
                     return json(['code' => 0, 'msg' => $baocuo]);
                 }
@@ -118,5 +116,69 @@ class Login extends Base
      
         }    
     }
-    
+
+    /**
+     * 找回密码逻辑
+     */
+    public function find_commit(){
+        $data = input('post.');
+        if($_POST){
+            //    验证
+           if($data['status'] == 1){
+                $err = $this->check_mobile($data);
+                if ($err) return json($err);
+                $info = Db::name('users')->where('mobile', $data['mobile'])->find();
+
+                if ($info) {
+                    return json(['code' => 1, 'msg' => '查询成功','mobile'=>$data['mobile']]);
+                } else {
+                    return json(['code' => 0, 'msg' => '手机号不存在']);
+                }
+           }else{
+                $LoginValidate = Loader::Validate('Login');
+                if (!$LoginValidate->scene('find_commit')->check($data)) {
+                    $baocuo = $LoginValidate->getError();
+                    return json(['code' => 0, 'msg' => $baocuo]);
+                }
+                if($data['password'] != $data['re_password']){
+                    return json(['code' => 0, 'msg' => '两次密码输入不一致']);
+                }
+                $where = [
+                    'password' => md5($data['password'])
+                ];
+                $res = Db::name('users')->where('mobile',$data['mobile1'])->update($where);
+                if($res){
+                    return json(['code' => 1, 'msg' => '密码修改成功']);
+                
+                }else{
+                    return json(['code' => 0, 'msg' => '网络繁忙，请稍后再试']);
+                }                
+           }
+ 
+           
+        }        
+    }
+
+    public function check_mobile($data){
+        if (empty($data['mobile'])) {
+            return array('code' => 0, 'msg' => '请输入手机号');
+        }
+        $check_phone = check_mobile_number($data['mobile']);
+        if (!$check_phone) {
+            return array('code' => 0, 'msg' => '手机号格式不正确');
+        }
+        if (!$data['code']) {
+            return array('code' => 0, 'msg' => '请输入验证码');
+        }
+                // 验证码
+                // $checkData['sms_type'] = $data['sms_type'];
+                // $checkData['code'] = $data['code'];
+                // $checkData['phone'] = $data['mobile'];
+                // $res = checkPhoneCode($checkData);
+                // if ($res['code'] == 0) {
+                //     return array(['code' => 0, 'msg' => $res['msg']]);
+                // }  
+                
+                
+    }
 }
