@@ -2,7 +2,7 @@
 namespace app\admin\validate;
 
 use \think\Validate;
-//品牌验证器
+
 
 class Money extends validate
 {

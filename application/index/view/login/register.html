@@ -21,7 +21,8 @@
             <!---->
             <div class="content">
             	<div class="shortcut">
-            		<!--手机号-->
+					<form action="" method="POST">
+					<!--手机号-->
             		<div class="mobile">
             			<div class="mark">手机号:</div>
             			<div class="inp">
@@ -41,11 +42,11 @@
             		<div class="mobile">
             			<div class="mark">设置密码:</div>
             			<div class="inp">
-            				<input class="text" type="number" name="password" id="password" placeholder="数字+字母或符号" />
+            				<input class="text" type="password" name="password" id="password" placeholder="数字+字母或符号" />
             			</div>
             		</div>
             	</div>
-            	
+				</form>
             	<!--注册按钮-->
             	<a class="signin_btn">提交注册</a>
             </div>
@@ -120,7 +121,26 @@
 			var mobile = $("#mobile").val();
 			var code = $("#code").val();
 			var sms_type = $("#sms_type_id").val();
-			var password = $("#password").val();									 
+			var password = $("#password").val();
+			if (!mobile) {
+				layer.msg('手机不能为空!', { time: 1000 }, function () {
+
+				});
+				return false
+			}
+			if (!code) {
+				layer.msg('验证码不能为空!', { time: 1000 }, function () {
+
+				});
+				return false
+			}
+			if (!password) {
+				layer.msg('密码不能为空!', { time: 1000 }, function () {
+
+				});
+				return false
+			}			
+			
             $.ajax({
                 url: '/index/login/re_commit',
                 type: 'post',
@@ -129,9 +149,10 @@
                 success: function (msg) {
                     if (msg.code == 0) {
                         layer.msg(msg.msg);
-                        flag = false;
                         return false;
-                    }
+                    }else{
+						window.location.replace(msg.url);
+					}
                 }
             });
 		})
