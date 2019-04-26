@@ -15,15 +15,19 @@ function getPhoneCode($data)
     }
     // 判断手机号是否合法
     $check_phone = check_mobile_number($data['phone']);
+    
     // 判断手机号是否存在数据库
-    if ($check_phone) {
-        $is_phone_db = Db::name('users')->where(['mobile' => $data['phone']])->find();
-        if ($is_phone_db) {
-            return array('code' => 0, 'msg' => '已存在此手机号！');
+    if( $data['sms_type'] == 1){
+        if ($check_phone) {
+            $is_phone_db = Db::name('users')->where(['mobile' => $data['phone']])->find();
+            if ($is_phone_db) {
+                return array('code' => 0, 'msg' => '已存在此手机号！');
+            }
+        } else {
+            return array('code' => 0, 'msg' => '手机号格式不正确');
         }
-    } else {
-        return array('code' => 0, 'msg' => '手机号格式不正确');
     }
+
     $limit_time = 60; // 60秒以内不能重复获取
     $where['phone'] = $data['phone'];
     $where['sms_type'] = $data['sms_type'];
@@ -93,6 +97,8 @@ function sendSms($phone,$content){
     {
     $o.="$k=".urlencode($v).'&';
     }
+    // dump($o);
+    // exit;
     $post_data=substr($o,0,-1);
     $result= curl_post($url,$post_data);
     // return $result['output'];
