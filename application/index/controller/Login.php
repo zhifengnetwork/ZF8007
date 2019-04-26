@@ -15,6 +15,7 @@ class Login extends Base
     public function register(){
         return $this->fetch();
     }
+    
     public function getPhoneVerify(){
         $param = input('post.');
         $sms_type = intval($param['sms_type']);
@@ -25,5 +26,10 @@ class Login extends Base
         $res = getPhoneCode($data);
         return json($res);
     }
+
+    public function re_commit(){
+        $data = input('post.');
+        dump($data);
+    } 
     
 }

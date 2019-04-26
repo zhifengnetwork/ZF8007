@@ -87,7 +87,7 @@ function sendSms($phone,$content){
     $post_data['content'] = $content; // 短信的内容，内容需要UTF-8编码
     $post_data['mobile'] = $phone; // 发信发送的目的号码.多个号码之间用半角逗号隔开 
     $post_data['sendtime'] = ''; // 为空表示立即发送，定时发送格式2010-10-24 09:08:10
-    $url='http://120.25.105.164:8888/sms.aspx?action=send';
+    // $url='http://120.25.105.164:8888/sms.aspx?action=send';
     $o='';
     foreach ($post_data as $k=>$v)
     {
