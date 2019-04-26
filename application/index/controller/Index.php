@@ -26,6 +26,7 @@ class Index extends Base
             //把所有选择过的颜色存起来
             $all_color=array();
             foreach ($list as $key=>$value){
+                $list[$key]['lottery_number_text']=$value['lottery_number'];
                 $list[$key]['lottery_number']=explode(',',$value['lottery_number']);
                 foreach($list[$key]['lottery_number'] as $k=>$v){
                     $list[$key]['lottery_color'][$v]=$this->get_lottery_color($user_id,$type,$v);
@@ -102,11 +103,33 @@ class Index extends Base
     //获取最新一条记录
     public function new_lottery(){
         $type=input('type');
-        $lottery_number=input('lottery_number');
+        $lottery_date=input('lottery_date');
         $user_id=session('user.user_id');
         $user_id=1;//用到登录做好了
-        if($user_id>0 && in_array($type,array(1,2,3,4)) && $lottery_number>0){
-            Db::name('');
+        if($user_id>0 && in_array($type,array(1,2,3,4)) && $lottery_date>0){
+            $new_lottery=Db::name('interface_recorder')->where(['type'=>$type])->where('lottery_date','>',$lottery_date)->find();
+            //初始化六十个白色球
+//            var_dump($new_lottery);die;
+            if(isset($new_lottery) && !empty($new_lottery)){
+                $data['lottery_time']=date('Y',$new_lottery['lottery_time'])."年".date('m',$new_lottery['lottery_time'])."月".date('d',$new_lottery['lottery_time']).'日'.' '.date('H:i:s',$new_lottery['lottery_time']);
+                $data['lottery_number']=explode(',',$new_lottery['lottery_number']);
+                $data['lottery_date']=$new_lottery['lottery_date'];
+                $lottery_number=explode(',',$new_lottery['lottery_number']);
+                foreach ($lottery_number as $k=>$v){
+                    $data['lottery_color']['oo'.$v]=array('FFFFFF','FFFFFF','FFFFFF','FFFFFF','FFFFFF','FFFFFF');
+                }
+//                var_dump($data['lottery_color']);die;
+                //看看有没有配过色
+                $lottery_color=Db::name('lottery_color')->where(['user_id'=>$user_id,'type'=>$type])->order('group asc')->select();
+                if(isset($lottery_color) && !empty($lottery_color)){
+//                    var_dump($lottery_color);die;
+                    foreach ($lottery_color as $key=>$value){
+                        $data['lottery_color']['oo'.$value['number']][$value['group']-1]=$value['color'];
+                    }
+                }
+//                var_dump($data);
+                $this->ajaxReturn($data);
+            }
         }
     }
 }
