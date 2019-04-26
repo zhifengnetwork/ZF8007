@@ -178,7 +178,7 @@
                            /*数据拼接*/
                            var strData = "";
                            // console.log(data)
-                           if(data.length) {
+                           if(data&&data.date!='') {
                                // for(var i=0;i<data.length;i++){
                                //     strData += '<div class="dataTerm">';
                                //     strData += '<p class="dataTermNum">'+data[i].ordernum+'</p>';
@@ -188,6 +188,37 @@
                                //
                                // /*追加数据*/
                                // $('.dataWrap').append(strData);
+                                //先搞期号
+                               var str_date='';
+                               for(var i in data){
+                                   str_date+='<li class="item-per">';
+                                   str_date+='<span>'+data[i].lottery_date+'</span></li>';
+                               }
+
+                               $('#lottery_date_str').append(str_date);
+                               //再来看看右边的600个数
+                               for(var j in data){
+                                   var l=1;
+                                   for(var k in data[j].lottery_new_color){
+                                       var str_number='';//新的数字
+                                       var p=k.replace("oo","");
+                                       str_number+='<li class="item-soll">';
+                                       str_number+='<ul class="clearfloat">';
+                                       str_number+='<li class="item-soll-qi"><div class="qi-num one" style="background-color:#'+data[j].lottery_new_color[k][0]+'">'+p+'</div></li>';
+                                       str_number+='<li class="item-soll-qi"><div class="qi-num two" style="background-color:#'+data[j].lottery_new_color[k][1]+'">'+p+'</div></li>';
+                                       str_number+='<li class="item-soll-qi"><div class="qi-num three" style="background-color:#'+data[j].lottery_new_color[k][2]+'">'+p+'</div></li>';
+                                       str_number+='<li class="item-soll-qi"><div class="qi-num four" style="background-color:#'+data[j].lottery_new_color[k][3]+'">'+p+'</div></li>';
+                                       str_number+='<li class="item-soll-qi"><div class="qi-num five" style="background-color:#'+data[j].lottery_new_color[k][4]+'">'+p+'</div></li>';
+                                       str_number+='<li class="item-soll-qi"><div class="qi-num six" style="background-color:#'+data[j].lottery_new_color[k][5]+'">'+p+'</div></li>';
+                                       str_number+='</ul></li>';
+                                       $("#lottery_number_"+l).prepend(str_number);
+                                       l++;
+                                   }
+                               }
+
+
+
+
 
                                page++;
                                loadingdelay = true;
