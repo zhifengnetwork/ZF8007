@@ -10,7 +10,7 @@ return [
 
 
     'view_replace_str' => [
-        '__PUBLIC__' => 'public/static',
+        '__PUBLIC__' => 'public',
         '__STATIC__' =>  'public/static/mobile',
         '__HOST__' => $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/index',
     ],

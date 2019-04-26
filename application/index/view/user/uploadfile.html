@@ -11,6 +11,7 @@
 		<link rel="stylesheet" type="text/css" href="/__STATIC__/css/my/uploadfile.css"/>
 	</head>
 	<body>
+	<form method="post" enctype="multipart/form-data" id="uploads" action="">
 		<div class="everyColor">
 			<div class="lb_headWrap">
 				<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
@@ -22,34 +23,39 @@
             <div class="content">
             	<!--选择方式-->
             	<div class="mode_wrap">
-            		<div class="pay">
-            			<div class="way">支付方式</div>
-            			<div class="pull_box pop">
-            				<p>微信支付<span class="rotate"></span></p>
-	            			<ul class="fl">
-	            				<li>支付宝</li>
-	            				<li>支付宝</li>
-	            				<li>支付宝</li>
+					<div class="pay">
+						<div class="way">购买会员天数：</div>
+						<div class="pull_box time">
+							<p im="" id="pack">{$package.0.pack_name}<span class="rot"></span></p>
+							<!--<select class="info">-->
+							<ul class="info">
+								{foreach name="package" item="pack"}
+								<li im="{$pack.pack_name}" onclick="sele(this)">{$pack.pack_name}</li>
+								{/foreach}
+							</ul>
+							<!--</select>-->
+							<!--<p><span class="rot"></span></p>-->
+							<!--<ul class="info">-->
+								<!--<li><span class="rot"></span></li>-->
+							<!--</ul>-->
+
+						</div>
+					</div>
+					<div class="pay">
+						<div class="way">支付方式</div>
+						<div class="pull_box pop">
+							<p im="{$pay.0.img}" id="default_img">{$pay.0.name}:{$pay.0.value}<span class="rotate"></span></p>
+							<ul class="fl">
+	            				<li onclick="difficut(this)" im="{$pay.1.img}">{$pay.1.name}:{$pay.1.value}</li>
 	            			</ul>
-            			</div>
-            		</div>
-            		
-            		<div class="pay">
-            			<div class="way">购买会员天数：</div>
-            			<div class="pull_box time">
-            				<p>9050天<span class="rot"></span></p>
-	            			<ul class="info">
-	            				<li>75天</li>
-	            				<li></li>
-	            				<li></li>
-	            			</ul>
-            			</div>
-            		</div>
+						</div>
+					</div>
+
             	</div>
             	<!--二维码-->
             	<div class="code_wrap">
             		<div class="code_img">
-            			<img src="/__STATIC__/image/my/timg.jpg" />
+            			<img id="code_img" src="{$pay.0.img}" />
             		</div>
             	</div>
             	<!--上传图片区-->
@@ -60,26 +66,74 @@
             				<img src="/__STATIC__/image/my/jia.png" />
             				<p>上传凭证</p>
             			</div>
-            			<input type="file"/>
+            			<input type="file" id="files"/>
             		</div>
             	</div>
             	<!--提交按钮-->
-            	<div class="put_btn">提交</div>
+            	<input class="put_btn" type="submit">提交</input>
             </div>
             
        	</div>
+	</form>
+</body>
        
-       	<script src="/__STATIC__/js/jquery-1.8.3.js"></script>
-        <script src="/__STATIC__/js/public.js"></script>
-        <script>
-        	$(function() {
-        		$('.pop').on('click',function(){
-        			$('.fl').slideToggle();
-        		})
-        		$('.time').on('click',function(){
-        			$('.info').slideToggle();
-        		})
-        	})
-        </script>
-	</body>
+<script src="/__STATIC__/js/jquery-1.8.3.js"></script>
+<script src="/__STATIC__/js/public.js"></script>
+<script src="/public/static/admin/lib/layer/2.4/layer.js"></script>
+<script type="text/javascript">
+	$(function() {
+		$('.pop').on('click',function(){
+			$('.fl').slideToggle();
+		})
+		$('.time').on('click',function(){
+			$('.info').slideToggle();
+		})
+	})
+	function difficut(obj) { //<span class="rotate"></span>
+		var new_img=$(obj).attr('im');
+		var new_value=$(obj).text();
+		var old_img=$('#default_img').attr('im');
+		var old_value=$('#default_img').text();
+		console.log(new_value)
+		console.log(old_value)
+		$('#default_img').attr('im',new_img);
+		$('#default_img').text(new_value);
+		$(obj).attr('im',old_img);
+		$(obj).text(old_value);
+		$('#code_img').attr('src',new_img);
+	}
+	function sele(obj) {
+		var new_pack=$(obj).attr('im');
+		var new_value=$(obj).text();
+		var old_pack=$('#pack').attr('im');
+		var old_value=$('#pack').text();
+		$('#pack').attr('im',new_pack);
+		$('#pack').text(new_value);
+		$(obj).attr('im',old_pack);
+		// $(obj).text(old_value);
+	}
+
+	$('.put_btn').click(function () {
+		var packages=$('#pack').text();
+		var pays=$('#default_img').text();
+		var files=$('#files').text();
+		$.ajax({
+			type:"post",
+			url:"{:url('index/User/uploadfile')}",
+			data:$(form).serialize(),//{'pack':packages,'pays':pays,'files':files},
+			success:function (data) {
+				if (data.status == 1){
+					layer.msg(data.msg, {icon:1, time:1000},function () {
+						location.reload()
+					})
+				} else {
+					layer.msg(data.msg, {icon:2, time:1000})
+				}
+			},
+			error:function (data) {
+				layer.msg('服务器繁忙，请稍后再试');
+			}
+		})
+	})
+</script>
 </html>
