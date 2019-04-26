@@ -228,70 +228,6 @@
 			});
 		}
 
-<<<<<<< HEAD
-		/*用户-启用*/
-		function member_start(obj, user_id) {
-			layer.confirm('确认要启用吗？', function (index) {
-				// 	$(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="member_stop(this,id)" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a>');
-				// 	$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已启用</span>');
-				// 	$(obj).remove();
-				// 	layer.msg('已启用!',{icon: 6,time:1000});
-				// });
-				$.ajax({
-					type: 'POST',
-					url: url,
-					dataType: 'json',
-					data: { 'id': user_id, 'act': "status", 'status': 1 },
-					success: function (data) {
-						if (data.code == 1) {
-							layer.msg('已启用!', { icon: 6, time: 1000 }, function () {
-								window.location.reload();
-							});
-						} else {
-							layer.msg('启用失败!', { icon: 2, time: 1000 });
-						}
-					},
-					error: function (data) {
-						layer.alert("服务器繁忙, 请联系管理员!");
-					},
-				});
-			});
-		}
-		/*用户-编辑*/
-		function member_edit(title, url, id, w, h) {
-			layer_show(title, url, w, h);
-		}
-		/*密码-修改*/
-		function change_password(title, url, id, w, h) {
-			layer_show(title, url, w, h);
-		}
-		/*用户-删除*/
-		function member_del(obj, user_id) {
-			layer.confirm('确认要删除吗？', function (index) {
-				$.ajax({
-					type: "post",
-					url: '{:url("admin/member/del")}',
-					dataType: "json",
-					data: { 'id': user_id },
-					success: function (data) {
-						if (data.code == 1) {
-							$(obj).parents("tr").remove();
-							layer.msg('删除成功', { icon: 1, time: 1000 });
-						} else {
-							layer.msg('删除失败', { icon: 2, time: 1000 });
-						}
-					},
-					error: function (data) {
-						layer.alert('服务器繁忙, 请联系管理员!');
-					}
-				});
-				// $(obj).parents("tr").remove();
-				// layer.msg('已删除!',{icon:1,time:1000});
-			});
-		}
-	</script>
-	<!--/请在上方写此页面业务相关的脚本-->
-=======
 /*用户-启用*/
 function member_start(obj,user_id){
 	layer.confirm('确认要启用吗？',function(index){
@@ -391,7 +327,6 @@ function datadel() {
 }
 </script>
 <!--/请在上方写此页面业务相关的脚本-->
->>>>>>> 5de03e5e4f83edaa92a70dbe5b8d79f9ac5c523b
 </body>
 
 </html>
