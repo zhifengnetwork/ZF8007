@@ -20,9 +20,35 @@ class Member extends Base
     //会员列表
     public function lists()
     {
+        $where['id'] = ['>', 0];
+        $datemin = '';
+        $datemax = '';
+        $seach = isset($_GET['seach']) ? $_GET['seach'] : '';
         $page = 10;
-        $list = Db::name('users')->paginate($page);
-        $count = count($list);//dump($count);die;
+
+        //搜索条件
+        if($seach){
+            $page = 0;
+            $time = " 23:59:59";
+            if($seach['m_conditions']){
+                $m_conditions = str_replace(' ', '', $seach['m_conditions']);
+                $where['nickname|mobile|email'] = ['like',"%$m_conditions%"];
+            }
+            if ($seach['datemin'] && $seach['datemax']) {
+                $datemin = strtotime($seach['datemin']);
+                $datemax = strtotime($seach['datemax'].$time);
+                $where['register_time'] = [['>= time',$datemin],['<= time',$datemax],'and'];
+            } elseif ($seach['datemin']) {
+                $where['register_time'] = ['>= time',strtotime($seach['datemin'])];
+            } elseif ($seach['datemax']) {
+                $where['register_time'] = ['<= time',strtotime($seach['datemax'].$time)];
+            }
+        }
+
+        $list = Db::name('users')->where($where)->paginate($page);//dump($list);die;
+        $count = count($list);
+        $this->assign('seach',$seach);
+
         $this->assign('list',$list);
         $this->assign('count',$count);
         return $this->fetch();
@@ -106,14 +132,120 @@ class Member extends Base
     //删除会员
     public function del()
     {
-        $id = input('post.id/d');//dump($id);
-        $res = Db::table('zf_users')->where('id',$id)->delete();
-        if($res){
-            return json(['code'=>1]);
-        }else {
-            return json(['code'=>0]);
+        $data = input('post.');
+        if ($_POST){
+            $id = json_decode($data['id'], true);
+            $where['id'] = array('in', $id);
+            $res = Db::table('zf_users')->where($where)->delete();
+            if($res){
+                return json(['status'=>1,'msg'=>'删除成功']);
+            }else {
+                return json(['status'=>-1,'msg'=>'删除失败']);
+            }
         }
     }
+    /**
+     * 用户支付详情
+     */
+    public function pay_check(){
+        $seach = isset($_GET['seach']) ? $_GET['seach'] : '';
+        $m_conditions   = isset($seach['m_conditions']) ? $seach['m_conditions'] : '';
+        $datemin        = isset($seach['datemin']) ? $seach['datemin'] : '';
+        $datemax        = isset($seach['datemax']) ? $seach['datemax'] : '';
+       
+        $where = '';
+        if($seach){
+            // 搜索条件
+            $name = 'pack_name|nickname';
+            $where=s_condition($seach,$name);
+            $seach = [
+                'm_conditions'  => $m_conditions,
+                'datemin'       => strtotime($datemin),
+                'datemax'       => strtotime($datemax),
+            ];
+            $this->assign('seach', $seach); 
+        }
+        // 列出数据
+        $list = Db::name('user_pay_log')
+                ->alias('p')
+                ->join('users u', 'u.id = p.user_id')
+                ->join('package pa', 'pa.id = p.package_id')
+                ->where($where)
+                ->field( 'p.*,u.nickname,pa.pack_name')
+                ->select();       
+        $num = count($list);
+        $this->assign('num',$num);
+        $this->assign('list',$list);
+        return $this->fetch();
+    }
+
+    public function img(){
+        $id = input('id');
+        $info = Db::name('user_pay_log')->where('id',$id)->find();
+        $this->assign('info',$info); 
+        return $this->fetch();
+    }
+
+    public function audit(){
+        $data = input('post.');
+        if($_POST){
+            
+            // 启动事务
+            Db::startTrans();
+            try{
+                $data['utime'] = time();
+                $res =  Db::name('user_pay_log')->update($data);
+                // 通过
+                if($data['pay_status']==1){
+                    //还要给用户添加对应时长
+                    $info = Db::name('user_pay_log')
+                        ->alias('p')
+                        ->join('package pa', 'pa.id = p.package_id')
+                        // ->where('pa.id',$data['id'])
+                        ->field('pa.*,p.user_id')
+                        ->find();
+
+                    $time = $info['pack_time'];
+                    $end_time = strtotime(date('Y-m-d H:i:s', strtotime("+$time day")));
+
+                    $where = [
+                        'end_time' => $end_time,
+                        'id'       => $info['user_id']
+                    ];
+                    $user_add = Db::name('users')->update($where);
+                }
+
+                // 提交事务
+                Db::commit();
+                return json(['code'=>1]);    
+            } catch (\Exception $e) {
+                // 回滚事务
+                Db::rollback();
+                return json(['code'=>0]);
+            }            
+
+        }
+        // $id = input('id/d');
+        // $status = input('status/d');
+        // // $user_id = session('admin_id');
+        // // $result['code'] = 0;
+        // if ($id && $user_id) {
+        //     Db::startTrans();
+        //     $bool = Db::name('comment')->where('id',$id)->update(['pay_status'=>$status,'utime'=>time()]);
+        //     if ($bool) {
+        //         $is_update = Db::name('article')->where(['id'=>$id])->setInc('comment');
+        //         if ($is_update) {
+        //             $result['code'] = 1;
+        //             Db::commit();
+        //         } else {
+        //             Db::rollback();
+        //         }
+        //     }
+        // }
+
+        // return json($result);        
+    } 
+
 
     public function level()
     {

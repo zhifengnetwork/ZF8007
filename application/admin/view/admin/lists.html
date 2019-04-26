@@ -13,15 +13,17 @@
 		管理员列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a> </nav>
 	<div class="Hui-article">
 		<article class="cl pd-20">
+			<form method="GET" action="">
 			<div class="text-c"> 日期范围：
 				{literal}
-				<input type="text" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}'})" id="datemin" class="input-text Wdate" style="width:120px;">
+				<input type="text" onfocus="WdatePicker()" id="datemin" name="seach[datemin]" {if condition='isset($seach.datemin)'}value="{$seach.datemin}"{else /}value=""{/if} class="input-text Wdate" style="width:120px;">
 				-
-				<input type="text" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'datemin\')}',maxDate:'%y-%M-%d'})" id="datemax" class="input-text Wdate" style="width:120px;">
+				<input type="text" onfocus="WdatePicker()" id="datemax" name="seach[datemax]" {if condition='isset($seach.datemax)'}value="{$seach.datemax}"{else /}value=""{/if} class="input-text Wdate" style="width:120px;">
 				{/literal}
-					<input type="text" class="input-text" style="width:250px" placeholder="输入管理员名称" id="" name="">
+				<input type="text" class="input-text" value="{if condition='isset($seach.m_conditions)'}{$seach.m_conditions}{/if}" style="width:250px" placeholder="输入管理员名称" id="m_conditions" name="seach[m_conditions]">
 				<button type="submit" class="btn btn-success" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜用户</button>
 			</div>
+			</form>
 			<div class="cl pd-5 bg-1 bk-gray mt-20">
 				<span class="l">
 					<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
@@ -166,6 +168,43 @@ function admin_start(obj,admin_id){
 			},
 		});
 	});
+}
+
+//批量删除
+function datadel() {
+	id = document.getElementsByName("pack_id");
+	check_val = [];
+	for (k in id) {
+		if (id[k].checked) {
+			check_val.push(id[k].value);
+		}
+	}
+	console.log(check_val);
+	if (check_val.length == 0) {
+		layer.alert("你还没有选择!");
+	} else {
+		check_val = JSON.stringify(check_val);
+		layer.confirm('确认要删除吗？', function (index) {
+			$.ajax({
+				type: 'POST',
+				url: "{:url('admin/admin/del')}",
+				data: { 'id': check_val },
+				dataType: 'json',
+				success: function (data) {
+					if (data.status == 1) {
+						layer.msg(data.msg, { icon: 1, time: 1000 }, function () {
+							window.location.reload();
+						});
+					} else {
+						layer.msg(data.msg, { icon: 2, time: 1000 });
+					}
+				},
+				error: function () {
+					layer.alert("服务器繁忙, 请联系管理员!");
+				},
+			});
+		});
+	}
 }
 </script> 
 <!--/请在上方写此页面业务相关的脚本-->

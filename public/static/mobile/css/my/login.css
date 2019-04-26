@@ -1,0 +1,99 @@
+body {
+	overflow: hidden;
+}
+.tabBox .hd {
+	padding: .4rem .9rem;
+}
+.tabBox .hd ul li {
+	display: inline-block;
+	font-size: .34rem;
+	letter-spacing: 1px;
+	color: #eff0f7;
+	text-align: center;
+	line-height: .8rem;
+}
+.tabBox .hd ul .on {
+    border-bottom: 2px solid #cd3238;
+}
+.tabBox .hd ul li:nth-child(1) {
+	margin-left: .55rem;
+}
+.tabBox .hd ul li:nth-child(2) {
+	margin-left: 1.35rem;
+}
+
+.tabBox .bd ul li .shortcut .mobile div {
+	display: inline-block;
+}
+.tabBox .bd ul li .shortcut .mobile {
+	padding: 0 0 0 .35rem;
+}
+.tabBox .bd ul li .shortcut .mobile .inp {
+	padding: .15rem 0;
+	width: 5.5rem;
+	border-bottom: 1px solid #30314a;
+}
+.tabBox .bd ul li .shortcut .mobile .inp .gain {
+	width: 1.75rem;
+	height: .65rem;
+	background-color: #3a3b55;
+	border-radius: 4px;
+	color: #9596a6;
+	font-size: .2rem;
+	text-align: center;
+	line-height: .65rem;
+}
+.mark {
+	margin-right: .25rem;
+	color: #fff;
+	letter-spacing: 2px;
+	font-size: .3rem;
+	line-height: .75rem;
+}
+.text {
+	padding: .25rem .2rem .25rem 0;
+	background: #17182d;
+	color: #fff;
+	font-size: .26rem;
+	border: none;
+	outline: none;
+}
+input::-webkit-input-placeholder {
+    font-size: .24rem;
+    letter-spacing: 1px;
+	color: #56566a;
+}
+
+.login_btn {
+	margin: 1rem auto .4rem;
+	width: 5.2rem;
+	height: .8rem;
+	background-color: #14bd64;
+	border-radius: 8px;
+	font-size: .34rem;
+	letter-spacing: 1px;
+	color: #fff;
+	text-align: center;
+	line-height: .8rem;
+}
+.fast_btn {
+	margin: 0 auto;
+	width: 5.2rem;
+	height: .8rem;
+	background-color: #38604b;
+	border-radius: 8px;
+	letter-spacing: 1px;
+	color: #fff;
+	font-size: .34rem;
+	text-align: center;
+	line-height: .8rem;
+}
+
+.pass {
+	margin-left: 6rem;
+	width: 25%;
+	font-size: .22rem;
+	letter-spacing: 1px;
+	color: #9697af;
+	line-height: .75rem;
+}

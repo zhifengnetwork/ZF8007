@@ -1,0 +1,8 @@
+.content .item_wrap p {
+	font-size: .24rem;
+	color: #f9f7fb;
+	line-height: .45rem;
+}
+.content .item_wrap {
+	padding: .6rem .7rem .25rem;
+}

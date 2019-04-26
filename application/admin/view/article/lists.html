@@ -13,19 +13,21 @@
         文章列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a> </nav>
     <div class="Hui-article">
         <article class="cl pd-20">
+            <form method="GET" action="">
             <div class="text-c"> 日期范围：
                 {literal}
-                <input type="text" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}'})" id="datemin" class="input-text Wdate" style="width:120px;">
+                <input type="text" onfocus="WdatePicker()" id="datemin" name="seach[datemin]" class="input-text Wdate" {if condition='isset($seach.datemin)'}value="{$seach.datemin}"{else /}value=""{/if} style="width:120px;">
                 -
-                <input type="text" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'datemin\')}',maxDate:'%y-%M-%d'})" id="datemax" class="input-text Wdate" style="width:120px;">
+                <input type="text" onfocus="WdatePicker()" id="datemax" name="seach[datemax]" class="input-text Wdate" {if condition='isset($seach.datemax)'}value="{$seach.datemax}"{else /}value=""{/if} style="width:120px;">
                 {/literal}
-                <input type="text" class="input-text" style="width:250px" placeholder="输入管理员名称" id="" name="">
-                <button type="submit" class="btn btn-success" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜用户</button>
+                <input type="text" class="input-text" style="width:250px" value="{if condition='isset($seach.m_conditions)'}{$seach.m_conditions}{/if}" placeholder="输入文章名称" id="m_conditions" name="seach[m_conditions]">
+                <button type="submit" class="btn btn-success" id="m_search" name=""><i class="Hui-iconfont">&#xe665;</i> 搜文章</button>
             </div>
+            </form>
             <div class="cl pd-5 bg-1 bk-gray mt-20">
 				<span class="l">
 					<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
-					<a href="javascript:;" onclick="article_add('添加文章','{:url(\'admin/article/add\')}','800','500')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加文章</a> </span>
+					<a href="javascript:;" onclick="article_add('添加文章','{:url(\'admin/article/add\')}','1000','800')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加文章</a> </span>
                 <span class="r">共有数据：<strong>{$count}</strong> 条</span>
             </div>
             <table class="table table-border table-bordered table-bg">
@@ -46,7 +48,7 @@
                 <tbody>
                 {foreach name="list" item="vo"}
                 <tr class="text-c">
-                    <td><input type="checkbox" value="1" name=""></td>
+                    <td><input type="checkbox" value="{$vo.id}" name="pack_id"></td>
                     <td>{$vo.article_title}</td>
                     <td>{$vo.article_id}</td>
                     <td>{$vo.content}</td>
@@ -80,14 +82,74 @@
         h		弹出层高度（缺省调默认值）
     */
 
-    /*管理员-增加*/
+    /*文章-增加*/
     function article_add(title,url,w,h){
         layer_show(title,url,w,h);
     }
 
-    /*管理员-编辑*/
+    /*文章-编辑*/
     function article_edit(title,url,id,w,h){
         layer_show(title,url,w,h);
+    }
+
+    /*文章删除*/
+    function article_del(obj,id) {
+        $.ajax({
+            type: "post",
+            url: "{:url('admin/article/del')}",
+            data:{'id':id},
+            dataType: "json",
+            success: function (data) {
+                if (data.status == 1) {
+                    $(obj).parents("tr").remove();
+                    layer.msg(data.msg,{icon:1, time:1000}, function () {
+                        location.reload()
+                    })
+                }else {
+                    layer.msg(data.msg, {icon:2 ,time:1000});
+                }
+            },
+            error:function (data) {
+                layer.alert('系统繁忙，请联系管理员',{time:1000});
+            }
+        })
+    }
+
+    //批量删除
+    function datadel() {
+        id = document.getElementsByName("pack_id");
+        check_val = [];
+        for (k in id) {
+            if (id[k].checked) {
+                check_val.push(id[k].value);
+            }
+        }
+        console.log(check_val);
+        if (check_val.length == 0) {
+            layer.alert("你还没有选择!");
+        } else {
+            check_val = JSON.stringify(check_val);
+            layer.confirm('确认要删除吗？', function (index) {
+                $.ajax({
+                    type: 'POST',
+                    url: "{:url('admin/article/del')}",
+                    data: { 'id': check_val, 'act': "batchdel" },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.status == 1) {
+                            layer.msg(data.msg, { icon: 1, time: 1000 }, function () {
+                                window.location.reload();
+                            });
+                        } else {
+                            layer.msg(data.msg, { icon: 2, time: 1000 });
+                        }
+                    },
+                    error: function () {
+                        layer.alert("服务器繁忙, 请联系管理员!");
+                    },
+                });
+            });
+        }
     }
 </script>
 </html>

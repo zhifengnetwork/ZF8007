@@ -1,0 +1,20 @@
+.content .center {
+	padding: .55rem .35rem;
+	margin: .7rem .7rem 0;
+	color: #f9f7fb;
+	background: #1f2034;
+}
+.content .center h2 {
+	font-size: .36rem;
+	text-align: center;
+	line-height: .75rem;
+}
+.content .center .time {
+	margin-bottom: .35rem;
+	text-align: center;
+	font-size: .2rem;
+}
+.content .center p {
+	font-size: .2rem;
+	line-height: .45rem;
+}

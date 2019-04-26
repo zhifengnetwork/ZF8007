@@ -111,7 +111,7 @@ body{
 
 .result-info {
     background: #17182d;
-    padding: .32rem 0 .32rem .24rem;
+    padding: .32rem .1rem .32rem .24rem;
     overflow: hidden;
     overflow-x: scroll; 
     overflow-y: hidden;

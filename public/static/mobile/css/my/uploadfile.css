@@ -1,0 +1,124 @@
+img {
+	display: block;
+	max-width: 100%;
+	margin: 0 auto;
+}
+.content .mode_wrap {
+	padding: .3rem .24rem .1rem;
+}
+.content .mode_wrap .pay {
+	position: relative;
+	margin-bottom: .3rem;
+	padding: 0 0 0 .24rem;
+	background: #1f2034;
+	border-radius: 6px;
+}
+.content .mode_wrap .pay div {
+	display: inline-block;
+	vertical-align: top;
+}
+.content .mode_wrap .pay .way {
+	font-size: .34rem;
+	color: #eff0f7;
+	line-height: .9rem;
+}
+
+.content .mode_wrap .pay .pull_box {
+	padding: 0 .25rem;
+	background: #1f2034;
+}
+.content .mode_wrap .pay .pop {
+	margin-left: 3rem;
+}
+.content .mode_wrap .pay .time {
+	margin-left: 2.2rem;
+}
+.content .mode_wrap .pay .pull_box p {
+	margin: .3rem 0 0;
+	color: #ac2c35;
+	font-size: .28rem;
+}
+.content .mode_wrap .pay span {
+	position: absolute;
+    top: .4rem;
+    right: .35rem;
+	display: inline-block;
+	width: .3rem;
+	height: .18rem;
+	background: url(../../image/my/down@2x.png) no-repeat;
+	background-size: 100% 100%;
+}
+/*.content .mode_wrap .pay .rotate {
+	transition: transform 0.5s;
+	-webkit-transition: transform 0.5s;
+}*/
+
+.content .mode_wrap .pay .pull_box ul {
+	display: none;
+}
+.content .mode_wrap .pay .pull_box ul li {
+	font-size: .28rem;
+	color: #ac2c35;
+	line-height: .7rem;
+}
+
+.content .code_wrap .code_img {
+	padding: .2rem;
+	margin: 0 auto;
+	width: 3rem;
+	height: 3rem;
+	background-color: #1f2034;
+	border-radius: 6px;
+}
+
+.content .pix_tu h2 {
+	padding-left: .22rem;
+	font-size: .34rem;
+	color: #fff;
+	line-height: .95rem;
+}
+.content .pix_tu .kuang {
+	position: relative;
+	margin: 0 auto;
+	width: 6.54rem;
+	height: 3.11rem;
+	background-color: #17182d;
+	border: solid 1px #515274;
+}
+.content .pix_tu .kuang .add_wrap {
+	margin: .95rem auto 0;
+	width: 1.5rem;
+	height: .99rem;
+}
+.content .pix_tu .kuang .add_wrap img {
+	width: .52rem;
+	height: .51rem;
+}
+.content .pix_tu .kuang .add_wrap p {
+	margin-top: .23rem;
+	font-size: .26rem;
+	color: #26284c;
+	text-align: center;
+}
+
+.content .pix_tu .kuang input {
+	position: absolute;
+	top: 1rem;
+	left: 2.5rem;
+	width: 1.5rem;
+	height: .99rem;
+	opacity: 0;
+}
+
+.content .put_btn {
+	margin: .7rem 0 .7rem 5rem;
+	width: 2rem;
+	height: .6rem;
+	background-color: #ac2c35;
+	border-radius: 6px;
+	text-align: center;
+	line-height: .6rem;
+	font-size: .3rem;
+	letter-spacing: 1px;
+	color: #ffffff;
+}
