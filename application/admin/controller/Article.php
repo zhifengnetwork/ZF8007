@@ -19,13 +19,60 @@ class Article extends Base
 
     public function lists()
     {
-        $list = Db::name('article')->paginate(10);
-        $count = count($list);
+        $where['id'] = ['>', 0];
+        $datemin = '';
+        $datemax = '';
+        $seach = isset($_GET['seach']) ? $_GET['seach'] : '';
+        $page = 10;
 
+        //搜索条件
+        if($seach){
+            $page = 0;
+            $time = " 23:59:59";
+            if($seach['m_conditions']){
+                $m_conditions = str_replace(' ', '', $seach['m_conditions']);
+                $where['article_title'] = ['like',"%$m_conditions%"];
+            }
+            if ($seach['datemin'] && $seach['datemax']) {
+                $datemin = strtotime($seach['datemin']);
+                $datemax = strtotime($seach['datemax'].$time);
+                $where['add_time'] = [['>= time',$datemin],['<= time',$datemax],'and'];
+            } elseif ($seach['datemin']) {
+                $where['add_time'] = ['>= time',strtotime($seach['datemin'])];
+            } elseif ($seach['datemax']) {
+                $where['add_time'] = ['<= time',strtotime($seach['datemax'].$time)];
+            }
+        }
+
+        $list = Db::name('article')->where($where)->paginate($page);
+        $count = count($list);
+        $this->assign('seach',$seach);
         $this->assign('list',$list);
         $this->assign('count',$count);
         return $this->fetch();
     }
+
+//    // 搜索条件
+//    public function s_condition($conditions, $datemins, $datemaxs,$role)
+//    {
+//        $time = " 23:59:59";
+//        if ($conditions) {
+//            $m_conditions = str_replace(' ', '', $conditions);
+//            $where['name'] = ['like', "%$m_conditions%"];
+//        }
+//        if ($datemins && $datemaxs) {
+//            $datemin = strtotime($datemins);
+//            $datemax = strtotime($datemaxs . $time);
+//            $where['addtime'] = [['>= time', $datemin], ['<= time', $datemax], 'and'];
+//        } elseif ($datemins) {
+//            $where['addtime'] = ['>= time', strtotime($datemins)];
+//        } elseif ($datemaxs) {
+//            $where['addtime'] = ['<= time', strtotime($datemaxs . $time)];
+//        } elseif ($role) {
+//            $where['group_id'] = $role;
+//        }
+//        return $where;
+//    }
 
     public function add()
     {
@@ -87,16 +134,16 @@ class Article extends Base
 
     public function del()
     {
-        $art_id = input('post.art_id/d');//dump($art_id);die;
-        if ($art_id) {
-            $res = Db::name('article')->where('id',$art_id)->delete();
+        $data = input('post.');//dump($art_id);die;
+        if ($_POST) {
+            $id = json_decode($data['id'], true);
+            $where['id'] = array('in', $id);
+            $res = Db::name('article')->where($where)->delete();
             if ($res) {
                 return json(['status'=>1,'msg'=>'删除成功']);
             }else {
                 return json(['status'=>-1,'msg'=>'删除失败']);
             }
-        }else {
-            return json(['status'=>-1,'msg'=>'删除失败']);
         }
     }
 }

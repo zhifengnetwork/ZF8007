@@ -6,6 +6,7 @@
 <body>
 	{include file='layout/menu' /}
 
+<<<<<<< HEAD
 	<section class="Hui-article-box">
 		<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 用户中心 <span
 				class="c-gray en">&gt;</span> 会员列表<a class="btn btn-success radius r"
@@ -96,6 +97,80 @@
 			</article>
 		</div>
 	</section>
+=======
+<section class="Hui-article-box">
+	<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 用户中心 <span class="c-gray en">&gt;</span> 会员列表<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+	<div class="Hui-article">
+		<article class="cl pd-20">
+			<form method="GET" action="">
+			<div class="text-c"> 日期范围：
+				{literal}
+				<input type="text" onfocus="WdatePicker()" id="datemin" name="seach[datemin]" {if condition='isset($seach.datemin)'}value="{$seach.datemin}"{else /}value=""{/if} class="input-text Wdate" style="width:120px;">
+				-
+				<input type="text" onfocus="WdatePicker()" id="datemax" name="seach[datemax]" {if condition='isset($seach.datemax)'}value="{$seach.datemax}"{else /}value=""{/if} class="input-text Wdate" style="width:120px;">
+				{/literal}
+				<input type="text" class="input-text" value="{if condition='isset($seach.m_conditions)'}{$seach.m_conditions}{/if}" style="width:250px" placeholder="输入会员名称、电话、邮箱" id="m_conditions" name="seach[m_conditions]">
+				<button type="submit" class="btn btn-success radius" id="m_search" name=""><i class="Hui-iconfont">&#xe665;</i> 搜用户</button>
+			</div>
+			</form>
+			<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a href="javascript:;" onclick="member_add('添加用户','{:url(\'admin/member/add\')}','','510')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加用户</a></span> <span class="r">共有数据：<strong>{$count}</strong> 条</span> </div>
+			<div class="mt-20">
+				<table class="table table-border table-bordered table-hover table-bg table-sort">
+					<thead>
+						<tr class="text-c">
+							<th width="25"><input type="checkbox" name="" value=""></th>
+							<th width="80">ID</th>
+							<th width="100">用户名</th>
+							<th width="40">性别</th>
+							<th width="200">手机</th>
+							<th width="200">邮箱</th>
+							<th width="80">套餐结束时间</th>
+							<th width="200">加入时间</th>
+							<th width="70">状态</th>
+							<th width="100">操作</th>
+						</tr>
+					</thead>
+					<tbody>
+					{foreach name="list" item="vo"}
+						<tr class="text-c">
+							<td><input type="checkbox" value="{$vo.id}" name="pack_id"></td>
+							<td>{$vo.id}</td>
+							<td><u style="cursor:pointer" class="text-primary" onclick="member_show('{$vo.nickname}','member-show.html','10001','360','400')">{$vo.nickname}</u></td>
+							<td>
+								{if condition="$vo.sex eq 0"}男
+								{else /}女
+								{/if}
+							</td>
+							<td>{$vo.mobile}</td>
+							<td>{$vo.email}</td>
+							<td >{$vo.end_time|date="Y-m-d H:i:s",###}</td>
+							<td>{$vo.register_time|date="Y-m-d H:i:s",###}</td>
+							<td class="td-status">
+								{if condition="$vo.status eq 1"}
+								<span class="label label-success radius">已启用</span>
+								{else /}
+								<span class="label radius">已停用</span>
+								{/if}
+							</td>
+							<td class="td-manage">
+								{if condition="$vo.status eq 1"}
+								<a style="text-decoration:none" onClick="member_stop(this,'{$vo.id}')" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a>
+								{else /}
+								<a style="text-decoration:none" onClick="member_start(this,'{$vo.id}')" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe6e1;</i></a>
+								{/if}
+								<a title="编辑" href="javascript:;" onclick="member_edit('编辑','/admin/member/edit?id={$vo.id}','{$vo.id}','','510')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
+								<a style="text-decoration:none" class="ml-5" onClick="change_password('修改密码','change-password.html','10001','600','270')" href="javascript:;" title="修改密码"><i class="Hui-iconfont">&#xe63f;</i></a>
+								<a style="text-decoration:none" onClick="member_del(this,'{$vo.id}')" title="删除" href="javascript:;"  class="ml-5" ><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+						</tr>
+					{/foreach}
+					</tbody>
+				</table>
+				<div class="pages">{$list->render()}</div>
+			</div>
+		</article>
+	</div>
+</section>
+>>>>>>> 5de03e5e4f83edaa92a70dbe5b8d79f9ac5c523b
 
 	{include file='layout/footer' /}
 
@@ -153,6 +228,7 @@
 			});
 		}
 
+<<<<<<< HEAD
 		/*用户-启用*/
 		function member_start(obj, user_id) {
 			layer.confirm('确认要启用吗？', function (index) {
@@ -215,6 +291,107 @@
 		}
 	</script>
 	<!--/请在上方写此页面业务相关的脚本-->
+=======
+/*用户-启用*/
+function member_start(obj,user_id){
+	layer.confirm('确认要启用吗？',function(index){
+	// 	$(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="member_stop(this,id)" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a>');
+	// 	$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已启用</span>');
+	// 	$(obj).remove();
+	// 	layer.msg('已启用!',{icon: 6,time:1000});
+	// });
+		$.ajax({
+			type: 'POST',
+			url: url,
+			dataType: 'json',
+			data: {'id':user_id,'act':"status",'status':1},
+			success: function (data) {
+				if (data.code == 1) {
+					layer.msg('已启用!', { icon: 6, time: 1000 },function(){
+						window.location.reload();
+					});
+				} else {
+					layer.msg('启用失败!', {icon: 2, time: 1000 });
+				}
+			},
+			error: function (data) {
+				layer.alert("服务器繁忙, 请联系管理员!");
+			},
+		});
+	});
+}
+/*用户-编辑*/
+function member_edit(title,url,id,w,h){
+	layer_show(title,url,w,h);
+}
+/*密码-修改*/
+function change_password(title,url,id,w,h){
+	layer_show(title,url,w,h);	
+}
+/*用户-删除*/
+function member_del(obj,user_id){
+	layer.confirm('确认要删除吗？',function(index){
+		$.ajax({
+			type: "post",
+			url: '{:url("admin/member/del")}',
+			dataType: "json",
+			data: {'id':user_id},
+			success: function(data){
+				if(data.status == 1){
+					$(obj).parents("tr").remove();
+					layer.msg(data.msg,{icon:1, time:1000});
+				}else {
+					layer.msg(data.msg,{icon:2, time:1000});
+				}
+			},
+			error: function (data) {
+				layer.alert('服务器繁忙, 请联系管理员!');
+			}
+		});
+		// $(obj).parents("tr").remove();
+		// layer.msg('已删除!',{icon:1,time:1000});
+	});
+}
+
+//批量删除
+function datadel() {
+	id = document.getElementsByName("pack_id");
+	check_val = [];
+	for (k in id) {
+		if (id[k].checked) {
+			check_val.push(id[k].value);
+		}
+	}
+	console.log(check_val);
+	if (check_val.length == 0) {
+		layer.alert("你还没有选择!");
+	} else {
+		check_val = JSON.stringify(check_val);
+		layer.confirm('确认要删除吗？', function (index) {
+			$.ajax({
+				type: 'POST',
+				url: "{:url('admin/member/del')}",
+				data: { 'id': check_val },
+				dataType: 'json',
+				success: function (data) {
+					if (data.status == 1) {
+						layer.msg(data.msg, { icon: 1, time: 1000 }, function () {
+							window.location.reload();
+						});
+					} else {
+						layer.msg(data.msg, { icon: 2, time: 1000 });
+					}
+				},
+				error: function () {
+					layer.alert("服务器繁忙, 请联系管理员!");
+				},
+			});
+		});
+	}
+}
+</script>
+<!--/请在上方写此页面业务相关的脚本-->
+>>>>>>> 5de03e5e4f83edaa92a70dbe5b8d79f9ac5c523b
 </body>
 
 </html>
