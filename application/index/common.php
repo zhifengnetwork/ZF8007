@@ -15,15 +15,19 @@ function getPhoneCode($data)
     }
     // 判断手机号是否合法
     $check_phone = check_mobile_number($data['phone']);
+    
     // 判断手机号是否存在数据库
-    if ($check_phone) {
-        $is_phone_db = Db::name('users')->where(['mobile' => $data['phone']])->find();
-        if ($is_phone_db) {
-            return array('code' => 0, 'msg' => '已存在此手机号！');
+    if( $data['sms_type'] == 1){
+        if ($check_phone) {
+            $is_phone_db = Db::name('users')->where(['mobile' => $data['phone']])->find();
+            if ($is_phone_db) {
+                return array('code' => 0, 'msg' => '已存在此手机号！');
+            }
+        } else {
+            return array('code' => 0, 'msg' => '手机号格式不正确');
         }
-    } else {
-        return array('code' => 0, 'msg' => '手机号格式不正确');
     }
+
     $limit_time = 60; // 60秒以内不能重复获取
     $where['phone'] = $data['phone'];
     $where['sms_type'] = $data['sms_type'];
@@ -87,12 +91,14 @@ function sendSms($phone,$content){
     $post_data['content'] = $content; // 短信的内容，内容需要UTF-8编码
     $post_data['mobile'] = $phone; // 发信发送的目的号码.多个号码之间用半角逗号隔开 
     $post_data['sendtime'] = ''; // 为空表示立即发送，定时发送格式2010-10-24 09:08:10
-    $url='http://120.25.105.164:8888/sms.aspx?action=send';
+    // $url='http://120.25.105.164:8888/sms.aspx?action=send';
     $o='';
     foreach ($post_data as $k=>$v)
     {
     $o.="$k=".urlencode($v).'&';
     }
+    // dump($o);
+    // exit;
     $post_data=substr($o,0,-1);
     $result= curl_post($url,$post_data);
     // return $result['output'];

@@ -5,6 +5,9 @@ use think\Loader;
 use think\Session;
 class Login extends Base
 {
+    /**
+     * 登录
+     */
     public function index(){
         return $this->fetch();
     }
@@ -14,7 +17,16 @@ class Login extends Base
     public function register(){
         return $this->fetch();
     }
-    
+
+    /**
+     * 找回密码
+     */
+    public function find_pwd(){
+        return $this->fetch();
+    }
+    /**
+     * 获取验证码
+     */
     public function getPhoneVerify(){
         $param = input('post.');
         $sms_type = intval($param['sms_type']);
@@ -25,7 +37,9 @@ class Login extends Base
         $res = getPhoneCode($data);
         return json($res);
     }
-
+    /**
+     * 注册逻辑
+     */
     public function re_commit(){
         $data = input('post.');
         if($_POST){
@@ -36,14 +50,14 @@ class Login extends Base
                 return json(['code'=>0,'msg'=> $baocuo]);
             }
             // 验证码
-            // $checkData['sms_type'] = $data['sms_type'];
-            // $checkData['code'] = $data['code'];
-            // $checkData['phone'] = $data['mobile'];            
-            // $res = checkPhoneCode($checkData);
-            // if($res['code']==0){
-            //     // return array('code' => 0, 'msg' => $res['msg']);
-            //     return json(['code'=>0,'msg'=> $res['msg']]);
-            // }
+            $checkData['sms_type'] = $data['sms_type'];
+            $checkData['code'] = $data['code'];
+            $checkData['phone'] = $data['mobile'];            
+            $res = checkPhoneCode($checkData);
+            if($res['code']==0){
+                // return array('code' => 0, 'msg' => $res['msg']);
+                return json(['code'=>0,'msg'=> $res['msg']]);
+            }
             //注册成功，有一天时长 
             $e_time = strtotime(date('Y-m-d H:i:s', strtotime('+1 day')));
             $data1 = [
@@ -62,6 +76,109 @@ class Login extends Base
                 return json(['code' => 0, 'msg' => '注册失败']);
            }        
         }
-    } 
-    
+    }
+    /**
+     * 登录逻辑
+     */
+    public function login_commit()
+    {
+        $data = input('post.'); 
+
+        if($_POST){
+            // 验证
+
+            if($data['check'] == 1){
+                $val = 'mobile';
+                $err = $this->check_mobile($data);
+                if ($err) return json($err);
+            }else{
+                $val = 'mobile1';
+                $LoginValidate = Loader::Validate('Login');
+                if (! $LoginValidate->scene( 'login_commit')->check($data)) {
+                    $baocuo = $LoginValidate->getError();
+                    return json(['code' => 0, 'msg' => $baocuo]);
+                }
+            }
+            $check = Db::name('users')->where('mobile',$data[$val])->find();
+            if($check){
+                // 检查游戏剩余时间
+                if ($check['end_time'] < time()) {
+                    return array('code' => 0, 'msg' => '您的游戏时长不足，请充值之后再登录');
+                }
+                if( $data['check'] == 2 && ($check['password'] != md5($data['password']))){
+                    return array('code' => 0, 'msg' => '密码错误');  
+                }  
+                Session::set('user',$check);
+                return json(['code'=>1,'msg'=>'登录成功','url'=> '/index/index/index']);                      
+            }else{
+                return array('code' => 0, 'msg' => '此用户不存在'); 
+            }
+     
+        }    
+    }
+
+    /**
+     * 找回密码逻辑
+     */
+    public function find_commit(){
+        $data = input('post.');
+        if($_POST){
+            //    验证
+           if($data['status'] == 1){
+                $err = $this->check_mobile($data);
+                if ($err) return json($err);
+                $info = Db::name('users')->where('mobile', $data['mobile'])->find();
+
+                if ($info) {
+                    return json(['code' => 1, 'msg' => '查询成功','mobile'=>$data['mobile']]);
+                } else {
+                    return json(['code' => 0, 'msg' => '手机号不存在']);
+                }
+           }else{
+                $LoginValidate = Loader::Validate('Login');
+                if (!$LoginValidate->scene('find_commit')->check($data)) {
+                    $baocuo = $LoginValidate->getError();
+                    return json(['code' => 0, 'msg' => $baocuo]);
+                }
+                if($data['password'] != $data['re_password']){
+                    return json(['code' => 0, 'msg' => '两次密码输入不一致']);
+                }
+                $where = [
+                    'password' => md5($data['password'])
+                ];
+                $res = Db::name('users')->where('mobile',$data['mobile1'])->update($where);
+                if($res){
+                    return json(['code' => 1, 'msg' => '密码修改成功']);
+                
+                }else{
+                    return json(['code' => 0, 'msg' => '网络繁忙，请稍后再试']);
+                }                
+           }
+ 
+           
+        }        
+    }
+
+    public function check_mobile($data){
+        if (empty($data['mobile'])) {
+            return array('code' => 0, 'msg' => '请输入手机号');
+        }
+        $check_phone = check_mobile_number($data['mobile']);
+        if (!$check_phone) {
+            return array('code' => 0, 'msg' => '手机号格式不正确');
+        }
+        if (!$data['code']) {
+            return array('code' => 0, 'msg' => '请输入验证码');
+        }
+                // 验证码
+                // $checkData['sms_type'] = $data['sms_type'];
+                // $checkData['code'] = $data['code'];
+                // $checkData['phone'] = $data['mobile'];
+                // $res = checkPhoneCode($checkData);
+                // if ($res['code'] == 0) {
+                //     return array(['code' => 0, 'msg' => $res['msg']]);
+                // }  
+                
+                
+    }
 }

@@ -57,6 +57,11 @@ class Index extends Base
                     break;
             }
             if($is_ajax){
+                foreach ($list as $ke=>$val){
+                    foreach($val['lottery_number'] as $l=>$p){
+                        $list[$ke]['lottery_new_color']['oo'.$p]=$val['lottery_color'][$p];
+                    }
+                }
                 $this->ajaxReturn($list);
             }
             $this->assign('typed',$typed);

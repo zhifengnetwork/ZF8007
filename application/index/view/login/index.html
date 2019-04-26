@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>登录</title>
+		<script type="text/javascript" src="/__STATIC__/js/rem.js" ></script>
+		<link rel="stylesheet" type="text/css" href="/__STATIC__/css/public.css"/>
+		<link rel="stylesheet" type="text/css" href="/__STATIC__/css/header.css"/>
+		<link rel="stylesheet" type="text/css" href="/__STATIC__/css/my/login.css"/>
+	</head>
+	<body>
+		<div class="everyColor">
+			<div class="lb_headWrap">
+				<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+                    <img class="lb_headWrap_return_img" src="/__STATIC__/image/back@2x.png"/> 
+                </p>
+				<span>登录</span>
+            </div>
+            <!--内容-->
+            <div class="content">
+            	<div id="leftTabBox" class="tabBox">
+				    <div class="hd">
+				        <ul>
+				            <li onclick="check_cl(1)">快捷登录</li>
+							<li onclick="check_cl(2)">账号密码登录</li>
+							
+				        </ul>
+					</div>
+					<form action="" method="POST">
+				    <div class="bd">
+				       
+			            <ul>
+			                <li>
+			                	<div class="shortcut">
+									<!--手机号-->
+									
+			                		<div class="mobile">
+			                			<div class="mark">手机号:</div>
+			                			<div class="inp">
+											<input class="text phone" type="number" name="mobile" id="mobile" placeholder="请输入手机号" />
+											<input type="hidden" name="sms_type" value="2" id="sms_type_id">
+											<input type="hidden" name="check" id="check" value="1">
+			                			</div>
+			                		</div>
+			                		<!--验证码-->
+			                		<div class="mobile">
+			                			<div class="mark">验证码:</div>
+			                			<div class="inp">
+			                				<input class="text" type="number" name="code" id="code" placeholder="请输入验证码" />
+			                				<input class="gain" type="button" id="btn" value="获取验证码" onclick="settime(this)" />
+			                			</div>
+			                		</div>
+			                	</div>
+			                </li>
+			            </ul>
+			            <ul>
+			                <li>
+			                	<div class="shortcut">
+									<!--手机号-->
+									
+			                		<div class="mobile">
+			                			<div class="mark">账号:</div>
+			                			<div class="inp">
+			                				<input class="text" type="number" name="mobile1" id="mobile1" placeholder="请输出手机号/邮箱/用户名" />
+			                			</div>
+			                		</div>
+			                		<!--验证码-->
+			                		<div class="mobile">
+			                			<div class="mark">密码:</div>
+			                			<div class="inp">
+			                				<input class="text" type="password" name="password" id="password"placeholder="请输入6-20位密码" />
+			                			</div>
+			                		</div>
+			                	</div>
+			                </li>
+			            </ul>
+					</div>
+					</form>
+				</div>
+				<div>
+					<a class="pass" href="/index/login/find_pwd">忘记密码？</a>
+				</div>
+				<div>
+		            <!--登录按钮-->
+            		<a class="login_btn" >登录</a>
+            		<!--快速注册按钮-->
+            		<a href="{:url('index/login/register')}" class="fast_btn">快速注册</a>
+            	</div>
+            </div>
+            
+        </div>
+        
+        <script src="/__STATIC__/js/jquery-1.8.3.js"></script>
+        <script src="/__STATIC__/js/public.js"></script>
+		<script type="text/javascript" src="/__STATIC__/js/TouchSlide.1.1.js" ></script>
+		<script type="text/javascript" src="/public/static/admin/lib/layer/2.4/layer.js"></script>
+        <script>
+        	//tab切换参数
+				TouchSlide({
+					slideCell:"#leftTabBox"
+				});
+				//获取验证码
+	 			var countdown=60; 
+				function settime(val) { 
+					if (countdown == 0) { 
+						val.removeAttribute("disabled");    
+						val.value="免费获取验证码"; 
+						countdown = 60; 
+					} else { 
+						val.setAttribute("disabled", true); 
+						val.value="重新发送(" + countdown + ")"; 
+						countdown--; 
+					} 
+					setTimeout(function() { 
+						settime(val) 
+					},1000) 
+				}
+				// 用来判断是验证码登录还是密码登录
+                function check_cl(val){
+                   var check = $("#check").val(val);
+				}
+
+				// //发送验证码
+				$("#btn").click(function () {
+					var reg = /^1[34578]\d{9}$/;  /*用户手机号*/
+					var phone = $(".phone");
+					var phoneS = $(".phone").val();
+					if (phone.val() == "") {
+						layer.msg('手机不能为空!', { time: 1000 }, function () {
+
+						});
+						return false
+					}
+					if (!reg.test(phone.val())) {
+						layer.msg('请输入正确的手机号!', { time: 1000 }, function () {
+
+						});
+						return false
+					}
+					var sms_type = $('#sms_type_id').val();
+
+					// 获取验证码
+					var flag = true;
+					$.ajax({
+						url: '/index/login/getPhoneVerify',
+						type: 'post',
+						dataType: 'json',
+						data: { 'phone': phoneS, 'sms_type': sms_type },
+						success: function (msg) {
+							if (msg.code == 0) {
+								layer.msg(msg.msg);
+								flag = false;
+								return false;
+							}
+						}
+					});
+					if (flag) {
+						layer.msg('已发送');
+					}
+				})
+
+				
+                $('.login_btn').click(function(){
+					var code = $("#code").val();
+					var sms_type = $("#sms_type_id").val();
+					var password = $("#password").val();
+					var check = $("#check").val();					
+					
+					if (check == 1) {
+						var mobile = $("#mobile").val();
+						if (!mobile) {
+							layer.msg('手机不能为空!', { time: 1000 }, function () {
+
+							});
+							return false
+						}	
+						if (!code) {
+							layer.msg('验证码不能为空!', { time: 1000 }, function () {
+
+							});
+							return false
+						}
+					} else {
+						var mobile = $("#mobile1").val();
+						if (!mobile) {
+							layer.msg('手机不能为空!', { time: 1000 }, function () {
+
+							});
+							return false
+						}							
+						if (!password) {
+							layer.msg('密码不能为空!', { time: 1000 }, function () {
+
+							});
+							return false
+						}
+					}
+
+					$.ajax({
+						url: '/index/login/login_commit',
+						type: 'post',
+						dataType: 'json',
+						data: $("form").serialize(),
+						success: function (msg) {
+							if (msg.code == 0) {
+								layer.msg(msg.msg);
+								return false;
+							} else {
+								layer.msg(msg.msg, { time: 1000 }, function () {
+									window.location.replace(msg.url);
+								});
+
+								
+							}
+						}
+					});
+					
+				})
+
+        </script>
+	</body>
+</html>
