@@ -126,7 +126,16 @@ class Member extends Base
                 return json(['code' => 0]);
             }
         }
+        if ($data['act'] == 'change_password') {
+            $newpassword = pwd_encryption($data['newpassword']);
+            $res = Db::name('users')->where('id', $data['id'])->update(['password' => $newpassword]);
 
+            if ($res) {
+                return json(['status' => 1, 'msg' => '修改成功']);
+            } else {
+                return json(['status' => -1, 'msg' => '修改失败']);
+            }
+        }
     }
 
     //删除会员
@@ -244,8 +253,28 @@ class Member extends Base
         // }
 
         // return json($result);        
-    } 
+    }
 
+    public function show()
+    {
+        $user_id = input('get.id/d');
+        $info = Db::name('users')->where('id',$user_id)->find();
+        $first_leader = Db::name('users')->where('id',$info['first_leader'])->value('nickname');
+        $this->assign('info',$info);
+        $this->assign('first_leader',$first_leader);
+        return $this->fetch();
+    }
+
+    public function change_password()
+    {
+        $user_id = input('get.id/d');
+        $info = Db::name('users')->where('id',$user_id)->find();
+        $act = 'change_password';
+        $this->assign('act',$act);
+        $this->assign('id',$user_id);
+        $this->assign('info',$info);
+        return $this->fetch();
+    }
 
     public function level()
     {

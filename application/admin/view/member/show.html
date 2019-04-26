@@ -5,8 +5,8 @@
 <div class="cl pd-20" style=" background-color:#5bacb6">
   <img class="avatar size-XL l" src="static/h-ui/images/user.png">
   <dl style="margin-left:80px; color:#fff">
-    <dt><span class="f-18">张三</span> <span class="pl-10 f-12">余额：40</span></dt>
-    <dd class="pt-10 f-12" style="margin-left:0">这家伙很懒，什么也没有留下</dd>
+    <dt><span class="f-18">{$info.nickname}</span> <span class="pl-10 f-12">余额：{$info.money}</span></dt>
+    <!--<dd class="pt-10 f-12" style="margin-left:0">这家伙很懒，什么也没有留下</dd>-->
   </dl>
 </div>
 <div class="pd-20">
@@ -14,27 +14,32 @@
     <tbody>
       <tr>
         <th class="text-r" width="80">性别：</th>
-        <td>男</td>
+        <td>
+        {if condition="$info.sex eq 0"}保密
+        {elseif condition="$info.sex eq 1"}男
+        {elseif condition="$info.sex eq 2"}女
+        {/if}
+        </td>
       </tr>
       <tr>
         <th class="text-r">手机：</th>
-        <td>13000000000</td>
+        <td>{$info.mobile}</td>
       </tr>
       <tr>
         <th class="text-r">邮箱：</th>
-        <td>admin@mail.com</td>
-      </tr>
-      <tr>
-        <th class="text-r">地址：</th>
-        <td>北京市 海淀区</td>
+        <td>{$info.email}</td>
       </tr>
       <tr>
         <th class="text-r">注册时间：</th>
-        <td>2014.12.20</td>
+        <td>{$info.register_time|date="Y-m-d H:m:s",###}</td>
       </tr>
       <tr>
-        <th class="text-r">积分：</th>
-        <td>330</td>
+        <th class="text-r">套餐结束时间：</th>
+        <td>{$info.end_time|date="Y-m-d H:m:s",###}</td>
+      </tr>
+      <tr>
+        <th class="text-r">上级：</th>
+        <td>{$first_leader ?? '无上级'}</td>
       </tr>
     </tbody>
   </table>
