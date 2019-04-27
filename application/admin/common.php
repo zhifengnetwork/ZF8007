@@ -5,6 +5,8 @@
  */
 
  use think\Db;
+ use think\Session;
+ use \think\Controller;
 
  //用户名
 function user_name($user_id){
@@ -55,4 +57,18 @@ function adminLog($log_info)
         $where['pay_time'] = ['<= time', strtotime($data['datemax'])];
     }
     return $where;
+}
+
+/**
+ *检查用户是否登陆
+ */
+function check_user(){
+    $admin = Session::get('admin_name');
+//    dump($admin);die;
+    if (empty($admin)) {
+         $url = "http://" . $_SERVER['HTTP_HOST'] . "/admin/login/index";
+//        header('/admin/login/index');
+        header("refresh:1;url=$url");
+        exit;
+    }
 }

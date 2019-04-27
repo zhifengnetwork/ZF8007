@@ -21,6 +21,7 @@ class Index extends Base
     {
         parent::_initialize();
 
+        check_user();
     }
 
 

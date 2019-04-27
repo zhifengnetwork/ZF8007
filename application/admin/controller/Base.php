@@ -25,12 +25,6 @@ class Base extends Controller
             $this->admin = Session::get('admin_name');
             $this->admin_id = Session::get('admin_id');
         }
-//        $admin_name = session::get('admin_name');
-//        if(empty($this->admin)){
-//            $url = "http://".$_SERVER['HTTP_HOST']. "/admin/";
-//            header("url=$url");
-//            exit;
-//        }
 
 
         $global_menu_list = $this->menu();
