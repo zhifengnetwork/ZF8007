@@ -170,14 +170,14 @@ class Login extends Base
         if (!$data['code']) {
             return array('code' => 0, 'msg' => '请输入验证码');
         }
-                // 验证码
-        $checkData['sms_type'] = $data['sms_type'];
-        $checkData['code'] = $data['code'];
-        $checkData['phone'] = $data['mobile'];
-        $res = checkPhoneCode($checkData);
-        if ($res['code'] == 0) {
-            return json(['code' => 0, 'msg' => $res['msg']]);
-        }            
+        // 验证码
+        // $checkData['sms_type'] = $data['sms_type'];
+        // $checkData['code'] = $data['code'];
+        // $checkData['phone'] = $data['mobile'];
+        // $res = checkPhoneCode($checkData);
+        // if ($res['code'] == 0) {
+        //     return json(['code' => 0, 'msg' => $res['msg']]);
+        // }            
     }
 
     public function check_register($data){
@@ -190,13 +190,12 @@ class Login extends Base
             return json(['code' => 0, 'msg' => '两次密码输入不一致']);
         }
             // 验证码
-            $checkData['sms_type'] = $data['sms_type'];
-            $checkData['code'] = $data['code'];
-            $checkData['phone'] = $data['mobile'];            
-            $res = checkPhoneCode($checkData);
-            if($res['code']==0){
-                // return array('code' => 0, 'msg' => $res['msg']);
-                return json(['code'=>0,'msg'=> $res['msg']]);
-            }        
+            // $checkData['sms_type'] = $data['sms_type'];
+            // $checkData['code'] = $data['code'];
+            // $checkData['phone'] = $data['mobile'];            
+            // $res = checkPhoneCode($checkData);
+            // if($res['code']==0){
+            //     return json(['code'=>0,'msg'=> $res['msg']]);
+            // }        
     }
 }
