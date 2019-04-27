@@ -51,13 +51,19 @@
 							<span id="time_s"></span>秒
 							</span>
 							<input type="hidden" name="e_time" id="e_time" value="{:date('Y-m-d,H:i:s',$info['end_time'])}">
+							<input type="hidden" name="log_time" id="log_time" value="{:date('Y-m-d,H:i:s',$time)}">
 							<!-- <input type="text" id="time_d">天<input type="text" id="time_h">时<input type="text" id="time_m">分<input type="text"
 								id="time_s">秒 -->
 
         				</div>
         				
         				<p>ID:{$info.id}</p>
-        				<p>在线时间:00:35:45</p>
+        				<p>
+							在线时间:
+							<span id="online_d"></span>天
+							<span id="online_h"></span>时
+							<span id="online_m"></span>分
+							<span id="online_s"></span>秒
             		</div>
             	</div>
             	
@@ -174,6 +180,7 @@
 		<script>
 			$(function () {
 				show_time();
+				line()
 			});
 
 			function show_time() {
@@ -215,6 +222,46 @@
 				// 设置定时器
 				setTimeout("show_time()", 1000);
 			}
+
+			function line() {
+				var time_start = new Date(); //设定当前时间
+				var e_time = $('#log_time').val()
+				var time_end = new Date(e_time).getTime(); //设定目标时间
+				// // 计算时间差 
+				var time_distance = time_start - time_end;
+				// 天
+				var int_day = Math.floor(time_distance / 86400000)
+				time_distance -= int_day * 86400000;
+				// 时
+				var int_hour = Math.floor(time_distance / 3600000)
+				time_distance -= int_hour * 3600000;
+				// 分
+				var int_minute = Math.floor(time_distance / 60000)
+				time_distance -= int_minute * 60000;
+				// 秒 
+				var int_second = Math.floor(time_distance / 1000)
+				// 时分秒为单数时、前面加零 
+				if (int_day < 10) {
+					int_day = "0" + int_day;
+				}
+				if (int_hour < 10) {
+					int_hour = "0" + int_hour;
+				}
+				if (int_minute < 10) {
+					int_minute = "0" + int_minute;
+				}
+				if (int_second < 10) {
+					int_second = "0" + int_second;
+				}
+				// 显示时间 
+				$("#online_d").html(int_day);
+				$("#online_h").html(int_hour);
+				$("#online_m").html(int_minute);
+				$("#online_s").html(int_second);
+				// 设置定时器
+				setTimeout("line()",1000);
+		}
+				
 		</script>		 
 
 	</body>

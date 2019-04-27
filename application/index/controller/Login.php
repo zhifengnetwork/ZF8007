@@ -68,6 +68,7 @@ class Login extends Base
            if($res){
                 $user_info = Db::name('users')->where('id',$res)->find();
                 Session::set('user',$user_info);
+                Session::set('time', time());
                 return json(['code'=>1,'msg'=>'注册成功','url'=> '/index/index/index']);
            }else{
                 return json(['code' => 0, 'msg' => '注册失败']);
@@ -96,6 +97,7 @@ class Login extends Base
                     return json(['code' => 0, 'msg' => $baocuo]);
                 }
             }
+            // 检查用户是否存在
             $check = Db::name('users')->where('mobile',$data[$val])->find();
             if($check){
                 // // 检查游戏剩余时间
@@ -106,6 +108,7 @@ class Login extends Base
                     return array('code' => 0, 'msg' => '密码错误');  
                 }  
                 Session::set('user',$check);
+                Session::set('time',time());
                 return json(['code'=>1,'msg'=>'登录成功','url'=> '/index/index/index']);                      
             }else{
                 return array('code' => 0, 'msg' => '此用户不存在'); 

@@ -26,26 +26,13 @@ class User extends Base
     {
         $this->check_user();
         $info = Db::name('users')->where('id', $this->user_id)->find();
-        // $time1 = $info['end_time'];
-        // $time2 = time();
-        // $time3 = $time1 - $time2;
-        // $t = $this->time2string($time3);
-        // $this->assign('t',$t);
-        // $this->assign('end_time',$info['end_time']);
+        $time = Session::get('time');
+        dump($time);
+        $this->assign('time',$time);
         $this->assign('info',$info);
         return $this->fetch();
     }
-    function time2string($second)
-    {
-        $day = floor($second / (3600 * 24));
-        $second = $second % (3600 * 24); //除去整天之后剩余的时间
-        $hour = floor($second / 3600);
-        $second = $second % 3600; //除去整小时之后剩余的时间 
-        $minute = floor($second / 60);
-        $second = $second % 60; //除去整分钟之后剩余的时间 
-        //返回字符串
-        return $day . '天' . $hour . '小时' . $minute . '分' . $second . '秒';
-    }
+
     //历史记录
     public function brokerage()
     {
@@ -113,6 +100,9 @@ class User extends Base
     public function setting(){
         return $this->fetch();
     }
+    /**
+     * 退出
+     */
     public function logout(){
         if($_POST){
            $check = Session::get('user');
@@ -129,6 +119,9 @@ class User extends Base
         }
     }
 
+    /**
+     *检查用户是否登陆
+     */      
     public function check_user(){
         $user = Session::get('user');
         if (empty($user)) {
