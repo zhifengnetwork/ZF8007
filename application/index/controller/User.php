@@ -72,7 +72,9 @@ class User extends Base
     public function invitelink()
     {
         $info = Db::name('users')->where('id',$this->user_id)->find();
+        $url = "http://" . $_SERVER['HTTP_HOST'] . "/index/login/register?id=" . $info['id'];
         $this->assign('info',$info);
+        $this->assign('url',$url);
         return $this->fetch();
     }
 
