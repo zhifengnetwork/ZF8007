@@ -6,6 +6,12 @@
 
  use think\Db;
 
+ //用户名
+function user_name($user_id){
+    $name = Db::name('users')->where('id',$user_id)->value('nickname');
+    return $name;
+}
+
  //分组名称
 function group_name($group_id){
     $group_name = Db::name('user_group')->where('id',$group_id)->value('name');

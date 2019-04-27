@@ -23,7 +23,7 @@
             	
             	<div class="name_wrap">
 	            	<div class="name">
-	            		<span>*{$info.nickname}</span>
+	            		<span>*{empty name="$info.nickname"}{$info.mobile}{/empty}{$info.nickname}</span>
 	            		<span>ID:{$info.id}</span>
 	            	</div>
 	            </div>

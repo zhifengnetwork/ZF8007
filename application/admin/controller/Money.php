@@ -145,4 +145,41 @@ class Money extends Base
         // Db::name('admin')->where('name', $data['name'])->select();
     }
 
+    /**
+     * 佣金明细
+     */
+    public function commission()
+    {
+        $where['id'] = ['>', 0];
+        $datemin = '';
+        $datemax = '';
+        $seach = isset($_GET['seach']) ? $_GET['seach'] : '';
+        $page = 10;
+        //搜索条件
+        if($seach){
+            $page = 0;
+            $time = " 23:59:59";
+//            if($seach['m_conditions']){
+//                $m_conditions = str_replace(' ', '', $seach['m_conditions']);
+//                $where['first_leader'] = ['like',"%$m_conditions%"];
+//            }
+            if ($seach['datemin'] && $seach['datemax']) {
+                $datemin = strtotime($seach['datemin']);
+                $datemax = strtotime($seach['datemax'].$time);
+                $where['rebate_time'] = [['>= time',$datemin],['<= time',$datemax],'and'];
+            } elseif ($seach['datemin']) {
+                $where['rebate_time'] = ['>= time',strtotime($seach['datemin'])];
+            } elseif ($seach['datemax']) {
+                $where['rebate_time'] = ['<= time',strtotime($seach['datemax'].$time)];
+            }
+        }
+
+        $this->assign('seach',$seach);
+        $list = Db::name('rebate_log')->where($where)->paginate($page);
+        $count = count($list);
+        $this->assign('list',$list);
+        $this->assign('count',$count);
+        return $this->fetch();
+    }
+
 }

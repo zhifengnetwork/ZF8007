@@ -182,7 +182,6 @@ class Member extends Base
                 ->where($where)
                 ->field( 'p.*,u.nickname,pa.pack_name')
                 ->paginate(15, false, ['query' => request()->param()]);;
-                      
         $num = count($list);
         $this->assign('num',$num);
         $this->assign('list',$list);
