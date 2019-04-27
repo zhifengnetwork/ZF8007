@@ -73,4 +73,26 @@ class User extends Base
     {
         return $this->fetch();
     }
+     /**
+      * 用户设置 
+      */ 
+    public function setting(){
+        return $this->fetch();
+    }
+    public function logout(){
+        $id = input('post.');
+        if($_POST){
+           $check = Session::get('user');
+           if($check){
+                $res = Session::clear();
+                if ($res) {
+                    return json(['status' => 1, 'msg' => '退出成功！']);
+                } else {
+                    return json(['status' => 0, 'msg' => '退出失败，请稍后再试！']);
+                }                
+           }else{
+               return json(['status' => 0, 'msg' => '退出异常，请稍后再试！']);
+           }
+        }
+    }
 }

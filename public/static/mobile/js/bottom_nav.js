@@ -40,10 +40,8 @@ var loginFalse = [
 ]
 /*已-登陆路径*/
 var loginTrue = [
-	"''",
-	"''",
-	"''",
-	"''",
+	"'/index/index/index.html'",
+	"'/index/user/mycenter.html'",
 ]
 
 /**对应登陆状态=>路径

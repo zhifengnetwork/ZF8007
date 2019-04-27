@@ -27,11 +27,11 @@ class Base extends Controller
         header("Cache-control: private");  // history.back返回后输入框值丢失问题 参考文章 http://www.tp-shop.cn/article_id_1465.html  http://blog.csdn.net/qinchaoguang123456/article/details/29852881
         $this->session_id = session_id(); // 当前的 session_id
         define('SESSION_ID',$this->session_id); //将当前的session_id保存为常量，供其它方法调用
-        $user = Session::get('user');
-        if (!empty($user)) {
-            $url = "http://" . $_SERVER['HTTP_HOST'] . "/index/index/index";
-            header("refresh:1;url=$url");
-        }
+        // $user = Session::get('user');
+        // if (!empty($user)) {
+        //     $url = "http://" . $_SERVER['HTTP_HOST'] . "/index/index/index";
+        //     header("refresh:1;url=$url");
+        // }
         // 判断当前用户是否手机
 //        if(isMobile())
 //            cookie('is_mobile','1',3600);
