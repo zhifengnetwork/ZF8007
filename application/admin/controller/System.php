@@ -20,6 +20,7 @@ class System extends Base
     {
         parent::_initialize();
 
+        check_user();
         //配置列表
         $this->menu_list = array(
             'base_setting' => ['order'=>0,'url'=>'base_setting','name'=>"基本设置"],
