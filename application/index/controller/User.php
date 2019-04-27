@@ -78,14 +78,9 @@ class User extends Base
     //上传凭证
     public function uploadfile(Request $request)
     {
-        if ($_POST){
-            $data = $_POST;
-            $file = $request->file();
-            dump($file);die;
-        }
-
-
         $pay_way = Db::name('config')->where('type','pay_setting')->select();
+        $pay_way[0]['name'] = '支付宝';
+        $pay_way[1]['name'] = '微信';
         $pay_way[0]['img'] = $pay_way[2]['value'];
         $pay_way[1]['img'] = $pay_way[3]['value'];
 
@@ -94,6 +89,48 @@ class User extends Base
         $this->assign('package',$package);//dump($package);die;
         return $this->fetch();
     }
+
+    public function upload(Request $request)
+    {
+        if ($_POST) {
+            $data = input('post.');
+            if (empty($data['files'])) {
+                return json(['status' => -1, 'msg' => '请选择凭证上传']);
+            }
+            $img_path = 'public/upload/proof/';
+            $img_name = md5(mt_rand(0, 100000) . time()) . '.png'; //文件名
+//            $exten = substr($name,strrpos($name,'.')); //上传文件后缀名
+            if (!is_dir(ROOT_PATH . $img_path)) {
+                mkdir(ROOT_PATH . $img_path, 0777, true);
+            }
+
+            $base64_string = explode(',', $data['files']); //截取data:image/png;base64, 这个逗号后的字符
+            $data1 = base64_decode($base64_string[1]);   //对截取后的字符使用base64_decode进行解码
+            file_put_contents(ROOT_PATH . $img_path . $img_name, $data1); //写入文件并保存
+
+            //写入数据库
+            $packs = Db::name('package')->where('id', $data['pack'])->find();
+            $pay_way = explode(':', $data['pays']);
+
+            $res = Db::name('user_pay_log')->insert([
+                'user_id' => 1,
+                'package_id' => $packs['id'],
+                'pay_money' => $packs['pack_money'],
+                'pay_status' => 0,
+                'pay_time' => time(),
+                'pay_code' => ROOT_PATH . $img_path . $img_name,
+                'pay_way' => $pay_way['0']
+            ]);
+            if ($res) {
+                return json(['status' => 1, 'msg' => '上传成功']);
+            } else {
+                return json(['status' => -1, 'msg' => '上传失败']);
+            }
+        } else {
+            return json(['status' => -1, 'msg' => '上传失败']);
+        }
+    }
+
      /**
       * 用户设置 
       */ 
