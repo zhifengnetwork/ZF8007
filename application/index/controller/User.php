@@ -49,7 +49,7 @@ class User extends Base
     //历史记录
     public function brokerage()
     {
-        $user_id = SESSION_ID;//dump($user_id);die;
+        $user_id = $this->user_id;//dump($user_id);die;
         $info = Db::name('users')->where('id',$user_id)->find();
         $team_ids = Db::name('users')->where('first_leader',$user_id)->field('id ,nickname, commission')->select();
         $count = count($team_ids);
@@ -126,7 +126,7 @@ class User extends Base
             $pay_way = explode(':', $data['pays']);
 
             $res = Db::name('user_pay_log')->insert([
-                'user_id' => 1,
+                'user_id' => $this->user_id,
                 'package_id' => $packs['id'],
                 'pay_money' => $packs['pack_money'],
                 'pay_status' => 0,
@@ -154,8 +154,9 @@ class User extends Base
         if($_POST){
            $check = Session::get('user');
            if($check){ 
-                Session::delete('user');           
-                if (empty(Session::get('user'))) {
+                Session::delete('user');
+                $user = Session::get('user');
+                if (empty($user)) {
                     return json(['status' => 1, 'msg' => '退出成功！','url'=>'/index/login/index']);
                 } else {
                     return json(['status' => 0, 'msg' => '退出失败，请稍后再试！']);
