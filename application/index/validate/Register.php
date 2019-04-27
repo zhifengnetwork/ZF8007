@@ -8,20 +8,24 @@ class Register extends validate
 {
 
     protected $rule = [
-        'mobile'           => 'require|checkMoblie',
-        'users'           => 'unique:mobile',
+        'mobile'          => 'require|checkMoblie|unique:users',
+        // 'mobile'           => '',
         'code'            => 'require',
         'password'        => 'require|chsDash|length:4,16',
+        're_password'     => 'require|chsDash|length:4,16',
     ];
     protected $message = [
         
         'mobile.require'      => '请填写手机号',
         // 'mobile.checkMobile'  => '手机号输入有误',
-        'users.unique'        => '已存在此手机号',
+        'mobile.unique'        => '已存在此手机号',
         'code.require'        => '请填写验证码',
         'password.require'    => '请填写密码' ,
         'password.chsDash'    => '密码只能是数字字母_或者-',
-        'password.length'     => '密码长度是4到16位'          
+        'password.length'     => '密码长度是4到16位',
+        're_password.require'    => '请填写确认密码',
+        're_password.chsDash'    => '确认密码只能是数字字母_或者-',
+        're_password.length'     => '确认密码长度是4到16位'                   
     ];
     // protected $scene = [
     //     'add' => ['name', 'jurisdiction'],

@@ -42,7 +42,15 @@
             			<div class="inp">
             				<input class="text" type="password" name="password" id="password" placeholder="数字+字母或符号" />
             			</div>
-            		</div>
+					</div>
+					<!--确认密码-->
+					<div class="mobile">
+						<div class="mark">确认密码:</div>
+						<div class="inp">
+							<input class="text" type="password" name="re_password" id="re_password" placeholder="数字+字母或符号" />
+						</div>
+					</div>
+
             	</div>
 				</form>
             	<!--注册按钮-->
@@ -122,6 +130,7 @@
 			var code = $("#code").val();
 			var sms_type = $("#sms_type_id").val();
 			var password = $("#password").val();
+			var re_password = $("#re_password").val();
 			if (!mobile) {
 				layer.msg('手机不能为空!', { time: 1000 }, function () {
 
@@ -139,7 +148,19 @@
 
 				});
 				return false
-			}			
+			}
+			if (!re_password) {
+				layer.msg('确认密码不能为空!', { time: 1000 }, function () {
+
+				});
+				return false
+			}
+			if(password != re_password){
+				layer.msg('两次密码不一致!', { time: 1000 }, function () {
+
+				});
+				return false
+			}						
 			
             $.ajax({
                 url: '/index/login/re_commit',

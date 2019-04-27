@@ -24,14 +24,28 @@ class User extends Base
     //个人中心首页
     public function mycenter()
     {
-        $user = Session::get('user');
-        if (empty($user)) {
-            $url = "http://" . $_SERVER['HTTP_HOST'] . "/index/login/index";
-            header("refresh:1;url=$url");
-        }
+        $this->check_user();
+        $info = Db::name('users')->where('id', $this->user_id)->find();
+        // $time1 = $info['end_time'];
+        // $time2 = time();
+        // $time3 = $time1 - $time2;
+        // $t = $this->time2string($time3);
+        // $this->assign('t',$t);
+        // $this->assign('end_time',$info['end_time']);
+        $this->assign('info',$info);
         return $this->fetch();
     }
-
+    function time2string($second)
+    {
+        $day = floor($second / (3600 * 24));
+        $second = $second % (3600 * 24); //除去整天之后剩余的时间
+        $hour = floor($second / 3600);
+        $second = $second % 3600; //除去整小时之后剩余的时间 
+        $minute = floor($second / 60);
+        $second = $second % 60; //除去整分钟之后剩余的时间 
+        //返回字符串
+        return $day . '天' . $hour . '小时' . $minute . '分' . $second . '秒';
+    }
     //历史记录
     public function brokerage()
     {
@@ -112,6 +126,14 @@ class User extends Base
            }else{
                return json(['status' => 0, 'msg' => '退出异常，请稍后再试！']);
            }
+        }
+    }
+
+    public function check_user(){
+        $user = Session::get('user');
+        if (empty($user)) {
+            $url = "http://" . $_SERVER['HTTP_HOST'] . "/index/login/index";
+            header("refresh:1;url=$url");
         }
     }
 }
