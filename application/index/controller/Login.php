@@ -68,6 +68,7 @@ class Login extends Base
            if($res){
                 $user_info = Db::name('users')->where('id',$res)->find();
                 Session::set('user',$user_info);
+                Session::set('time', time());
                 return json(['code'=>1,'msg'=>'注册成功','url'=> '/index/index/index']);
            }else{
                 return json(['code' => 0, 'msg' => '注册失败']);
@@ -87,7 +88,7 @@ class Login extends Base
             if($data['check'] == 1){
                 $val = 'mobile';
                 $err = $this->check_mobile($data);
-                if ($err) return json($err);
+                if ($err) return $err;
             }else{
                 $val = 'mobile1';
                 $LoginValidate = Loader::Validate('Login');
@@ -96,6 +97,7 @@ class Login extends Base
                     return json(['code' => 0, 'msg' => $baocuo]);
                 }
             }
+            // 检查用户是否存在
             $check = Db::name('users')->where('mobile',$data[$val])->find();
             if($check){
                 // // 检查游戏剩余时间
@@ -106,6 +108,7 @@ class Login extends Base
                     return array('code' => 0, 'msg' => '密码错误');  
                 }  
                 Session::set('user',$check);
+                Session::set('time',time());
                 return json(['code'=>1,'msg'=>'登录成功','url'=> '/index/index/index']);                      
             }else{
                 return array('code' => 0, 'msg' => '此用户不存在'); 
@@ -123,7 +126,7 @@ class Login extends Base
             //    验证
            if($data['status'] == 1){
                 $err = $this->check_mobile($data);
-                if ($err) return json($err);
+                if ($err) return $err;
                 $info = Db::name('users')->where('mobile', $data['mobile'])->find();
 
                 if ($info) {
@@ -168,13 +171,13 @@ class Login extends Base
             return array('code' => 0, 'msg' => '请输入验证码');
         }
                 // 验证码
-        // $checkData['sms_type'] = $data['sms_type'];
-        // $checkData['code'] = $data['code'];
-        // $checkData['phone'] = $data['mobile'];
-        // $res = checkPhoneCode($checkData);
-        // if ($res['code'] == 0) {
-        //     return array(['code' => 0, 'msg' => $res['msg']]);
-        // }            
+        $checkData['sms_type'] = $data['sms_type'];
+        $checkData['code'] = $data['code'];
+        $checkData['phone'] = $data['mobile'];
+        $res = checkPhoneCode($checkData);
+        if ($res['code'] == 0) {
+            return json(['code' => 0, 'msg' => $res['msg']]);
+        }            
     }
 
     public function check_register($data){
@@ -187,13 +190,13 @@ class Login extends Base
             return json(['code' => 0, 'msg' => '两次密码输入不一致']);
         }
             // 验证码
-            // $checkData['sms_type'] = $data['sms_type'];
-            // $checkData['code'] = $data['code'];
-            // $checkData['phone'] = $data['mobile'];            
-            // $res = checkPhoneCode($checkData);
-            // if($res['code']==0){
-            //     // return array('code' => 0, 'msg' => $res['msg']);
-            //     return json(['code'=>0,'msg'=> $res['msg']]);
-            // }        
+            $checkData['sms_type'] = $data['sms_type'];
+            $checkData['code'] = $data['code'];
+            $checkData['phone'] = $data['mobile'];            
+            $res = checkPhoneCode($checkData);
+            if($res['code']==0){
+                // return array('code' => 0, 'msg' => $res['msg']);
+                return json(['code'=>0,'msg'=> $res['msg']]);
+            }        
     }
 }

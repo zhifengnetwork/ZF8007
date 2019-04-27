@@ -9,8 +9,8 @@ class Login extends validate
 
     protected $rule = [
         'mobile1'         => 'require|checkMoblie',
-        'password'        => 'require|chsDash|length:4,16',
-        're_password'     => 'require|chsDash|length:4,16'        
+        'password'        => 'require|chsDash|length:6,20',
+        're_password'     => 'require|chsDash|length:6,20'        
     ];
     protected $message = [
         
