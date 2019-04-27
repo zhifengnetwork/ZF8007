@@ -197,6 +197,7 @@ class Member extends Base
 
     public function audit(){
         $data = input('post.');
+
         if($_POST){
             
             // 启动事务
@@ -210,7 +211,7 @@ class Member extends Base
                     $info = Db::name('user_pay_log')
                         ->alias('p')
                         ->join('package pa', 'pa.id = p.package_id')
-                        // ->where('pa.id',$data['id'])
+                        ->where('p.id',$data['id'])
                         ->field('pa.*,p.user_id')
                         ->find();
 
