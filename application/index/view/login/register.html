@@ -65,6 +65,7 @@
 					val.setAttribute("disabled", true); 
 					val.value="重新发送(" + countdown + ")"; 
 					countdown--;
+					
 				} 
 				setTimeout(function() { 
 					settime(val) 
@@ -99,15 +100,17 @@
                 data: { 'phone': phoneS, 'sms_type': sms_type },
                 success: function (msg) {
                     if (msg.code == 0) {
-                        layer.msg(msg.msg);
-                        flag = false;
+						layer.msg(msg.msg);
+						flag = false;								
                         return false;
-                    }
+                    }else{
+						if (flag) {
+							layer.msg('已发送');
+						}						
+					}
                 }
             }); 
-            if(flag){
-                layer.msg('已发送');
-            }
+
             // $(".verify").focus();
             // daojishi(60,$(this))
             // $(".phone").attr("disabled","disabled") 
