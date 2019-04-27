@@ -24,16 +24,21 @@
             	<div class="det_wrap">
             		<div class="info">
             			<div class="img">
-            				<img src="/__STATIC__/image/my/touxiang.png" />
+							{empty name="$info.avatar"}
+							<img src="/__STATIC__/image/my/touxiang.png" />
+							{else/}
+							<img src="/__STATIC__/{$info.avatar}" />
+							{/empty}
+            				
             			</div>
             			<div class="nome_wrap">
-            				<span>*小明</span>
-            				<span>ID:00001</span>
+            				<span>{empty name="$info.nickname"}{$info.mobile}{else/}{$info.nickname}{/empty}</span>
+            				<span>ID:{$info.id}</span>
             			</div>
             		</div>
             		<!--分享-->
             		<div class="share">
-            			<div class="ur publicEllipsis">www.hao123.com</div>
+            			<div class="ur publicEllipsis">{$url}</div>
             			<a>分享</a>
             		</div>
             	</div>

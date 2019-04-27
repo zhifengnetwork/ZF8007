@@ -42,7 +42,7 @@
                                 {volist name="all_color" id="ac" key="l"}
                                 <?php $j=($k-1)*10+$l;?>
                                     <li class="color-item" >
-                                        <input class="jscolor {valueElement:valueSpan<?php echo ($k-1)*10+$l;?>,value:'',width:101,closable:true,closeText:'关闭'}" style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center;background-color:#{$ac[$k-1]}" disabled value="{if condition='($type eq 4) and ($l eq 10)'}0{else /}{$l}{/if}"><input type="hidden" value="{$ac[$k-1]}" id="valueSpan{$j}" onchange="color{$k-1}(this)" >
+                                        <input class="jscolor {valueElement:valueSpan<?php echo ($k-1)*10+$l;?>,value:'',width:101,closable:true,closeText:'关闭'}" style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center;background-color:#{$ac[$k-1]}" disabled value="{if condition='($type eq 4) and ($l eq 10)'}0{else /}{$l}{/if}"><input type="hidden" value="{$ac[$k-1]}" id="valueSpan{$j}" onchange="color(this)" >
                                     </li>
                                 {/volist}
                             </ul>
@@ -54,7 +54,11 @@
                       <div class="info-periods">
                           <p class="info-t">期数</p>
                           <ul id="lottery_date_str">
-
+                              {foreach name="list" item="li"}
+                                  <li class="item-per">
+                                      <span>{$li.lottery_date}</span>
+                                  </li>
+                              {/foreach}
                           </ul>
                       </div>
                       <div class="soll ">
@@ -63,7 +67,19 @@
                               <p class="info-t">{$l}</p>
                               <div class="result-list">
                                   <ul id="lottery_number_{$l}">
-
+                                      <!--{volist name="list" id="vl"}-->
+                                      <!--<li class="item-soll">-->
+                                          <!--<ul class="clearfloat">-->
+                                              <!--<?php $koa=($l-1).'_'.$vl['lottery_number'][$l-1];?>-->
+                                              <!--<li class="item-soll-qi"><div class="qi-num one" style="background-color:#{$vl.lottery_color[\"$koa\"][0]}">{$vl.lottery_number[$l-1]}</div></li>-->
+                                              <!--<li class="item-soll-qi"><div class="qi-num two" style="background-color:#{$vl.lottery_color[\"$koa\"][1]}">{$vl.lottery_number[$l-1]}</div></li>-->
+                                              <!--<li class="item-soll-qi"><div class="qi-num three" style="background-color:#{$vl.lottery_color[\"$koa\"][2]}">{$vl.lottery_number[$l-1]}</div></li>-->
+                                              <!--<li class="item-soll-qi"><div class="qi-num four" style="background-color:#{$vl.lottery_color[\"$koa\"][3]}">{$vl.lottery_number[$l-1]}</div></li>-->
+                                              <!--<li class="item-soll-qi"><div class="qi-num five" style="background-color:#{$vl.lottery_color[\"$koa\"][4]}">{$vl.lottery_number[$l-1]}</div></li>-->
+                                              <!--<li class="item-soll-qi"><div class="qi-num six" style="background-color:#{$vl.lottery_color[\"$koa\"][5]}">{$vl.lottery_number[$l-1]}</div></li>-->
+                                          <!--</ul>-->
+                                      <!--</li>-->
+                                      <!--{/volist}-->
                                   </ul>
                               </div>
                           </div>
@@ -85,7 +101,7 @@
                 });
            }
             //    第一列
-            function color0(e){
+            function color(e){
                 colo(e,$(".one"))
                 corresponding_color(1,$(e).prev().val(),$(e).val())
             }
@@ -117,7 +133,7 @@
             //将颜色对应的存起来
            function corresponding_color(group,num,color) {
                console.log(group+'```'+num+'````'+color)
-               if(num>=0 && color !=''){
+               if(num>0 && color !=''){
                    var type={$type};
                    $.ajax({
                        type: "POST",
@@ -135,16 +151,16 @@
                    })
                }
            }
-           // $(function() {
+           $(function() {
 
                /*此处参数是判断是否重复的请求 避免数据多加载*/
                var loadingdelay = true;
                /*请求数据页数*/
                var page = 1;
                var type={$type};//游戏类型
-               get_lottery_list();
-               setTimeout(get_new_lottery, 10000);
-           // })
+               get_lottery_list()
+               // setTimeout(get_new_lottery, 10000);
+           })
 
            $('.soll').on("scroll", function(event) {
                /*文档(页面)高度*/
@@ -201,20 +217,17 @@
                                var l=1;
                                for(var k in data[j].lottery_new_color){
                                    var str_number='';//新的数字
-                                   // console.log(k)
-                                   var p=k.split("-");
-                                   // console.log(p)
-                                   // console.log(p[1])
+                                   var p=k.replace("oo","");
                                    str_number+='<li class="item-soll">';
                                    str_number+='<ul class="clearfloat">';
-                                   str_number+='<li class="item-soll-qi"><div class="qi-num one" style="background-color:#'+data[j].lottery_new_color[k][0]+'">'+p[1]+'</div></li>';
-                                   str_number+='<li class="item-soll-qi"><div class="qi-num two" style="background-color:#'+data[j].lottery_new_color[k][1]+'">'+p[1]+'</div></li>';
-                                   str_number+='<li class="item-soll-qi"><div class="qi-num three" style="background-color:#'+data[j].lottery_new_color[k][2]+'">'+p[1]+'</div></li>';
-                                   str_number+='<li class="item-soll-qi"><div class="qi-num four" style="background-color:#'+data[j].lottery_new_color[k][3]+'">'+p[1]+'</div></li>';
-                                   str_number+='<li class="item-soll-qi"><div class="qi-num five" style="background-color:#'+data[j].lottery_new_color[k][4]+'">'+p[1]+'</div></li>';
-                                   str_number+='<li class="item-soll-qi"><div class="qi-num six" style="background-color:#'+data[j].lottery_new_color[k][5]+'">'+p[1]+'</div></li>';
+                                   str_number+='<li class="item-soll-qi"><div class="qi-num one" style="background-color:#'+data[j].lottery_new_color[k][0]+'">'+p+'</div></li>';
+                                   str_number+='<li class="item-soll-qi"><div class="qi-num two" style="background-color:#'+data[j].lottery_new_color[k][1]+'">'+p+'</div></li>';
+                                   str_number+='<li class="item-soll-qi"><div class="qi-num three" style="background-color:#'+data[j].lottery_new_color[k][2]+'">'+p+'</div></li>';
+                                   str_number+='<li class="item-soll-qi"><div class="qi-num four" style="background-color:#'+data[j].lottery_new_color[k][3]+'">'+p+'</div></li>';
+                                   str_number+='<li class="item-soll-qi"><div class="qi-num five" style="background-color:#'+data[j].lottery_new_color[k][4]+'">'+p+'</div></li>';
+                                   str_number+='<li class="item-soll-qi"><div class="qi-num six" style="background-color:#'+data[j].lottery_new_color[k][5]+'">'+p+'</div></li>';
                                    str_number+='</ul></li>';
-                                   $("#lottery_number_"+l).append(str_number);
+                                   $("#lottery_number_"+l).prepend(str_number);
                                    l++;
                                }
                            }
@@ -273,18 +286,15 @@
                                 var l=1;
                                 for(var k in data.lottery_color){
                                     var str_number='';//新的数字
-                                    // console.log(k)
-                                    var p=k.split("-");
-                                    // console.log(p)
-                                    // console.log(p[1])
+                                    var p=k.replace("oo","");
                                     str_number+='<li class="item-soll">';
                                     str_number+='<ul class="clearfloat">';
-                                    str_number+='<li class="item-soll-qi"><div class="qi-num one" style="background-color:#'+data.lottery_color[k][0]+'">'+p[1]+'</div></li>';
-                                    str_number+='<li class="item-soll-qi"><div class="qi-num two" style="background-color:#'+data.lottery_color[k][1]+'">'+p[1]+'</div></li>';
-                                    str_number+='<li class="item-soll-qi"><div class="qi-num three" style="background-color:#'+data.lottery_color[k][2]+'">'+p[1]+'</div></li>';
-                                    str_number+='<li class="item-soll-qi"><div class="qi-num four" style="background-color:#'+data.lottery_color[k][3]+'">'+p[1]+'</div></li>';
-                                    str_number+='<li class="item-soll-qi"><div class="qi-num five" style="background-color:#'+data.lottery_color[k][4]+'">'+p[1]+'</div></li>';
-                                    str_number+='<li class="item-soll-qi"><div class="qi-num six" style="background-color:#'+data.lottery_color[k][5]+'">'+p[1]+'</div></li>';
+                                    str_number+='<li class="item-soll-qi"><div class="qi-num one" style="background-color:#'+data.lottery_color[k][0]+'">'+p+'</div></li>';
+                                    str_number+='<li class="item-soll-qi"><div class="qi-num two" style="background-color:#'+data.lottery_color[k][1]+'">'+p+'</div></li>';
+                                    str_number+='<li class="item-soll-qi"><div class="qi-num three" style="background-color:#'+data.lottery_color[k][2]+'">'+p+'</div></li>';
+                                    str_number+='<li class="item-soll-qi"><div class="qi-num four" style="background-color:#'+data.lottery_color[k][3]+'">'+p+'</div></li>';
+                                    str_number+='<li class="item-soll-qi"><div class="qi-num five" style="background-color:#'+data.lottery_color[k][4]+'">'+p+'</div></li>';
+                                    str_number+='<li class="item-soll-qi"><div class="qi-num six" style="background-color:#'+data.lottery_color[k][5]+'">'+p+'</div></li>';
                                     str_number+='</ul></li>';
                                     $("#lottery_number_"+l).prepend(str_number);
                                     l++;

@@ -212,13 +212,14 @@ class Member extends Base
                     $info = Db::name('user_pay_log')
                         ->alias('p')
                         ->join('package pa', 'pa.id = p.package_id')
+                        ->join('users u','u.id = p.user_id')
                         ->where('p.id',$data['id'])
-                        ->field('pa.*,p.user_id')
+                        ->field('pa.*,p.user_id,u.end_time')
                         ->find();
 
                     $time = $info['pack_time'];
-                    $end_time = strtotime(date('Y-m-d H:i:s', strtotime("+$time day")));
-
+                     
+                    $end_time = strtotime(date('Y-m-d H:i:s', strtotime("+$time day",$info['end_time'])));
                     $where = [
                         'end_time' => $end_time,
                         'id'       => $info['user_id']
