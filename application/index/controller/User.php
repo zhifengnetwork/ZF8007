@@ -11,6 +11,7 @@ header('content-type:text/html;charset=utf-8');
 
 use think\Db;
 use think\Session;
+use think\Request;
 
 class User extends Base
 {
@@ -69,8 +70,22 @@ class User extends Base
     }
 
     //上传凭证
-    public function uploadfile()
+    public function uploadfile(Request $request)
     {
+        if ($_POST){
+            $data = $_POST;
+            $file = $request->file();
+            dump($file);die;
+        }
+
+
+        $pay_way = Db::name('config')->where('type','pay_setting')->select();
+        $pay_way[0]['img'] = $pay_way[2]['value'];
+        $pay_way[1]['img'] = $pay_way[3]['value'];
+
+        $package = Db::name('package')->select();
+        $this->assign('pay',$pay_way);
+        $this->assign('package',$package);//dump($package);die;
         return $this->fetch();
     }
      /**
