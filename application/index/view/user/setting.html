@@ -27,10 +27,12 @@
     </style>
 	<body>
 		<div class="everyColor wrapper">
-			<!--头部-->
-			<div class="lb_headWrap ">
-               <span>个人中心</span>
-           	</div>
+			<div class="lb_headWrap">
+				<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+					<img class="lb_headWrap_return_img" src="/__STATIC__/image/back@2x.png" />
+				</p>
+				<span>设置</span>
+			</div>
             <!--内容-->
             <div class="content">
             	<!---->
@@ -137,7 +139,8 @@
 		</div>
 		
 		<script src="/__STATIC__/js/jquery-1.8.3.js"></script>
-        <script src="/__STATIC__/js/bottom_nav.js"></script>
+		<script src="/__STATIC__/js/bottom_nav.js"></script>
+		<script src="/__STATIC__/js/public.js"></script>
         <script type="text/javascript" src="/public/static/admin/lib/layer/2.4/layer.js"></script>
     </body>
     <script>
@@ -161,18 +164,6 @@
                      }
                  }
              });
-
-            // $.post("index/user/logout", {'id':1},function (result) {
-            //     if(result.status == 1){
-            //         layer.msg(msg.msg, { time: 1000 }, function () {
-            //             window.location.replace("index/login/index");
-            //         });
-            //     }else{
-            //         layer.msg(msg.msg, { time: 1000 }, function () {
-                        
-            //         });                    
-            //     }
-            // });
          })
     </script> 
 

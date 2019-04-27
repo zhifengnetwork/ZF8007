@@ -24,6 +24,11 @@ class User extends Base
     //个人中心首页
     public function mycenter()
     {
+        $user = Session::get('user');
+        if (empty($user)) {
+            $url = "http://" . $_SERVER['HTTP_HOST'] . "/index/login/index";
+            header("refresh:1;url=$url");
+        }
         return $this->fetch();
     }
 
@@ -95,13 +100,12 @@ class User extends Base
         return $this->fetch();
     }
     public function logout(){
-        $id = input('post.');
         if($_POST){
            $check = Session::get('user');
-           if($check){
-                $res = Session::clear();
-                if ($res) {
-                    return json(['status' => 1, 'msg' => '退出成功！']);
+           if($check){ 
+                Session::delete('user');           
+                if (empty(Session::get('user'))) {
+                    return json(['status' => 1, 'msg' => '退出成功！','url'=>'/index/login/index']);
                 } else {
                     return json(['status' => 0, 'msg' => '退出失败，请稍后再试！']);
                 }                
