@@ -153,12 +153,14 @@
 								layer.msg(msg.msg);
 								flag = false;
 								return false;
+							}else{
+								if (flag) {
+									layer.msg('已发送');
+								}								
 							}
 						}
 					});
-					if (flag) {
-						layer.msg('已发送');
-					}
+
 				})
 
 				

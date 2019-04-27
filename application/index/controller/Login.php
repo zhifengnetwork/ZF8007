@@ -5,6 +5,15 @@ use think\Loader;
 use think\Session;
 class Login extends Base
 {
+    public function _initialize()
+    {
+        parent::_initialize();
+        $user = Session::get('user');
+        if (!empty($user)) {
+            $url = "http://" . $_SERVER['HTTP_HOST'] . "/index/index/index";
+            header("refresh:1;url=$url");
+        }        
+    }    
     /**
      * 登录
      */
@@ -44,20 +53,8 @@ class Login extends Base
         $data = input('post.');
         if($_POST){
             // 验证
-            $RegisterValidate = Loader::Validate('Register');
-            if(!$RegisterValidate->check($data)){
-                $baocuo=$RegisterValidate->getError();
-                return json(['code'=>0,'msg'=> $baocuo]);
-            }
-            // 验证码
-            $checkData['sms_type'] = $data['sms_type'];
-            $checkData['code'] = $data['code'];
-            $checkData['phone'] = $data['mobile'];            
-            $res = checkPhoneCode($checkData);
-            if($res['code']==0){
-                // return array('code' => 0, 'msg' => $res['msg']);
-                return json(['code'=>0,'msg'=> $res['msg']]);
-            }
+            $check_reg = $this->check_register($data);
+            if($check_reg) return $check_reg;
             //注册成功，有一天时长 
             $e_time = strtotime(date('Y-m-d H:i:s', strtotime('+1 day')));
             $data1 = [
@@ -101,10 +98,10 @@ class Login extends Base
             }
             $check = Db::name('users')->where('mobile',$data[$val])->find();
             if($check){
-                // 检查游戏剩余时间
-                if ($check['end_time'] < time()) {
-                    return array('code' => 0, 'msg' => '您的游戏时长不足，请充值之后再登录');
-                }
+                // // 检查游戏剩余时间
+                // if ($check['end_time'] < time()) {
+                //     return array('code' => 0, 'msg' => '您的游戏时长不足，请充值之后再登录');
+                // }
                 if( $data['check'] == 2 && ($check['password'] != md5($data['password']))){
                     return array('code' => 0, 'msg' => '密码错误');  
                 }  
@@ -171,14 +168,32 @@ class Login extends Base
             return array('code' => 0, 'msg' => '请输入验证码');
         }
                 // 验证码
-                // $checkData['sms_type'] = $data['sms_type'];
-                // $checkData['code'] = $data['code'];
-                // $checkData['phone'] = $data['mobile'];
-                // $res = checkPhoneCode($checkData);
-                // if ($res['code'] == 0) {
-                //     return array(['code' => 0, 'msg' => $res['msg']]);
-                // }  
-                
-                
+        // $checkData['sms_type'] = $data['sms_type'];
+        // $checkData['code'] = $data['code'];
+        // $checkData['phone'] = $data['mobile'];
+        // $res = checkPhoneCode($checkData);
+        // if ($res['code'] == 0) {
+        //     return array(['code' => 0, 'msg' => $res['msg']]);
+        // }            
+    }
+
+    public function check_register($data){
+        $RegisterValidate = Loader::Validate('Register');
+        if (!$RegisterValidate->check($data)) {
+            $baocuo = $RegisterValidate->getError();
+            return json(['code' => 0, 'msg' => $baocuo]);
+        }
+        if ($data['password'] != $data['re_password']) {
+            return json(['code' => 0, 'msg' => '两次密码输入不一致']);
+        }
+            // 验证码
+            // $checkData['sms_type'] = $data['sms_type'];
+            // $checkData['code'] = $data['code'];
+            // $checkData['phone'] = $data['mobile'];            
+            // $res = checkPhoneCode($checkData);
+            // if($res['code']==0){
+            //     // return array('code' => 0, 'msg' => $res['msg']);
+            //     return json(['code'=>0,'msg'=> $res['msg']]);
+            // }        
     }
 }

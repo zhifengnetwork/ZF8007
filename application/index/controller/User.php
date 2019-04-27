@@ -24,9 +24,28 @@ class User extends Base
     //个人中心首页
     public function mycenter()
     {
+        $this->check_user();
+        $info = Db::name('users')->where('id', $this->user_id)->find();
+        // $time1 = $info['end_time'];
+        // $time2 = time();
+        // $time3 = $time1 - $time2;
+        // $t = $this->time2string($time3);
+        // $this->assign('t',$t);
+        // $this->assign('end_time',$info['end_time']);
+        $this->assign('info',$info);
         return $this->fetch();
     }
-
+    function time2string($second)
+    {
+        $day = floor($second / (3600 * 24));
+        $second = $second % (3600 * 24); //除去整天之后剩余的时间
+        $hour = floor($second / 3600);
+        $second = $second % 3600; //除去整小时之后剩余的时间 
+        $minute = floor($second / 60);
+        $second = $second % 60; //除去整分钟之后剩余的时间 
+        //返回字符串
+        return $day . '天' . $hour . '小时' . $minute . '分' . $second . '秒';
+    }
     //历史记录
     public function brokerage()
     {
@@ -86,25 +105,25 @@ class User extends Base
 
     public function upload(Request $request)
     {
-        if ($_POST){
+        if ($_POST) {
             $data = input('post.');
-            if (empty($data['files'])){
-                return json(['status'=>-1, 'msg'=>'请选择凭证上传']);
+            if (empty($data['files'])) {
+                return json(['status' => -1, 'msg' => '请选择凭证上传']);
             }
             $img_path = 'public/upload/proof/';
-            $img_name = md5(mt_rand(0,100000).time()).'.png'; //文件名
+            $img_name = md5(mt_rand(0, 100000) . time()) . '.png'; //文件名
 //            $exten = substr($name,strrpos($name,'.')); //上传文件后缀名
-            if(!is_dir(ROOT_PATH.$img_path)){
-                mkdir(ROOT_PATH.$img_path,0777,true);
+            if (!is_dir(ROOT_PATH . $img_path)) {
+                mkdir(ROOT_PATH . $img_path, 0777, true);
             }
 
-            $base64_string= explode(',', $data['files']); //截取data:image/png;base64, 这个逗号后的字符
-            $data1= base64_decode($base64_string[1]);   //对截取后的字符使用base64_decode进行解码
-            file_put_contents(ROOT_PATH.$img_path.$img_name, $data1); //写入文件并保存
+            $base64_string = explode(',', $data['files']); //截取data:image/png;base64, 这个逗号后的字符
+            $data1 = base64_decode($base64_string[1]);   //对截取后的字符使用base64_decode进行解码
+            file_put_contents(ROOT_PATH . $img_path . $img_name, $data1); //写入文件并保存
 
             //写入数据库
-            $packs = Db::name('package')->where('id',$data['pack'])->find();
-            $pay_way = explode(':',$data['pays']);
+            $packs = Db::name('package')->where('id', $data['pack'])->find();
+            $pay_way = explode(':', $data['pays']);
 
             $res = Db::name('user_pay_log')->insert([
                 'user_id' => 1,
@@ -112,16 +131,46 @@ class User extends Base
                 'pay_money' => $packs['pack_money'],
                 'pay_status' => 0,
                 'pay_time' => time(),
-                'pay_code' => ROOT_PATH.$img_path.$img_name,
+                'pay_code' => ROOT_PATH . $img_path . $img_name,
                 'pay_way' => $pay_way['0']
             ]);
             if ($res) {
-                return json(['status'=>1, 'msg'=>'上传成功']);
-            }else {
-                return json(['status'=>-1, 'msg'=>'上传失败']);
+                return json(['status' => 1, 'msg' => '上传成功']);
+            } else {
+                return json(['status' => -1, 'msg' => '上传失败']);
             }
-        }else{
-            return json(['status'=>-1,'msg'=>'上传失败']);
+        } else {
+            return json(['status' => -1, 'msg' => '上传失败']);
+        }
+    }
+
+     /**
+      * 用户设置 
+      */ 
+    public function setting(){
+        return $this->fetch();
+    }
+    public function logout(){
+        if($_POST){
+           $check = Session::get('user');
+           if($check){ 
+                Session::delete('user');           
+                if (empty(Session::get('user'))) {
+                    return json(['status' => 1, 'msg' => '退出成功！','url'=>'/index/login/index']);
+                } else {
+                    return json(['status' => 0, 'msg' => '退出失败，请稍后再试！']);
+                }                
+           }else{
+               return json(['status' => 0, 'msg' => '退出异常，请稍后再试！']);
+           }
+        }
+    }
+
+    public function check_user(){
+        $user = Session::get('user');
+        if (empty($user)) {
+            $url = "http://" . $_SERVER['HTTP_HOST'] . "/index/login/index";
+            header("refresh:1;url=$url");
         }
     }
 }

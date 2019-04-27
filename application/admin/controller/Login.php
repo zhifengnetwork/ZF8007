@@ -19,12 +19,9 @@ class Login extends Base
         parent::_initialize();
 
         $admin_name = session::get('admin_name');
-//        Session::clear();
-//        dump($admin_name);
         if(!empty($admin_name)){
             $url = "http://".$_SERVER['HTTP_HOST']. "/index.php/admin";
             header("refresh:1;url=$url");
-//            $this->redirect('admin/index');
             exit;
         }
 

@@ -11,6 +11,13 @@
 		<link rel="stylesheet" type="text/css" href="/__STATIC__/css/bottom_nav.css"/>
 		<link rel="stylesheet" type="text/css" href="/__STATIC__/css/my/mycenter.css"/>
 	</head>
+<style>
+.content .tu_wrap div {
+    display: inline-grid;
+    vertical-align: top;
+}
+</style>
+
 	<body>
 		<div class="everyColor wrapper">
 			<!--头部-->
@@ -23,19 +30,33 @@
             	<div class="tu_wrap">
             		
             		<div class="img">
+						{if condition = "empty($info.avatar)"}
             			<img src="/__STATIC__/image/my/touxiang.png" />
-            		</div>
+						{else/}
+						<img src="{$info.avatar}" />
+						{/if}
+					</div>
             		
-            		<div class="right_zi">
+            		<div class="right_zi" >
             			<div class="name_wrap">
-	        				<span class="name">*小明</span>
-	        				<div class="vip_img">
+	        				<span class="name">{if condition ="empty($info.nickname)"}{$info.mobile}{else/}{$info.nickname}{/if}</span>
+	        				<span class="vip_img">
 	        					<img src="/__STATIC__/image/my/vip@2x.png" />
-	        				</div>
-	        				<span class="time">剩余天数20天</span>
+							</span>
+							<span class="time">
+								剩余天数
+							<span id="time_d"></span>天
+							<span id="time_h"></span>时
+							<span id="time_m"></span>分
+							<span id="time_s"></span>秒
+							</span>
+							<input type="hidden" name="e_time" id="e_time" value="{:date('Y-m-d,H:i:s',$info['end_time'])}">
+							<!-- <input type="text" id="time_d">天<input type="text" id="time_h">时<input type="text" id="time_m">分<input type="text"
+								id="time_s">秒 -->
+
         				</div>
         				
-        				<p>ID:12345</p>
+        				<p>ID:{$info.id}</p>
         				<p>在线时间:00:35:45</p>
             		</div>
             	</div>
@@ -127,7 +148,20 @@
 	            			</div>
 	            		</div>
 	            	</a>	
-            		
+					<!--设置-->
+					<a href="/index/user/setting">
+						<div class="item">
+							<div class="list_img">
+								<img src="/__STATIC__/image/shezhi@2x.png" />
+							</div>
+							<div class="arr_wrap arr">
+								<div class="size">
+									<span>设置</span>
+								</div>
+								<div class="arrw"></div>
+							</div>
+						</div>
+					</a>
             	</div>
             </div>
              
@@ -136,6 +170,52 @@
 		</div>
 		
 		<script src="/__STATIC__/js/jquery-1.8.3.js"></script>
-     	<script src="/__STATIC__/js/bottom_nav.js"></script>
+		<script src="/__STATIC__/js/bottom_nav.js"></script>
+		<script>
+			$(function () {
+				show_time();
+			});
+
+			function show_time() {
+				var time_start = new Date(); //设定当前时间
+				// console.log(time_start)
+				var e_time = $('#e_time').val()
+				var time_end = new Date(e_time).getTime(); //设定目标时间
+				// // 计算时间差 
+				var time_distance = time_end - time_start;
+				// 天
+				var int_day = Math.floor(time_distance / 86400000)
+				time_distance -= int_day * 86400000;
+				// 时
+				var int_hour = Math.floor(time_distance / 3600000)
+				time_distance -= int_hour * 3600000;
+				// 分
+				var int_minute = Math.floor(time_distance / 60000)
+				time_distance -= int_minute * 60000;
+				// 秒 
+				var int_second = Math.floor(time_distance / 1000)
+				// 时分秒为单数时、前面加零 
+				if (int_day < 10) {
+					int_day = "0" + int_day;
+				}
+				if (int_hour < 10) {
+					int_hour = "0" + int_hour;
+				}
+				if (int_minute < 10) {
+					int_minute = "0" + int_minute;
+				}
+				if (int_second < 10) {
+					int_second = "0" + int_second;
+				}
+				// 显示时间 
+				$("#time_d").html(int_day);
+				$("#time_h").html(int_hour);
+				$("#time_m").html(int_minute);
+				$("#time_s").html(int_second);
+				// 设置定时器
+				setTimeout("show_time()", 1000);
+			}
+		</script>		 
+
 	</body>
 </html>
