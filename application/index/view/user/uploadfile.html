@@ -26,19 +26,12 @@
 					<div class="pay">
 						<div class="way">购买会员天数：</div>
 						<div class="pull_box time">
-							<p im="" id="pack">{$package.0.pack_name}<span class="rot"></span></p>
-							<!--<select class="info">-->
+							<p im="{$package.0.id}" id="pack">{$package.0.pack_name}<span class="rot"></span></p>
 							<ul class="info">
 								{foreach name="package" item="pack"}
-								<li im="{$pack.pack_name}" onclick="sele(this)">{$pack.pack_name}</li>
+								<li im="{$pack.id}" onclick="sele(this)">{$pack.pack_name}</li>
 								{/foreach}
 							</ul>
-							<!--</select>-->
-							<!--<p><span class="rot"></span></p>-->
-							<!--<ul class="info">-->
-								<!--<li><span class="rot"></span></li>-->
-							<!--</ul>-->
-
 						</div>
 					</div>
 					<div class="pay">
@@ -63,14 +56,16 @@
             		<h2>上传凭证图片</h2>
             		<div class="kuang">
             			<div class="add_wrap">
-            				<img src="/__STATIC__/image/my/jia.png" />
+            				<img  src="/__STATIC__/image/my/jia.png" />
             				<p>上传凭证</p>
             			</div>
-            			<input type="file" id="files"/>
+						<img src="" class="img_base_url" id="img_base_up">
+            			<input type="file" name="file" id="upLoadImg" />
+						<canvas id="canvas" hidden><!--图片过大，压缩--></canvas>
             		</div>
             	</div>
             	<!--提交按钮-->
-            	<input class="put_btn" type="submit">提交</input>
+            	<a class="put_btn">提交</a>
             </div>
             
        	</div>
@@ -81,6 +76,8 @@
 <script src="/__STATIC__/js/public.js"></script>
 <script src="/public/static/admin/lib/layer/2.4/layer.js"></script>
 <script type="text/javascript">
+	/*图片base64=>后台*/
+	var img_base = null;
 	$(function() {
 		$('.pop').on('click',function(){
 			$('.fl').slideToggle();
@@ -88,7 +85,61 @@
 		$('.time').on('click',function(){
 			$('.info').slideToggle();
 		})
+		$('#img_base_up').on('click',function(){
+			// console.log(6666);
+			$('#upLoadImg').trigger('click');
+		});
+		/*上传图片*/
+		$('#upLoadImg').change(function(){
+			console.log($('#upLoadImg')[0].files);
+			var files_data = $('#upLoadImg')[0].files[0];
+			if(files_data){
+				fileType = files_data.type;
+				if(/image\/\w+/.test(fileType)) {
+					var fileReader = new FileReader();
+					fileReader.readAsDataURL(files_data);
+					fileReader.onload = function(event) {
+						var result = event.target.result; //返回的dataURL
+						var image = new Image();
+						image.src = result;
+						//若图片大小大于1M，压缩后再上传，否则直接上传
+						if(files_data.size>1024*1024){
+							image.onload = function() {
+								//创建一个image对象，给canvas绘制使用
+								var canvas = document.getElementById("canvas");
+								canvas.width = image.width;
+								canvas.height = image.height; //计算等比缩小后图片宽高
+								var ctx = canvas.getContext('2d');
+								ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
+								var newImageData = canvas.toDataURL(fileType, 0.8); //重新生成图片
+								console.log('压缩图片:',newImageData);
+								$("#canvas").hide();
+								img_base = newImageData;
+								$('.img_base_url').attr('src',newImageData);
+								$('.img_base_url').show();
+							}
+						}else{
+							//创建一个image对象，给canvas绘制使用
+							image.onload = function() {
+								console.log('图片:',result);
+								img_base = result;
+								$('.img_base_url').attr('src',result);
+								$('.img_base_url').show();
+							}
+						}
+					}
+				} else {
+					alert("请选择图片");
+				}
+
+			}else {
+				console.log('取消选择图片！')
+			}
+
+		})
 	})
+
+	//根据支付方式切换付款码
 	function difficut(obj) { //<span class="rotate"></span>
 		var new_img=$(obj).attr('im');
 		var new_value=$(obj).text();
@@ -114,17 +165,18 @@
 	}
 
 	$('.put_btn').click(function () {
-		var packages=$('#pack').text();
+		var packages=$('#pack').attr('im');
 		var pays=$('#default_img').text();
-		var files=$('#files').text();
+		// var files=$('#files').text();
+		console.log('图片=》后台base64:',img_base);
 		$.ajax({
 			type:"post",
-			url:"{:url('index/User/uploadfile')}",
-			data:$(form).serialize(),//{'pack':packages,'pays':pays,'files':files},
+			url:"{:url('index/User/upload')}",
+			data:{'pack':packages,'pays':pays,'files':img_base},
 			success:function (data) {
 				if (data.status == 1){
 					layer.msg(data.msg, {icon:1, time:1000},function () {
-						location.reload()
+						window.location.href = '/index/index/index'
 					})
 				} else {
 					layer.msg(data.msg, {icon:2, time:1000})
