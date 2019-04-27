@@ -28,16 +28,24 @@ class Index extends Base
             foreach ($list as $key=>$value){
                 $list[$key]['lottery_number_text']=$value['lottery_number'];
                 $list[$key]['lottery_number']=explode(',',$value['lottery_number']);
-                foreach($list[$key]['lottery_number'] as $k=>$v){
-                    $list[$key]['lottery_color'][$v]=$this->get_lottery_color($user_id,$type,$v);
-//                    if(isset($l))
-                    $all_color[$v]=$this->get_lottery_color($user_id,$type,$v,1);
-                }
+//                foreach($list[$key]['lottery_number'] as $k=>$v){
+//                    $list[$key]['lottery_color'][$k."_".$v]=$this->get_lottery_color($user_id,$type,$v);
+//                }
                 $list[$key]['lottery_time']=date('Y',$value['lottery_time'])."年".date('m',$value['lottery_time'])."月".date('d',$value['lottery_time']).'日'.' '.date('H:i:s',$value['lottery_time']);
+            }
+            if($type==4){
+                for($i=1;$i<10;$i++){
+                    $all_color[$i]=$this->get_lottery_color($user_id,$type,$i,1);
+                }
+                $all_color[10]=$this->get_lottery_color($user_id,$type,0,1);
+            }else{
+                for($i=1;$i<11;$i++){
+                    $all_color[$i]=$this->get_lottery_color($user_id,$type,$i,1);
+                }
             }
 //            var_dump($list);die;
 //            $pages = $list->render();
-            ksort($all_color);
+//            ksort($all_color);
 //            var_dump($all_color);die;
             $this->assign('list', $list);
             $this->assign('page', $num);
@@ -61,7 +69,7 @@ class Index extends Base
             if($is_ajax){
                 foreach ($list as $ke=>$val){
                     foreach($val['lottery_number'] as $l=>$p){
-                        $list[$ke]['lottery_new_color']['oo'.$p]=$val['lottery_color'][$p];
+                        $list[$ke]['lottery_new_color'][$l.'-'.$p]=$this->get_lottery_color($user_id,$type,$p);
                     }
                 }
                 $this->ajaxReturn($list);
@@ -73,6 +81,7 @@ class Index extends Base
             echo '参数错误';
         }
     }
+
     //存颜色
     public function lottery_color(){
         $user_id=session('user.user_id');
@@ -130,7 +139,7 @@ class Index extends Base
                 $data['lottery_date']=$new_lottery['lottery_date'];
                 $lottery_number=explode(',',$new_lottery['lottery_number']);
                 foreach ($lottery_number as $k=>$v){
-                    $data['lottery_color']['oo'.$v]=array('060835','060835','060835','060835','060835','060835');
+                    $data['lottery_color'][$k."-".$v]=array('060835','060835','060835','060835','060835','060835');
                 }
 //                var_dump($data['lottery_color']);die;
                 //看看有没有配过色
@@ -138,7 +147,9 @@ class Index extends Base
                 if(isset($lottery_color) && !empty($lottery_color)){
 //                    var_dump($lottery_color);die;
                     foreach ($lottery_color as $key=>$value){
-                        $data['lottery_color']['oo'.$value['number']][$value['group']-1]=$value['color'];
+                        foreach ($lottery_number as $ke=>$va){
+                            $data['lottery_color'][$ke.'-'.$value['number']][$value['group']-1]=$value['color'];
+                        }
                     }
                 }
 //                var_dump($data);
