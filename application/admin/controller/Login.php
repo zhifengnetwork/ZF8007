@@ -20,7 +20,7 @@ class Login extends Base
 
         $admin_name = session::get('admin_name');
         if(!empty($admin_name)){
-            $url = "http://".$_SERVER['HTTP_HOST']. "/index.php/admin";
+            $url = "http://".$_SERVER['HTTP_HOST']. "/admin";
             header("refresh:1;url=$url");
             exit;
         }
