@@ -5,7 +5,9 @@
  */
 
  use think\Db;
-
+use think\Session;
+use think\Request;
+use think\Controller;
 //获取验证码短信
 function getPhoneCode($data)
 {
@@ -175,4 +177,16 @@ function checkPhoneCode($data){
         return array('code' => 0, 'msg' => $msg);
 	}
     return array('code' => 200, 'msg' => '验证通过');
+}
+/**
+ *检查用户是否登陆
+ */
+function check_user(){
+    $user = Session::get('user');
+    if (empty($user)) {
+         $url = "http://" . $_SERVER['HTTP_HOST'] . "/index/login/index";
+//        $this->redirect('/index/login/index');
+        header("refresh:1;url=$url");
+        exit;
+    }
 }

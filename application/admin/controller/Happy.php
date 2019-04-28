@@ -7,6 +7,8 @@
  */
 
 namespace app\admin\controller;
+header("Content-type: text/html; charset=utf-8");
+date_default_timezone_set("PRC");
 use think\Db;
 
 class Happy extends Base
@@ -26,11 +28,11 @@ class Happy extends Base
         $racing_issue=$this->get_max_issue(3);
         $lottery_issue=$this->get_max_issue(4);
         //4个接口连接
-        $luck_url='';
+        $luck_url='http://api.b1api.com/t?p=json&t=bjpk10&limit=20&token=2B5AD08943A60F98';
         $airship_url='https://api.happylottery.com/data/airship/last.xml';
         $racing_url='https://api.happylottery.com/data/racing/last.xml';
         $lottery_url='https://api.happylottery.com/data/lottery/last.xml';
-//        $this->deposit($luck_issue,$luck_url,1);
+        $this->deposit_luck($luck_issue,$luck_url,1);
         $this->deposit($airship_issue,$airship_url,2);
         $this->deposit($racing_issue,$racing_url,3);
         $this->deposit($lottery_issue,$lottery_url,4);
@@ -40,10 +42,12 @@ class Happy extends Base
         if($max_issue!=0){
             $luck_data=$this->get_interface_infomation($url);
             if($max_issue==1){
-                foreach ($luck_data as $key=>$value){
-                    $lottery_time=strtotime($value['time']);
-                    $this->save_interface($type,$value['issue'],$value['numbers'],$lottery_time,time());
-                    echo '存入一条类型为'.$type.'，期号为'.$value['issue'].'的数据/n';
+                if(isset($luck_data) && !empty($luck_data)){
+                    foreach ($luck_data as $key=>$value){
+                        $lottery_time=strtotime($value['time']);
+                        $this->save_interface($type,$value['issue'],$value['numbers'],$lottery_time,time());
+                        echo '存入一条类型为'.$type.'，期号为'.$value['issue'].'的数据/n';
+                    }
                 }
             }else{
                 if(isset($luck_data) && !empty($luck_data)){
@@ -53,6 +57,32 @@ class Happy extends Base
                             $lottery_time=strtotime($value['time']);
                             $this->save_interface($type,$value['issue'],$value['numbers'],$lottery_time,time());
                             echo '存入一条类型为'.$type.'，期号为'.$value['issue'].'的数据/n';
+                        }
+                    }
+                }
+            }
+        }
+    }
+    //专为幸运飞艇设置
+    public function deposit_luck($max_issue,$url,$type){
+        if($max_issue!=0){
+            $luck_data=$this->get_first_imformation($url);
+            if($max_issue==1){
+                if(isset($luck_data) && !empty($luck_data)){
+                    foreach ($luck_data as $key=>$value){
+                        $lottery_time=strtotime($value['opentime']);
+                        $this->save_interface($type,$value['expect'],$value['opencode'],$lottery_time,time());
+                        echo '存入一条类型为'.$type.'，期号为'.$value['expect'].'的数据/n';
+                    }
+                }
+            }else{
+                if(isset($luck_data) && !empty($luck_data)){
+                    foreach ($luck_data as $key=>$value){
+                        if($value['expect']>$max_issue){
+                            //存起来
+                            $lottery_time=strtotime($value['opentime']);
+                            $this->save_interface($type,$value['expect'],$value['opencode'],$lottery_time,time());
+                            echo '存入一条类型为'.$type.'，期号为'.$value['expect'].'的数据/n';
                         }
                     }
                 }
@@ -101,6 +131,16 @@ class Happy extends Base
         curl_close($curl);
         $tmpInfo=json_decode(json_encode(simplexml_load_string($tmpInfo)),true);
         return $tmpInfo['item'];
+    }
+    //幸运飞艇接口处理
+    private function get_first_imformation($src){
+        //防止GET本地缓存，增加随机数
+        $src .= (strpos($src,'?')>0 ? '&':'?').'_='.time();
+        $html = file_get_contents($src);
+        $json = json_decode($html,true);
+        if (isset($json['row'])){
+            return $json['data'];
+        }
     }
     private function save_interface($type,$lottery_date,$lottery_number,$lottery_time,$add_time){
         $data['type']=$type;
