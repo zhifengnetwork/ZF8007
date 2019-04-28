@@ -4,4 +4,4 @@ composer.lock
 application/database.php
 .vscode
 runtime
-public/uploads
+public/upload/proof/

@@ -26,10 +26,10 @@
 					<div class="pay">
 						<div class="way">购买会员天数：</div>
 						<div class="pull_box time">
-							<p im="{$package.0.id}" id="pack">{$package.0.pack_name}<span class="rot"></span></p>
+							<p im="{$package.0.id}" id="pack">{$package.0.pack_name}：{$package.0.pack_time}天<span class="rot"></span></p>
 							<ul class="info">
 								{foreach name="package" item="pack"}
-								<li im="{$pack.id}" onclick="sele(this)">{$pack.pack_name}</li>
+								<li im="{$pack.id}" onclick="sele(this)">{$pack.pack_name}：{$pack.pack_time}天</li>
 								{/foreach}
 							</ul>
 						</div>
