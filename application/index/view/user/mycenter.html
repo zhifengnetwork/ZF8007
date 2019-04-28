@@ -22,7 +22,9 @@
 		<div class="everyColor wrapper">
 			<!--头部-->
 			<div class="lb_headWrap ">
-               <span>个人中心</span>
+			   <span>个人中心</span>
+			<!--设置按钮-->
+			<a class="set" href="/index/user/setting"></a>
            	</div>
             <!--内容-->
             <div class="content">
@@ -33,7 +35,7 @@
 						{if condition = "empty($info.avatar)"}
             			<img src="/__STATIC__/image/my/touxiang.png" />
 						{else/}
-						<img src="/__STATIC__/{$info.avatar}" />
+						<img src="{$info.avatar}" />
 						{/if}
 					</div>
             		
@@ -155,7 +157,7 @@
 	            		</div>
 	            	</a>	
 					<!--设置-->
-					<a href="/index/user/setting">
+					<!-- <a href="/index/user/setting">
 						<div class="item">
 							<div class="list_img">
 								<img src="/__STATIC__/image/shezhi@2x.png" />
@@ -167,7 +169,7 @@
 								<div class="arrw"></div>
 							</div>
 						</div>
-					</a>
+					</a> -->
             	</div>
             </div>
              

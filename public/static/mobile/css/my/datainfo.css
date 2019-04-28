@@ -1,0 +1,47 @@
+img {
+	display: block;
+	max-width: 100%;
+	margin: 0 auto;
+}
+.item_wrap {
+	margin-top: .4rem;
+	padding: .15rem .25rem 0;
+	background: #1d1e30;
+}
+.item {
+	margin-bottom: .15rem;
+}
+.item div {
+	display: inline-block;
+	vertical-align: top;
+}
+.photo_text {
+	font-size: .28rem;
+	letter-spacing: 1px;
+	color: #eff0f7;
+	line-height: .85rem;
+}
+.run {
+	margin-top: .3rem;
+	float: right;
+	width: .18rem;
+	height: .3rem;
+	background: url(../../image/my/arrow@2x.png) no-repeat;
+	background-size: 100% 100%;
+}
+.photo_img {
+	margin-left: 5rem;
+}
+.photo_img img {
+	width: .91rem;
+	height: .91rem;
+	border-radius: 50%;
+}
+
+.ber_wrap {
+	font-size: .28rem;
+	letter-spacing: 1px;
+	color: #eff0f7;
+	line-height: .95rem;
+	border-top: 1px solid #2f3042;
+}

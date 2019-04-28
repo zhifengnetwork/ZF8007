@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/__STATIC__/css/swiper.css">
     <link rel="stylesheet" href="/__STATIC__/css/bottom_nav.css">
     <link rel="stylesheet" href="/__STATIC__/css/header.css">
+    <link rel="stylesheet" href="/__STATIC__/css/my/mycenter.css">
     <script src="/__STATIC__/js/rem.js"></script>
 </head>
 <body>
@@ -38,8 +39,8 @@
              <img src="/__STATIC__/image/notice.png" alt="" class="notice-i">
              <div class="notice">
                     公告:
-                    <span >
-                            限时促销优惠限时促销优惠限时促销优惠限时促销优惠限时促销优惠限时促销优惠限时促销优惠限时促销优惠限时促销优惠限时促销优惠 限时促销优惠限时促销优惠限时促销优惠
+                    <span onclick="location.href='/Index/user/notice'">
+                            {$notice.content}
                     </span>
              </div>
          </div>
@@ -47,25 +48,25 @@
          <div class="fourGongGe clearfloat">
              <ul class="clearfloat">
                  <li class="four-item">
-                     <a href="{:url('index/lottery_list?type=1')}">
+                     <a {if condition="$is_end eq 1"} href="javascript:void(0);" onclick="end_time()" {else} href="{:url('index/lottery_list?type=1')}" {/if}>
                         <img src="/__STATIC__/image/img2@2x.png" alt="" class="four-icon">
                         <P class="four-name">幸运飞艇</P>
                      </a>
                     </li>
                  <li class="four-item">
-                     <a href="{:url('Index/index/lottery_list?type=2')}">
+                     <a {if condition="$is_end eq 1"} href="javascript:void(0);" onclick="end_time()" {else /} href="{:url('Index/index/lottery_list?type=2')}" {/if}>
                             <img src="/__STATIC__/image/img3@2x.png" alt="" class="four-icon">
                             <P class="four-name">快乐飞艇</P>
                      </a>
                     </li>
                  <li class="four-item">
-                     <a href="{:url('index/lottery_list?type=3')}">
+                     <a {if condition="$is_end eq 1"} href="javascript:void(0);" onclick="end_time()" {else /} href="{:url('index/lottery_list?type=3')}" {/if}>
                             <img src="/__STATIC__/image/img4@2x.png" alt="" class="four-icon">
                             <P class="four-name">快乐赛车</P>
                      </a>
                     </li>
                  <li class="four-item">
-                     <a href="{:url('index/lottery_list?type=4')}">
+                     <a {if condition="$is_end eq 1"} href="javascript:void(0);" onclick="end_time()" {else /} href="{:url('index/lottery_list?type=4')}" {/if}>
                             <img src="/__STATIC__/image/img5@2x.png" alt="" class="four-icon">
                             <P class="four-name">快乐时时彩</P>
                      </a>
@@ -75,6 +76,12 @@
          <!-- 底部 -->
          <div class="bottomNavWrap container" id="bottomNavWrap" data-id="0"></div>
      </div>
+    <!--vip过期弹框==>默认隐藏-->
+    <div class="vip_wrap">
+        <div class="vip_up">
+            <p>您的VIP已经过期请及时充值</p>
+        </div>
+    </div>
      <script src="/__STATIC__/js/jquery-1.8.3.js"></script>
      <script src="/__STATIC__/js/swiper.js"></script>
      <script src="/__STATIC__/js/bottom_nav.js"></script>
@@ -90,6 +97,15 @@
                 autoplayDisableOnInteraction: false
             });
         }
+        //time over
+         function end_time() {
+             $(".vip_wrap").show();
+         }
+        $('.vip_wrap').click(function(){
+            if($(".vip_wrap").css('display') == 'block'){
+                $(".vip_wrap").hide();
+            }
+        });
      </script>
 </body>
 </html>

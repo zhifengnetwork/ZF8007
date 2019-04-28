@@ -1,0 +1,71 @@
+.item_wrap {
+	margin: .4rem .24rem;
+	background-color: #1f2034;
+	border-radius: 4px;
+}
+.cash {
+	padding: .3rem 0 .3rem .3rem;
+	font-size: .36rem;
+	letter-spacing: 1px;
+	color: #fff;
+	line-height: .85rem;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+.sum_wrap {
+	margin: 0 .35rem 0 .3rem;
+	border-bottom: 1px solid #2f3042;
+}
+.sum_box {
+	padding: 0 0 .2rem;
+}
+.sum_wrap div {
+	display: inline-block;
+	vertical-align: top;
+}
+.dl {
+	margin-right: .15rem;
+	width: .3rem;
+	height: .37rem;
+	background: url(../../image/my/dl.png) no-repeat;
+	background-size: 100% 100%;
+}
+.inp {
+	margin-top: .05rem;
+	background: #1f2034;
+	color: #fff;
+	font-size: .3rem;
+	border: none;
+	outline: none;
+	
+}
+
+.ance {
+	padding-left: .3rem;
+	line-height: .75rem;
+}
+.ance .beg {
+	font-size: .22rem;
+	color: #414262;
+}
+.ance .all {
+	margin-left: .05rem;
+	font-size: .22rem;
+	color: #5a5e9f;
+}
+
+.all_btn a {
+	margin: 1.1rem auto;
+	width: 3.5rem;
+	height: .8rem;
+	font-size: .3rem;
+	background-color: #46d16a;
+	border-radius: 10px;
+	text-align: center;
+	line-height: .8rem;
+	letter-spacing: 1px;
+	color: #f9f7fb;
+}

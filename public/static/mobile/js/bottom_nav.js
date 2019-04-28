@@ -90,4 +90,3 @@ var thisInd = Number($.trim($('.pageTopTitle').attr('page-id')));
 $('#bottomNavWrap .bottomNavTerm').eq(thisInd).find('.bottomNavIcon').attr('src', bottomTabArrTwo[thisInd]);
 /*title的color*/
 $('#bottomNavWrap .bottomNavTerm').eq(thisInd).find('.bottomNavTitle').addClass('bNavYseFontColor').removeClass('bNavNoFontColor');
-

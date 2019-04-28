@@ -42,11 +42,11 @@ body{
 .ballBox{
     height: .56rem;
     padding:.23rem 0 .23rem .28rem;
-    -moz-box-sizing: content-box;  
-    -webkit-box-sizing: content-box; 
-    -o-box-sizing: content-box; 
-    -ms-box-sizing: content-box; 
-    box-sizing: content-box; 
+    -moz-box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+    -o-box-sizing: content-box;
+    -ms-box-sizing: content-box;
+    box-sizing: content-box;
 }
 
 .ball-ls{
@@ -62,9 +62,9 @@ body{
 }
 
 .select{
-   white-space: nowrap;
-   width:44rem;
-   overflow: hidden;
+    white-space: nowrap;
+    width:44rem;
+    overflow: hidden;
 }
 
 .colorSelect{
@@ -111,20 +111,20 @@ body{
 
 .result-info {
     background: #17182d;
-    padding: .32rem .1rem .32rem .24rem;
+    padding: .32rem .05rem .32rem .1rem;
     overflow: hidden;
-    overflow-x: scroll; 
+    overflow-x: scroll;
     overflow-y: hidden;
 }
 
 .info-periods{
     float: left;
-    width: 23%;
-    -moz-box-sizing: content-box;  
-    -webkit-box-sizing: content-box; 
-    -o-box-sizing: content-box; 
-    -ms-box-sizing: content-box; 
-    box-sizing: content-box; 
+    width: 27%;
+    -moz-box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+    -o-box-sizing: content-box;
+    -ms-box-sizing: content-box;
+    box-sizing: content-box;
     display: inline-block;
 }
 
@@ -153,7 +153,7 @@ body{
 }
 
 .soll{
-    width: 75.7%;
+    width: 70.7%;
     float: left;
     overflow-y: scroll;
     display: flex;
@@ -166,9 +166,9 @@ body{
     white-space: nowrap;
 }
 
- .result-soll:first-child{
-     margin: 0;
- }
+.result-soll:first-child{
+    margin: 0;
+}
 
 .result-soll .info-t{
     width: 3.6rem;
@@ -185,7 +185,7 @@ body{
 
 .item-soll>ul .item-soll-qi{
     float: left;
-    width: 16.2%;
+    width: 16%;
     border-left: 1px solid #000000;
     height: .64rem;
     line-height: .64rem;

@@ -12,6 +12,7 @@ header('content-type:text/html;charset=utf-8');
 use think\Db;
 use think\Session;
 use think\Request;
+use think\Loader;
 
 class User extends Base
 {
@@ -31,7 +32,81 @@ class User extends Base
         $this->assign('info',$info);
         return $this->fetch();
     }
+    /**
+     * 用户信息
+     *  */ 
+    public function data_info(){
+        $info = Db::name('users')->where('id', $this->user_id)->find();
+        $sex = [
+          0 => '保密',
+          1 => '男',
+          2 => '女',
+        ];
+        $this->assign('sex',$sex);
+        $this->assign('info', $info);
+        return $this->fetch();
+    }  
+    /**
+     * 更换头像
+     */
+    public function alter_avatar(){
+        return $this->fetch();
+    }
+    /**
+     * 更换昵称
+     */
+    public function alter_name()
+    {
+        $data = input('post.');
+        if($_POST){
+            //    验证
+            $UserValidate = Loader::Validate('User');
+            if (!$UserValidate->check($data)) {
+                $baocuo = $UserValidate->getError();
+                return json(['code' => 0, 'msg' => $baocuo]);
+            }
+            $data1 = [
+                'id'       => $this->user_id,
+                'nickname' => trim($data['nickname'])
+            ];
+            $res = Db::name('users')->update($data1);
+            if($res){
+                return json(['code'=>1,'msg'=>'更换成功']);
+            }else{
+                return json(['code'=>0,'msg'=>'更换失败']);
+            }         
+        }
+        return $this->fetch();
+    }
+    /**
+     * 更换性别
+     */
+    public function alter_sex()
+    {
+        $data = input('post.');
+        if($_POST){
+            $data1 = [
+                'id'  => $this->user_id,
+                'sex' => intval($data['sex'])
+            ];
+            $res = Db::name('users')->update($data1);
+            if ($res) {
+                return json(['code' => 1, 'msg' => '更换成功']);
+            } else {
+                return json(['code' => 0, 'msg' => '更换失败']);
+            }                            
+        }
 
+        $info = Db::name('users')->where('id', $this->user_id)->find();
+        $sex = [
+            0 => '保密',
+            1 => '男',
+            2 => '女',
+        ];
+        $this->assign('sex', $sex);
+        $this->assign('info', $info);        
+        return $this->fetch();
+    }     
     //历史记录
     public function brokerage()
     {
@@ -160,6 +235,53 @@ class User extends Base
         }
     }
 
+    /**
+     * 上传头像
+     */
+    public function upload_avatar()
+    {
+        $base64 = input('post.dataImg');
+        $user_id = $this->user_id;
+        $res = $this->uploadImg($base64, $user_id);
+        return $res;
+    }
+
+    /**
+     * 处理base64
+    */
+    function uploadImg($base64,$user_id){
+        header("content-type:text/html;charset=utf-8");
+        $base64_image = str_replace(' ', '+', $base64);
+        //post的数据里面，加号会被替换为空格，需要重新替换回来，如果不是post的数据，则注释掉这一行
+        if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $base64_image, $result)){
+            //匹配成功
+            if($result[2] == 'jpeg'){
+                $image_name = uniqid().'.jpg';
+                //纯粹是看jpeg不爽才替换的
+            }else{
+                $image_name = uniqid().'.'.$result[2];
+            }
+            $image_file = "./uploads/".date('Ymd',time()).'/';
+            if (!file_exists($image_file)) {
+
+                mkdir($image_file,0755,true);
+            }
+            $image_url = "./uploads/".date('Ymd',time()).'/'."{$image_name}";
+            $res_url = "/uploads/".date('Ymd',time()).'/'."{$image_name}";
+            $res = Db::name('users')->where('id',$user_id)->update(['avatar' => $res_url]);
+            $user = Db::name('users')->where('id', $user_id)->find();
+            Session::set('user', $user);
+            //服务器文件存储路径
+            if ($res && file_put_contents($image_url, base64_decode(str_replace($result[1], '', $base64_image)))){
+                return json(['code'=>200, 'msg'=>'上传成功', 'imgUrl'=>$res_url]);
+            }else{
+                return json(['code'=>0, 'msg'=>'上传失败']);
+
+            }
+        }else{
+            return json(['code'=>0, 'msg'=>'上传失败..']);
+        }
+    }
     /**
      *检查用户是否登陆
      */      

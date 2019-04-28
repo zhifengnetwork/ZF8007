@@ -1,0 +1,58 @@
+.pay_wrap {
+	padding: .4rem 0;
+}
+.pay_wrap div {
+	display: inline-block;
+	vertical-align: top;
+}
+.sex {
+	width: 22%;
+	height: .8rem;
+	font-size: .34rem;
+	letter-spacing: 1px;
+	color: #fefefe;
+	text-align: center;
+	line-height: .8rem;
+}
+.pull_box {
+	position: relative;
+	width: 70%;
+	background-color: #1f2034;
+	border-radius: 4px;
+}
+#tresult {
+	padding-left: .24rem;
+	font-size: .3rem;
+	color: #fefefe;
+	line-height: .8rem;
+}
+.info {
+	display: none;
+}
+.info li {
+	padding-left: .24rem;
+	font-size: .3rem;
+	color: #fefefe;
+	line-height: .8rem;
+}
+.rotate {
+	position: absolute;
+	top: .32rem;
+	right: .24rem;
+	width: .3rem;
+	height: .16rem;
+	background: url(../../image/my/dow.png) no-repeat;
+	background-size: 100% 100%;
+}
+.ack {
+	margin: .78rem auto 0;
+	width: 3.5rem;
+	height: .8rem;
+	background-color: #ac2c35;
+	border-radius: 10px;
+	font-size: .3rem;
+	letter-spacing: 1px;
+	color: #f9f7fb;
+	text-align: center;
+	line-height: .8rem;
+}
