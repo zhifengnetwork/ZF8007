@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>更改性别</title>
+		<script type="text/javascript" src="/__STATIC__/js/rem.js" ></script>
+		<link rel="stylesheet" type="text/css" href="/__STATIC__/css/public.css"/>
+		<link rel="stylesheet" type="text/css" href="/__STATIC__/css/header.css"/>
+		<link rel="stylesheet" type="text/css" href="/__STATIC__/css/my/altersex.css"/>
+	</head>
+	<body>
+		<div class="wrapper">
+			<!--头部-->
+			<div class="lb_headWrap">
+				<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+                    <img class="lb_headWrap_return_img" src="/__STATIC__/image/back@2x.png"/> 
+                </p>
+				<span>更改性别</span>
+            </div>
+            <!--内容-->
+            <div class="content">
+            	<div class="pay_wrap">
+            		
+            		<div class="sex">性别</div>
+            		
+            		<div class="pull_box">
+            			<p id="tresult">{$sex[$info.sex]}</p>
+            			<ul class="info">
+							<li data-id="0">保密</li>
+							<li data-id="1">男</li>
+							<li data-id="2">女</li>
+            			</ul>
+            			<div class="rotate"></div>
+					</div>
+					<form action="" method="POST">
+						<input type="hidden" name="sex" id="sex" value="{$info.sex}">	
+					</form>
+            		
+            	</div>
+            	<!--确认按钮-->
+            	<a class="ack">确认修改</a>
+            </div>
+		</div>
+		
+		<script src="/__STATIC__/js/jquery-1.8.3.js"></script>
+		<script src="/__STATIC__/js/public.js"></script>
+		<script type="text/javascript" src="/public/static/admin/lib/layer/2.4/layer.js"></script>
+        <script>
+        	$(function(){
+        		
+        		$('.pay_wrap').on('click',function(){
+        			$('.info').slideToggle();
+        		})
+        		
+        		var Uarry=$(".info li");//获取所有的li元素
+				$(".info li").click(function(){
+				//点击事件
+				//测试直接获取值 
+				//var v=$(this).text(); alert(v); 
+				var count=$(this).index();//获取li的下标
+				var Tresult=Uarry.eq(count).text();
+				$("#tresult").html(Tresult);
+				var Tresult1 = Uarry.eq(count).data('id');
+				$("#sex").val(Tresult1);
+				})
+
+				$('.ack').click(function(){
+					var sex = $('#sex').val()
+					
+					$.ajax({
+						type: "post",
+						url: "{:url('index/user/alter_sex')}",
+						data: {'sex':sex},
+
+						success: function (data) {
+							if (data.code == 1) {
+								layer.msg(data.msg, { icon: 1, time: 1000 }, function () {
+									parent.location.reload();
+								});
+							} else {
+								layer.msg(data.msg, { icon: 2, time: 1000 });
+							}
+						},
+						error: function () {
+							layer.alert("服务器繁忙, 请稍等!");
+						}
+					});
+				})
+        	})
+        </script>
+	</body>
+</html>

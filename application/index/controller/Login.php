@@ -8,11 +8,11 @@ class Login extends Base
     public function _initialize()
     {
         parent::_initialize();
-        $user = Session::get('user');
-        if (!empty($user)) {
-            $url = "http://" . $_SERVER['HTTP_HOST'] . "/index/index/index";
-            header("refresh:1;url=$url");
-        }        
+        // $user = Session::get('user');
+        // if (!empty($user)) {
+        //     $url = "http://" . $_SERVER['HTTP_HOST'] . "/index/index/index";
+        //     header("refresh:1;url=$url");
+        // }        
     }    
     /**
      * 登录
@@ -24,6 +24,8 @@ class Login extends Base
      * 注册
      */
     public function register(){
+        $user_id = input('get.id');
+        $this->assign('user_id',$user_id); 
         return $this->fetch();
     }
 
@@ -64,15 +66,21 @@ class Login extends Base
                 'register_method'=> 'mobile',
                 'end_time'       =>  $e_time
             ];
-           $res = Db::name('users')->insertGetId($data1);
-           if($res){
+            if($data['user_id']){
+                $has_user = Db::name('users')->where('id',$data['user_id'])->find(); 
+                if($has_user){
+                   $data1['first_leader'] = $data['user_id'];
+                }
+            }              
+            $res = Db::name('users')->insertGetId($data1);
+            if($res){
                 $user_info = Db::name('users')->where('id',$res)->find();
                 Session::set('user',$user_info);
                 Session::set('time', time());
                 return json(['code'=>1,'msg'=>'注册成功','url'=> '/index/index/index']);
-           }else{
+            }else{
                 return json(['code' => 0, 'msg' => '注册失败']);
-           }        
+            }        
         }
     }
     /**

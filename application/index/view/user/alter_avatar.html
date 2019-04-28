@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>个人头像</title>
+		<script type="text/javascript" src="/__STATIC__/js/rem.js" ></script>
+		<link rel="stylesheet" type="text/css" href="/__STATIC__/css/public.css"/>
+		<link rel="stylesheet" type="text/css" href="/__STATIC__/css/header.css"/>
+		<link rel="stylesheet" type="text/css" href="/__STATIC__/css/my/alterphoto.css"/>
+	</head>
+	<body>
+		<div class="wrapper">
+			<!--头部-->
+			<div class="lb_headWrap">
+				<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+                    <img class="lb_headWrap_return_img" src="/__STATIC__/image/back@2x.png"/> 
+                </p>
+				<span>个人头像</span>
+            </div>
+            <!--内容-->
+            <div class="content">
+            	<!--上传图片放置区-->
+            	<div class="file_img_ut">
+					<img id="file_img" src=""/>
+				</div>
+				<div class="inp_wrap">
+					<input class="inp" id="file" type="file" />
+					<div class="cli">从手机相册选择</div>
+				</div>
+            </div>
+		</div>
+		
+		<script src="/__STATIC__/js/jquery-1.8.3.js"></script>
+        <script src="/__STATIC__/js/public.js"></script>
+        <script>
+        	//上传头像
+        	var Input  = document.getElementById("file");   // input file
+			var FileImg = document.getElementById("file_img");//img file
+			
+			Input.onchange = function(){
+			    var file = this.files[0];
+			        if(!!file){
+			            var reader = new FileReader();
+			            // 图片文件转换为base64
+			            reader.readAsDataURL(file);
+			            reader.onload = function(){
+			            // 显示图片
+			            FileImg.src = this.result;
+			        }
+			    }
+			}
+        </script>
+	</body>
+</html>

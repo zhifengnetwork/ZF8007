@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>基本资料</title>
+		<script type="text/javascript" src="/__STATIC__/js/rem.js" ></script>
+		<link rel="stylesheet" type="text/css" href="/__STATIC__/css/public.css"/>
+		<link rel="stylesheet" type="text/css" href="/__STATIC__/css/header.css"/>
+		<link rel="stylesheet" type="text/css" href="/__STATIC__/css/my/datainfo.css"/>
+	</head>
+	<body>
+		<div class="wrapper">
+			<!--头部-->
+			<div class="lb_headWrap">
+				<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+                    <img class="lb_headWrap_return_img" src="/__STATIC__/image/back@2x.png"/> 
+                </p>
+				<span>基本资料</span>
+            </div>
+            <!--内容-->
+            <div class="content">
+            	<div class="item_wrap">
+            		<!--头像区-->
+            		<a href="/index/user/alter_avatar">
+	            		<div class="item">
+	            			<div class="photo_text">头像</div>
+	            			<div class="photo_img">
+                                {if condition = "empty($info.avatar)"}
+                                <img src="/__STATIC__/image/my/touxiang.png" />
+                                {else/}
+                                <img src="/__STATIC__/{$info.avatar}" />
+                                {/if}
+	            			</div>
+	            			<div class="run"></div>
+	            		</div>
+	            	</a>	
+            		<!--ID号-->
+            		<div class="ber_wrap">
+        				<span>ID：</span>
+        				<span>{$info.id}</span>
+            		</div>
+            		<!--会员名-->
+            		<a href="/index/user/alter_name">
+	            		<div class="ber_wrap">
+	        				<span>会员名：</span>
+	        				<span>*{if condition = "empty($info.nickname)"}{$info.mobile}{else/}{$info.nickname}{/if}</span>
+	        				<div class="run"></div>
+	            		</div>
+            		</a>
+            		<!--性别-->
+            		<a href="/index/user/alter_sex">
+	            		<div class="ber_wrap">
+	        				<span>性别：</span>
+	        				<span>{$sex[$info.sex]}</span>
+	        				<div class="run"></div>
+	            		</div>
+            		</a>
+            		<!--手机号-->
+            		<div class="ber_wrap">
+        				<span>手机号：</span>
+        				<span>{$info.mobile}</span>
+            		</div>
+            		<!--注册时间-->
+            		<div class="ber_wrap">
+        				<span>注册时间：</span>
+        				<span>{:date('Y-m-d,H:i:s',$info.register_time)}</span>
+        				<!-- <span>12:03</span> -->
+            		</div>
+            		
+            	</div>
+            </div>
+		</div>
+		
+		<script src="/__STATIC__/js/jquery-1.8.3.js"></script>
+        <script src="/__STATIC__/js/public.js"></script>
+	</body>
+</html>

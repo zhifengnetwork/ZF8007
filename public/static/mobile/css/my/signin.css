@@ -40,7 +40,10 @@ input::-webkit-input-placeholder {
     letter-spacing: 1px;
 	color: #56566a;
 }
-
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
 .signin_btn {
 	margin: 1.2rem auto .4rem;
 	width: 5.2rem;

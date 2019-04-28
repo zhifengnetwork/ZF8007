@@ -1,0 +1,21 @@
+img {
+	display: block;
+	margin: 0 auto;
+	max-width: 100%;
+}
+
+.status {
+	margin: 4.5rem auto 0;
+}
+.img_wrap {
+	margin: .25rem auto;
+	width: 2.81rem;
+	height: .94rem;
+}
+.being {
+	font-size: .36rem;
+	text-align: center;
+	line-height: .75rem;
+	letter-spacing: 1px;
+	color: #f9f7fb;
+}

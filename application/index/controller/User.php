@@ -12,6 +12,7 @@ header('content-type:text/html;charset=utf-8');
 use think\Db;
 use think\Session;
 use think\Request;
+use think\Loader;
 
 class User extends Base
 {
@@ -31,7 +32,81 @@ class User extends Base
         $this->assign('info',$info);
         return $this->fetch();
     }
+    /**
+     * 用户信息
+     *  */ 
+    public function data_info(){
+        $info = Db::name('users')->where('id', $this->user_id)->find();
+        $sex = [
+          0 => '保密',
+          1 => '男',
+          2 => '女',
+        ];
+        $this->assign('sex',$sex);
+        $this->assign('info', $info);
+        return $this->fetch();
+    }  
+    /**
+     * 更换头像
+     */
+    public function alter_avatar(){
+        return $this->fetch();
+    }
+    /**
+     * 更换昵称
+     */
+    public function alter_name()
+    {
+        $data = input('post.');
+        if($_POST){
+            //    验证
+            $UserValidate = Loader::Validate('User');
+            if (!$UserValidate->check($data)) {
+                $baocuo = $UserValidate->getError();
+                return json(['code' => 0, 'msg' => $baocuo]);
+            }
+            $data1 = [
+                'id'       => $this->user_id,
+                'nickname' => trim($data['nickname'])
+            ];
+            $res = Db::name('users')->update($data1);
+            if($res){
+                return json(['code'=>1,'msg'=>'更换成功']);
+            }else{
+                return json(['code'=>0,'msg'=>'更换失败']);
+            }         
+        }
+        return $this->fetch();
+    }
+    /**
+     * 更换性别
+     */
+    public function alter_sex()
+    {
+        $data = input('post.');
+        if($_POST){
+            $data1 = [
+                'id'  => $this->user_id,
+                'sex' => intval($data['sex'])
+            ];
+            $res = Db::name('users')->update($data1);
+            if ($res) {
+                return json(['code' => 1, 'msg' => '更换成功']);
+            } else {
+                return json(['code' => 0, 'msg' => '更换失败']);
+            }                            
+        }
 
+        $info = Db::name('users')->where('id', $this->user_id)->find();
+        $sex = [
+            0 => '保密',
+            1 => '男',
+            2 => '女',
+        ];
+        $this->assign('sex', $sex);
+        $this->assign('info', $info);        
+        return $this->fetch();
+    }     
     //历史记录
     public function brokerage()
     {
