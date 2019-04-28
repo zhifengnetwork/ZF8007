@@ -25,7 +25,8 @@
             			<div class="mark">手机号:</div>
             			<div class="inp">
                             <input class="text phone" name="mobile" id="mobile" type="text" placeholder="请输入手机号" />
-                            <input type="hidden" name="sms_type" value="1" id="sms_type_id">
+							<input type="hidden" name="sms_type" value="1" id="sms_type_id">
+							<input type="hidden" name="user_id" id="user_id" value="{empty name="$user_id"}{else/}{$user_id}{/empty}">
             			</div>
             		</div>
             		<!--验证码-->
@@ -118,11 +119,6 @@
 					}
                 }
             }); 
-
-            // $(".verify").focus();
-            // daojishi(60,$(this))
-            // $(".phone").attr("disabled","disabled") 
-            // return condition.phonestate=true
         })
 
         $('.signin_btn').click(function(){
