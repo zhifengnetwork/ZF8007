@@ -48,25 +48,25 @@
          <div class="fourGongGe clearfloat">
              <ul class="clearfloat">
                  <li class="four-item">
-                     <a href="{:url('index/lottery_list?type=1')}">
+                     <a {if condition="$is_end eq 1"} href="javascript:void(0);" onclick="end_time()" {else} href="{:url('index/lottery_list?type=1')}" {/if}>
                         <img src="/__STATIC__/image/img2@2x.png" alt="" class="four-icon">
                         <P class="four-name">幸运飞艇</P>
                      </a>
                     </li>
                  <li class="four-item">
-                     <a href="{:url('Index/index/lottery_list?type=2')}">
+                     <a {if condition="$is_end eq 1"} href="javascript:void(0);" onclick="end_time()" {else /} href="{:url('Index/index/lottery_list?type=2')}" {/if}>
                             <img src="/__STATIC__/image/img3@2x.png" alt="" class="four-icon">
                             <P class="four-name">快乐飞艇</P>
                      </a>
                     </li>
                  <li class="four-item">
-                     <a href="{:url('index/lottery_list?type=3')}">
+                     <a {if condition="$is_end eq 1"} href="javascript:void(0);" onclick="end_time()" {else /} href="{:url('index/lottery_list?type=3')}" {/if}>
                             <img src="/__STATIC__/image/img4@2x.png" alt="" class="four-icon">
                             <P class="four-name">快乐赛车</P>
                      </a>
                     </li>
                  <li class="four-item">
-                     <a href="{:url('index/lottery_list?type=4')}">
+                     <a {if condition="$is_end eq 1"} href="javascript:void(0);" onclick="end_time()" {else /} href="{:url('index/lottery_list?type=4')}" {/if}>
                             <img src="/__STATIC__/image/img5@2x.png" alt="" class="four-icon">
                             <P class="four-name">快乐时时彩</P>
                      </a>
@@ -97,6 +97,15 @@
                 autoplayDisableOnInteraction: false
             });
         }
+        //time over
+         function end_time() {
+             $(".vip_wrap").show();
+         }
+        $('.vip_wrap').click(function(){
+            if($(".vip_wrap").css('display') == 'block'){
+                $(".vip_wrap").hide();
+            }
+        });
      </script>
 </body>
 </html>

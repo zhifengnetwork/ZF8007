@@ -28,6 +28,8 @@ class Base extends Controller
 
 
         $global_menu_list = $this->menu();
+        $global_admin = $this->header();
+        $this->assign('global_admin',$global_admin);
         $this->assign('global_menu_list',$global_menu_list);
 
     }
@@ -46,5 +48,12 @@ class Base extends Controller
 
     public function ajaxReturn($data,$type = 'json'){
         exit(json_encode($data));
+    }
+
+    public function header()
+    {
+        $admin_id = Session::get('admin_id');
+        $global_admin = Db::name('admin')->where('id',$admin_id)->find();
+        return $global_admin;
     }
 }

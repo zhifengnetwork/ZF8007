@@ -27,8 +27,10 @@ class Index extends Base
             $article['id']=0;
         }
         //看看用户到期了没有
-        $user_id=session('user.user_id');
+        $user_id=$this->user_id;
+//        var_dump($user_id);
         $is_end=Db::name('users')->where(['id'=>$user_id])->where('end_time','<',time())->count();
+//        var_dump($is_end);die;
         $this->assign('is_end',$is_end);
         $this->assign('notice',$article);
         return $this->fetch();
