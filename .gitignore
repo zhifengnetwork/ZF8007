@@ -5,3 +5,4 @@ application/database.php
 .vscode
 runtime
 public/upload/proof/
+uploads/
