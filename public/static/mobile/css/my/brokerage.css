@@ -74,3 +74,24 @@
 	color: #515274;
 	text-align: center;
 }
+
+.the {
+	margin-bottom: .1rem;
+}
+.the span {
+	font-size: .34rem;
+	color: #cd3238;
+	line-height: .55rem;
+}
+.the a {
+	margin-left: .55rem;
+	display: inline-block;
+	width: 13%;
+	height: .5rem;
+	font-size: .28rem;
+	color: #f9f7fb;
+	text-align: center;
+	line-height: .5rem;
+	background-color: #46d16a;
+	border-radius: 4px;
+}

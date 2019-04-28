@@ -1,171 +1,55 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
-		<meta http-equiv="X-UA-Compatible" content="ie=edge">
-		<title class="pageTopTitle" page-id="1">个人中心</title>
-		<script type="text/javascript" src="/__STATIC__/js/rem.js" ></script>
-		<link rel="stylesheet" type="text/css" href="/__STATIC__/css/public.css"/>
-		<link rel="stylesheet" type="text/css" href="/__STATIC__/css/header.css"/>
-		<link rel="stylesheet" type="text/css" href="/__STATIC__/css/bottom_nav.css"/>
-		<link rel="stylesheet" type="text/css" href="/__STATIC__/css/my/mycenter.css"/>
-    </head>
-    <style>
-        .login_btn {
-            margin: 1rem auto .4rem;
-            width: 5.2rem;
-            height: .8rem;
-            background-color: #14bd64;
-            border-radius: 8px;
-            font-size: .34rem;
-            letter-spacing: 1px;
-            color: #fff;
-            text-align: center;
-            line-height: .8rem;
-        }    
-    </style>
-	<body>
-		<div class="everyColor wrapper">
-			<div class="lb_headWrap">
-				<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
-					<img class="lb_headWrap_return_img" src="/__STATIC__/image/back@2x.png" />
-				</p>
-				<span>设置</span>
-			</div>
-            <!--内容-->
-            <div class="content">
-            	<!---->
-            	<div class="tu_wrap">
-            		
-            		<div class="img">
-            			<img src="/__STATIC__/image/my/touxiang.png" />
-            		</div>
-            		
-            		<div class="right_zi">
-            			<div class="name_wrap">
-	        				<span class="name">*小明</span>
-	        				<!-- <div class="vip_img">
-	        					<img src="/__STATIC__/image/my/vip@2x.png" />
-	        				</div> -->
-	        				<!-- <span class="time">剩余天数20天</span> -->
-        				</div>
-        				
-        				<p>ID:12345</p>
-        				<p>在线时间:00:35:45</p>
-            		</div>
-            	</div>
-            	
-            	<!---->
-            	<div class="nav_wrap">
-            		<!--历史记录-->
-            		<a href="/__STATIC__/html/brokerage.html">
-	            		<div class="item">
-	            			<div class="list_img">
-	            				<img src="/__STATIC__/image/my/history@2x.png" />
-	            			</div>
-	            			
-	            			<div class="arr_wrap">
-		            			<div class="size">
-		            				<span>昵称</span>
-		            			</div>
-		            			<div class="arrw"></div>
-	            			</div>
-	            		</div>
-	            	</a>	
-            		<!--公告-->
-            		<a href="/__STATIC__/html/notice.html">
-	            		<div class="item">
-	            			<div class="list_img">
-	            				<img src="/__STATIC__/image/my/announcement@2x.png" />
-	            			</div>
-	            			<div class="arr_wrap">
-		            			<div class="size">
-		            				<span>性别</span>
-		            			</div>
-		            			<div class="arrw"></div>
-	            			</div>	
-	            		</div>
-	            	</a>	
-            		<!--免责说明-->
-            		<a href="/__STATIC__/html/disclaimer.html">
-	            		<div class="item">
-	            			<div class="list_img">
-	            				<img src="/__STATIC__/image/my/liability@2x.png" />
-	            			</div>
-	            			<div class="arr_wrap">
-		            			<div class="size">
-		            				<span>手机</span>
-		            			</div>
-		            			<div class="arrw"></div>
-	            			</div>
-	            		</div>
-	            	</a>	
-            		<!--使用说明-->
-            		<a href="/__STATIC__/html/use.html">	
-	            		<div class="item">
-	            			<div class="list_img">
-	            				<img src="/__STATIC__/image/my/use@2x.png" />
-	            			</div>
-	            			<div class="arr_wrap">
-		            			<div class="size">
-		            				<span>修改密码</span>
-		            			</div>
-		            			<div class="arrw"></div>
-	            			</div>	
-	            		</div>
-	            	</a>	
-            		<!--邀请链接-->
-            		<a href="/__STATIC__/html/invitelink.html">
-	            		<div class="item">
-	            			<div class="list_img">
-	            				<img src="/__STATIC__/image/my/invitation@2x.png" />
-	            			</div>
-	            			<div class="arr_wrap">
-		            			<div class="size">
-		            				<span>修改支付密码</span>
-		            			</div>
-		            			<div class="arrw"></div>
-	            			</div>
-	            		</div>
-	            	</a>	
-                    <a class="login_btn">退出</a>
-            		
-            	</div>
-            </div>
-             
-			<!-- 底部 -->
-         	<div class="bottomNavWrap container" id="bottomNavWrap" data-id="0"></div>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+		content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>设置</title>
+	<script type="text/javascript" src="/__STATIC__/js/rem.js"></script>
+	<link rel="stylesheet" type="text/css" href="/__STATIC__/css/public.css" />
+	<link rel="stylesheet" type="text/css" href="/__STATIC__/css/header.css" />
+	<link rel="stylesheet" type="text/css" href="/__STATIC__/css/my/setting.css" />
+</head>
+
+<body>
+	<div class="wrapper">
+		<!--头部-->
+		<div class="lb_headWrap">
+			<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+				<img class="lb_headWrap_return_img" src="/__STATIC__/image/back@2x.png" />
+			</p>
+			<span>设置</span>
 		</div>
-		
-		<script src="/__STATIC__/js/jquery-1.8.3.js"></script>
-		<script src="/__STATIC__/js/bottom_nav.js"></script>
-		<script src="/__STATIC__/js/public.js"></script>
-        <script type="text/javascript" src="/public/static/admin/lib/layer/2.4/layer.js"></script>
-    </body>
-    <script>
-         $('.login_btn').click(function(){
+		<!--内容-->
+		<div class="content">
+			<div class="basic_wrap">
+				<!--基本资料-->
+				<a href="/index/user/data_info">
+					<div class="data">
+						<div>基本资料</div>
+						<div class="run"></div>
+					</div>
+				</a>
+				<!--修改密码-->
+				<a href="#">
+					<div class="data">
+						<div>修改密码</div>
+						<div class="run"></div>
+					</div>
+				</a>
+			</div>
+			<!--退出按钮-->
+			<div class="close_wrap">
+				<a href="#" class="close">退出登录</a>
+			</div>
+		</div>
 
-             $.ajax({
-                 url: '/index/user/logout',
-                 type: 'post',
-                 dataType: 'json',
-                 data:{'id':1},
-                 success: function (msg) {
-                     if (msg.status == 0) {
-                         layer.msg(msg.msg);
-                         return false;
-                     } else {
-                         layer.msg(msg.msg, { time: 1000 }, function () {
-                             window.location.replace(msg.url);
-                         });
+	</div>
 
-
-                     }
-                 }
-             });
-         })
-    </script> 
-
+	<script src="/__STATIC__/js/jquery-1.8.3.js"></script>
+	<script src="/__STATIC__/js/public.js"></script>
+</body>
 
 </html>

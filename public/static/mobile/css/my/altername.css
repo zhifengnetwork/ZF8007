@@ -1,0 +1,37 @@
+.inp_wrap {
+	padding: .4rem .25rem 0;
+}
+.inp_wrap .text {
+	padding: .25rem;
+	width: 90%;
+	background-color: #1f2034;
+	color: #fff;
+	border: none;
+	outline: none;
+	border-radius: 4px;
+}
+input::-webkit-input-placeholder {
+	font-size: .3rem;
+   	letter-spacing: 1px;
+	color: #72727c;
+    
+}
+.remark {
+	padding: 0 0 0 .43rem;
+	font-size: .22rem;
+	letter-spacing: 1px;
+	color: #5a5e9f;
+	line-height: .75rem;
+}
+.ack {
+	margin: .78rem auto 0;
+	width: 3.5rem;
+	height: .8rem;
+	background-color: #ac2c35;
+	border-radius: 10px;
+	font-size: .3rem;
+	letter-spacing: 1px;
+	color: #f9f7fb;
+	text-align: center;
+	line-height: .8rem;
+}

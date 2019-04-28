@@ -1,6 +1,10 @@
 body {
 	overflow: hidden;
 }
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
 .tabBox .hd {
 	padding: .4rem .9rem;
 }
