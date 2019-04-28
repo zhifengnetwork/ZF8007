@@ -96,7 +96,7 @@ class User extends Base
     public function upload(Request $request)
     {
         if ($_POST) {
-            $data = input('post.');
+            $data = input('post.');//dump($data);die;
             if (empty($data['files'])) {
                 return json(['status' => -1, 'msg' => '请选择凭证上传']);
             }
