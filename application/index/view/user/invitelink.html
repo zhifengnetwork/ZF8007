@@ -44,14 +44,38 @@
             		</div>
             		<!--分享-->
             		<div class="share">
-            			<div class="ur publicEllipsis1">{$url}</div>
-            			<a>分享</a>
+            			<div class="ur publicEllipsis1" id="codeNum">{$url}</div>
+            			<a id="dynamic" data-clipboard-target="#codeNum">分享</a>
             		</div>
             	</div>
             </div>
         </div>
         
         <script src="/__STATIC__/js/jquery-1.8.3.js"></script>
-        <script src="/__STATIC__/js/public.js"></script>
+		<script src="/__STATIC__/js/public.js"></script>
+		<script src="/__STATIC__/js/clipboard.js"></script>
+		<script src="/__STATIC__/js/jquery.zclip.min.js"></script>
+	
+	<script>
+		$(document).ready(function () {
+			$("#dynamic").click(function () {
+				//  copyUrl($('.publicEllipsis1'))
+				let e = document.getElementById("codeNum").value;
+				//实例化clipboard
+				var clipboard = new ClipboardJS('#dynamic');
+
+				clipboard.on("success", function (e) {
+					console.log(e);
+				});
+
+				clipboard.on("error", function (e) {
+					console.log(e);
+				});
+
+			})
+			
+		})
+	</script>
+
 	</body>
 </html>
