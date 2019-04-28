@@ -57,8 +57,6 @@
 			            // 图片文件转换为base64
 						reader.readAsDataURL(file);
 			            reader.onload = function(){
-			            // // 显示图片
-						// FileImg.src = this.result;
 
 						$.ajax({
 							url: '/index/user/upload_avatar',
@@ -69,18 +67,11 @@
 							},
 							success: function (msg) {
 								if (msg.code == 200) {
-									// $('#qrcode_addr').val(msg.imgUrl);
-									// $('.text').html('成功');
-									// console.log(msg);
 									layer.msg(msg.msg, { time: 1000 }, function () {
 										FileImg.src = msg.imgUrl;
-										// location.reload()
 									})
-
 								} else {
-									// $('.text').html('失败');
 									layer.msg(msg.msg, { time: 1000 }, function () {
-										// location.reload()
 									})
 									return false;
 								}
