@@ -10,6 +10,12 @@
 		<link rel="stylesheet" type="text/css" href="/__STATIC__/css/header.css"/>
 		<link rel="stylesheet" type="text/css" href="/__STATIC__/css/my/alterphoto.css"/>
 	</head>
+	<style>
+	   .avatar{
+		   width: 200px;
+		   height: 200px;
+	   }
+	</style>
 	<body>
 		<div class="wrapper">
 			<!--头部-->
@@ -23,7 +29,11 @@
             <div class="content">
             	<!--上传图片放置区-->
             	<div class="file_img_ut">
-					<img id="file_img" src=""/>
+					{empty name="$info.avatar"}
+					<img class="avatar" id="file_img" src="/__STATIC__/image/my/touxiang.png" />
+					{else/}
+					<img class="avatar" id="file_img" src="{$info.avatar}"/>
+					{/empty}
 				</div>
 				<div class="inp_wrap">
 					<input class="inp" id="file" type="file" />

@@ -50,6 +50,8 @@ class User extends Base
      * 更换头像
      */
     public function alter_avatar(){
+        $info = Db::name('users')->where('id', $this->user_id)->find();
+        $this->assign('info',$info);
         return $this->fetch();
     }
     /**
@@ -71,9 +73,9 @@ class User extends Base
             ];
             $res = Db::name('users')->update($data1);
             if($res){
-                return json(['code'=>1,'msg'=>'更换成功']);
+                return json(['code'=>1,'msg'=>'更新成功']);
             }else{
-                return json(['code'=>0,'msg'=>'更换失败']);
+                return json(['code'=>0,'msg'=>'更新失败']);
             }         
         }
         return $this->fetch();
@@ -91,9 +93,9 @@ class User extends Base
             ];
             $res = Db::name('users')->update($data1);
             if ($res) {
-                return json(['code' => 1, 'msg' => '更换成功']);
+                return json(['code' => 1, 'msg' => '更新成功']);
             } else {
-                return json(['code' => 0, 'msg' => '更换失败']);
+                return json(['code' => 0, 'msg' => '更新失败']);
             }                            
         }
 
