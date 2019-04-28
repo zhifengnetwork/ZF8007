@@ -46,6 +46,16 @@ class User extends Base
         $this->assign('info', $info);
         return $this->fetch();
     }  
+
+    /**
+     * 更换密码
+     */
+    public function change_pwd(){
+        $info = Db::name('users')->where('id', $this->user_id)->find();
+        $this->assign('info', $info);       
+        return $this->fetch();
+    }
+
     /**
      * 更换头像
      */
