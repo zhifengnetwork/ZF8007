@@ -61,7 +61,7 @@ class Login extends Base
             $e_time = strtotime(date('Y-m-d H:i:s', strtotime('+1 day')));
             $data1 = [
                 'mobile'         => $data['mobile'],
-                'password'       => md5($data['password']),
+                'password'       => pwd_encryption($data['password']),
                 'register_time'  => time(),
                 'register_method'=> 'mobile',
                 'end_time'       =>  $e_time
@@ -112,7 +112,7 @@ class Login extends Base
                 // if ($check['end_time'] < time()) {
                 //     return array('code' => 0, 'msg' => '您的游戏时长不足，请充值之后再登录');
                 // }
-                if( $data['check'] == 2 && ($check['password'] != md5($data['password']))){
+                if( $data['check'] == 2 && ($check['password'] != pwd_encryption($data['password']))){
                     return array('code' => 0, 'msg' => '密码错误');  
                 }  
                 Session::set('user',$check);
@@ -152,7 +152,7 @@ class Login extends Base
                     return json(['code' => 0, 'msg' => '两次密码输入不一致']);
                 }
                 $where = [
-                    'password' => md5($data['password'])
+                    'password' => pwd_encryption($data['password'])
                 ];
                 $res = Db::name('users')->where('mobile',$data['mobile1'])->update($where);
                 if($res){
