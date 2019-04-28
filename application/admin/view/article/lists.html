@@ -50,7 +50,7 @@
                 <tr class="text-c">
                     <td><input type="checkbox" value="{$vo.id}" name="pack_id"></td>
                     <td>{$vo.article_title}</td>
-                    <td>{$vo.article_id}</td>
+                    <td>{$vo.article_id|get_admin_name}</td>
                     <td>{$vo.content}</td>
                     <td>{:date('Y-m-d,H:s:i',$vo.add_time)}</td>
                     <td>{if condition="$vo.type eq 0"}公告{/if}

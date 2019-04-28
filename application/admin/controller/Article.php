@@ -98,6 +98,7 @@ class Article extends Base
     {
         $data = input('post.');
         //文本内容
+        if (empty($data['editorValue']))return json(['status'=>-1,'msg'=>'还没写内容啊。']);
         $content = mb_substr($data['editorValue'],3,-4,'utf-8');
         $data['editorValue'] = $content;
 //        dump($data);die;
