@@ -9,7 +9,7 @@ namespace app\admin\controller;
 
 use think\Db;
 use think\Session;
-//use think\Cookie;
+use think\Config;
 use think\captcha\Captcha;
 
 class Login extends Base
@@ -34,7 +34,7 @@ class Login extends Base
 
     public function entry()
     {
-        $captcha = new Captcha();
+        $captcha = new Captcha(Config::get('captcha'));
         return $captcha->entry();
     }
 

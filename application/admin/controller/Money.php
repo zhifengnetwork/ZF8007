@@ -189,4 +189,11 @@ class Money extends Base
         return $this->fetch();
     }
 
+    /**
+     * 提现审核
+     */
+    public function withdrawal()
+    {
+        return $this->fetch();
+    }
 }

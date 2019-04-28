@@ -208,7 +208,7 @@ class User extends Base
                 'pay_money' => $packs['pack_money'],
                 'pay_status' => 0,
                 'pay_time' => time(),
-                'pay_code' => ROOT_PATH . $img_path . $img_name,
+                'pay_code' => '/'.$img_path . $img_name,
                 'pay_way' => $pay_way['0']
             ]);
             if ($res) {
