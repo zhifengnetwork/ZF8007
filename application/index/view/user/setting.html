@@ -50,6 +50,29 @@
 
 	<script src="/__STATIC__/js/jquery-1.8.3.js"></script>
 	<script src="/__STATIC__/js/public.js"></script>
+	<script type="text/javascript" src="/public/static/admin/lib/layer/2.4/layer.js"></script>
+	<script>
+			$('.close').click(function(){				
+				$.ajax({
+					type: "post",
+					url: "{:url('index/user/logout')}",
+					data:{'status':1},
+					success: function (data) {
+						if (data.status == 1) {
+							layer.msg(data.msg, { icon: 1, time: 1000 }, function () {
+								 window.location.replace(data.url);
+							});
+						} else {
+							layer.msg(data.msg, { icon: 2, time: 1000 });
+						}
+					},
+					error: function () {
+						layer.alert("服务器繁忙, 请稍等!");
+					}
+				});
+			})	
+	</script> 
+
 </body>
 
 </html>
