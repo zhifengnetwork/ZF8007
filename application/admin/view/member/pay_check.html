@@ -137,7 +137,7 @@
                     $.post(url,{'id':id,'pay_status':2},function(data){
                         layer.close(index);
                         if(data.code == 1){
-                            layer.msg('审核成功！', {icon: 1, time: 1000},function(){
+                            layer.msg('审核不通过！', {icon: 1, time: 1000},function(){
                                 // window.location.replace(location.href);
                                 window.location.reload()
                             });
