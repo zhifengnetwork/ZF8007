@@ -197,6 +197,7 @@ function layer_error($msg)
     echo '<script type="text/javascript" src="/public/static/mobile/js/jquery-1.8.3.js"></script>';
     echo '<script type="text/javascript" src="/public/static/mobile/js/layer/2.4/layer.js"></script>';
     echo "<script>$(function () {layer.msg('$msg',{icon:5,time:1000},function(){window.history.go(-1)})}); </script>";
+}
 /**
  * 调广告
  * $ad_id  传一个广告位id
