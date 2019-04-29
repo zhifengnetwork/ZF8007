@@ -17,24 +17,18 @@
             <form method="GET" action="">
                 <div class="text-c">
                     日期范围：
-                    <input type="text" {literal}
-                           onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" {/literal}
-                    {if condition="isset($seach.datemin) && !empty($seach.datemin)" } value="{$seach.datemin|date='Y-m-d H:i:s',###}"
-                    {else/} value="" {/if} id="datemin" name="seach[datemin]" class="input-text Wdate" style="width:180px;">
-
+                    {literal}
+                    <input type="text" onfocus="WdatePicker()" id="datemin" name="seach[datemin]" {if condition='isset($seach.datemin)'}value="{$seach.datemin}"{else /}value=""{/if} class="input-text Wdate" style="width:120px;">
                     -
-                    <input type="text" {literal} onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'datemin\')}' })"
-                           {/literal} {if condition="isset($seach.datemax) && !empty($seach.datemax)" }
-                    value="{$seach.datemax|date='Y-m-d H:i:s',###}" {else/} value="" {/if} id="datemax" name="seach[datemax]"
-                    class="input-text Wdate" style="width:180px;">
-                    <input type="text" class="input-text" style="width:250px"
-                           value="{if condition='isset($seach.m_conditions)'}{$seach.m_conditions}{/if}" placeholder="输入用户名称"
-                           id="m_conditions" name="seach[m_conditions]">
-                    <button type="submit" class="btn btn-success radius" id="" name=""><i
-                            class="Hui-iconfont">&#xe665;</i> 搜用户</button>
+                    <input type="text" onfocus="WdatePicker()" id="datemax" name="seach[datemax]" {if condition='isset($seach.datemax)'}value="{$seach.datemax}"{else /}value=""{/if} class="input-text Wdate" style="width:120px;">
+                    {/literal}
+                    <!--<input type="text" class="input-text" style="width:250px" value="{if condition='isset($seach.m_conditions)'}{$seach.m_conditions}{/if}" placeholder="输入用户名称"-->
+                           <!--id="m_conditions" name="seach[m_conditions]">-->
+                    <button type="submit" class="btn btn-success radius" id="m_search" name=""><i
+                            class="Hui-iconfont">&#xe665;</i> 搜索</button>
                 </div>
             </form>
-            <div class="cl pd-5 bg-1 bk-gray mt-20"> 共有数据：<strong></strong> 条</span> </div>
+            <div class="cl pd-5 bg-1 bk-gray mt-20"> 共有数据：<strong>{$count}</strong> 条</span> </div>
             <div class="mt-20">
                 <table class="table table-border table-bordered table-hover table-bg table-sort">
                     <thead>
@@ -42,54 +36,44 @@
                         <th width="25"><input type="checkbox" name="" value=""></th>
                         <th width="80">ID</th>
                         <th width="80">用户名</th>
-                        <th width="90">支付金额</th>
-                        <th width="90">凭证</th>
-                        <th width="150">购买时间</th>
-                        <th width="90">支付状态</th>
+                        <th width="90">提现方式</th>
+                        <th width="90">提现金额</th>
+                        <th width="150">申请时间</th>
+                        <th width="90">审核状态</th>
                         <th width="100">操作</th>
                     </tr>
                     </thead>
                     <tbody>
-
+                    {foreach name="list" item="vo"}
                     <tr class="text-c">
                         <td><input type="checkbox" value="{$vo.id}" name="pack_id"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>{$key+1}</td>
+                        <td>{$vo.user_id|user_name}</td>
+                        <td>{$vo.withdraw_way}</td>
+                        <td>{$vo.money}</td>
+                        <td>{$vo.apply_time|date="Y-m-d H:m:s",###}</td>
                         <td>
-
-                            <span>无凭证上传</span>
-
-                            <a href="#" onclick="member_add('查看凭证','/admin/member/img?id=','500','500')">点击查看</a>
-
-
-                        </td>
-                        <td width="40"></td>
-                        <td class="td-status">
-
+                            {if condition="$vo.status eq 0"}
+                            <span class="label radius">未审核</span>
+                            {elseif condition="$vo.status eq 1"}
                             <span class="label label-success radius">审核通过</span>
-
-                            <span class="label radius">待审核</span>
-
+                            {else /}
                             <span class="label radius">审核不通过</span>
-
+                            {/if}
                         </td>
                         <td class="td-manage" data-id="{$vo.id}">
-
-                            <a title="审核" href="javascript:;" onclick="audit('')" class="ml-5 elementcheck" style="text-decoration:none">
+                            <a title="审核" href="javascript:;" onclick="audit('{$vo.id}')" class="ml-5 elementcheck" style="text-decoration:none">
                                 <i class="Hui-iconfont">&#xe606;</i>
                             </a>
-
                         </td>
                     </tr>
-
-
+                    {/foreach}
                     </tbody>
                 </table>
-
+                {empty name="$list"}
                 <p style="text-align: center;height: 75px;line-height: 75px">暂无数据</p>
-
+                {/empty}
+                {$list->render()}
             </div>
         </article>
     </div>
@@ -104,7 +88,7 @@
     }
     function audit(id){
 
-        url = "/admin/member/audit"
+        url = "/admin/Money/audit"
         layer.open({
             title:'安全提示',
             type:1,
@@ -120,8 +104,6 @@
                     if(data.code == 1){
                         layer.msg('审核成功！', {icon: 1, time: 1000},function(){
                             window.location.replace(location.href);
-                            open_closeAll();
-
                         });
                     }else{
                         layer.msg('审核失败！', {icon: 2, anim: 6, time: 1000});
@@ -133,9 +115,8 @@
                 $.post(url,{'id':id,'pay_status':2},function(data){
                     layer.close(index);
                     if(data.code == 1){
-                        layer.msg('审核成功！', {icon: 1, time: 1000},function(){
+                        layer.msg('审核不通过！', {icon: 1, time: 1000},function(){
                             window.location.replace(location.href);
-                            open_closeAll();
                         });
                     }else{
                         layer.msg('审核失败！', {icon: 2, anim: 6, time: 1000});
