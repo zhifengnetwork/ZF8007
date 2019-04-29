@@ -20,15 +20,18 @@
          <div class="swiperBox">
             <div class="swiper-container">
                 <div class="swiper-wrapper">
-                    <div class="swiper-slide">
-                           <img src="/__STATIC__/image/img1@2x.png" alt="">
-                    </div>
-                    <div class="swiper-slide">
-                            <img src="/__STATIC__/image/img1@2x.png" alt="">
-                    </div>
-                    <div class="swiper-slide">
-                            <img src="/__STATIC__/image/img1@2x.png" alt="">
-                    </div>
+                    {volist name="banner" id="ba"}
+                        <div class="swiper-slide">
+                            <img src="{ba.image}" alt="">
+                        </div>
+                    {/volist}
+
+                    <!--<div class="swiper-slide">-->
+                            <!--<img src="/__STATIC__/image/img1@2x.png" alt="">-->
+                    <!--</div>-->
+                    <!--<div class="swiper-slide">-->
+                            <!--<img src="/__STATIC__/image/img1@2x.png" alt="">-->
+                    <!--</div>-->
                 </div>
                 <!-- 如果需要分页器 -->
                 <div class="swiper-pagination"></div>
@@ -36,7 +39,10 @@
          </div>
          <!-- 公告 -->
          <div class="announcement ">
-             <img src="/__STATIC__/image/notice.png" alt="" class="notice-i">
+
+                 <img src="/__STATIC__/image/notice.png" alt="" class="notice-i">
+
+
              <div class="notice">
                     公告:
                     <span onclick="location.href='/Index/user/notice'">
@@ -49,25 +55,33 @@
              <ul class="clearfloat">
                  <li class="four-item">
                      <a {if condition="$is_end eq 1"} href="javascript:void(0);" onclick="end_time()" {else} href="{:url('index/lottery_list?type=1')}" {/if}>
-                        <img src="/__STATIC__/image/img2@2x.png" alt="" class="four-icon">
+                     {volist name="luck_lottery" id="ll"}
+                        <img src="{$ll.image}" alt="" class="four-icon">
+                     {/volist}
                         <P class="four-name">幸运飞艇</P>
                      </a>
                     </li>
                  <li class="four-item">
                      <a {if condition="$is_end eq 1"} href="javascript:void(0);" onclick="end_time()" {else /} href="{:url('Index/index/lottery_list?type=2')}" {/if}>
-                            <img src="/__STATIC__/image/img3@2x.png" alt="" class="four-icon">
+                            {volist name="happy_lottery" id='hl'}
+                            <img src="{$hl.image}" alt="" class="four-icon">
+                     {/volist}
                             <P class="four-name">快乐飞艇</P>
                      </a>
                     </li>
                  <li class="four-item">
                      <a {if condition="$is_end eq 1"} href="javascript:void(0);" onclick="end_time()" {else /} href="{:url('index/lottery_list?type=3')}" {/if}>
-                            <img src="/__STATIC__/image/img4@2x.png" alt="" class="four-icon">
+                     {volist name="happy_car" id='hc'}
+                     <img src="{$hc.image}" alt="" class="four-icon">
+                     {/volist}
                             <P class="four-name">快乐赛车</P>
                      </a>
                     </li>
                  <li class="four-item">
                      <a {if condition="$is_end eq 1"} href="javascript:void(0);" onclick="end_time()" {else /} href="{:url('index/lottery_list?type=4')}" {/if}>
-                            <img src="/__STATIC__/image/img5@2x.png" alt="" class="four-icon">
+                     {volist name="happy_color" id='hr'}
+                     <img src="{$hr.image}" alt="" class="four-icon">
+                     {/volist}
                             <P class="four-name">快乐时时彩</P>
                      </a>
                     </li>
