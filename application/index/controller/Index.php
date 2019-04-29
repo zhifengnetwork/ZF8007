@@ -26,6 +26,17 @@ class Index extends Base
             $article['content']='暂无公告';
             $article['id']=0;
         }
+        //调用广告
+        $banner=get_ad(8);//首页banner
+        $luck_lottery=get_ad(4);//幸运飞艇
+        $happy_lottery=get_ad(5);//快乐飞艇
+        $happy_car=get_ad(6);//快乐赛车
+        $happy_color=get_ad(7);//快乐时时彩
+        $this->assign('banner',$banner);
+        $this->assign('luck_lottery',$luck_lottery);
+        $this->assign('happy_lottery',$happy_lottery);
+        $this->assign('happy_car',$happy_car);
+        $this->assign('happy_color',$happy_color);
         //看看用户到期了没有
         $user_id=$this->user_id;
 //        var_dump($user_id);
