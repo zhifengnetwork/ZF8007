@@ -54,7 +54,6 @@ class Money extends Base
     // 搜索条件
     public function s_condition($conditions, $datemins, $datemaxs)
     {
-        $time = " 23:59:59";
         if ($conditions) {
             $m_conditions = str_replace(' ', '', $conditions);
             $where['pack_name'] = ['like', "%$m_conditions%"];
