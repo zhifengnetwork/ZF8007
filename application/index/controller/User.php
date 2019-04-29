@@ -304,4 +304,62 @@ class User extends Base
             $this->redirect('/index/login/index');
         }
     }
+
+    /*
+     * 提现
+     */
+    public function withdraw()
+    {
+        $user_id = $this->user_id;
+        $commission = Db::name('id',$user_id)->value('commission');
+
+        $this->assign('commission',$commission);
+        return $this->fetch();
+    }
+
+    /*
+     * 提现方式展示
+     */
+    public function withdraw_way()
+    {
+        $lists = Db::name('withdraw_way')->where('user_id',$this->user_id)->select();
+        $this->assign('lists',$lists);
+        return $this->fetch();
+    }
+
+    /*
+     * 编辑提现方式
+     */
+    public function edit_withdraw()
+    {
+        $data = input('post.');
+        if($_POST){
+            if ($data['payways'] == 'ali'){
+                $res = Db::name('withdraw_way')->where('id',$this->user_id)->update(['account'=>$data['account'],'user_name'=>$data['user_name']]);
+                if ($res) {
+                    return json(['status' => 1, 'msg' => '编辑成功']);
+                }else{
+                    return json(['status' => -1, 'msg' => '编辑失败']);
+                }
+            }
+
+            if ($data['payways'] == 'bank'){
+                $res = Db::name('withdraw_way')->where('id',$this->user_id)->update([
+                    'withdraw_way'=>$data['bank'],
+                    'account'=>$data['account'],
+                    'user_name'=>$data['user_name'],
+                    'address'=>$data['address']
+                ]);
+                if ($res) {
+                    return json(['status' => 1, 'msg' => '编辑成功']);
+                }else{
+                    return json(['status' => -1, 'msg' => '编辑失败']);
+                }
+            }
+        }
+
+        $list = Db::name('withdraw_way')->where('id',$this->user_id)->select();
+        $this->assign('list',$list);
+        return $this->fetch();
+    }
 }
