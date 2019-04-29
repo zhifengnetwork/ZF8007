@@ -304,4 +304,6 @@ class User extends Base
             $this->redirect('/index/login/index');
         }
     }
+
+									
 }
