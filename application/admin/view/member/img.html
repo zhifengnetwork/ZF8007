@@ -25,7 +25,16 @@
 </style>
 <body>
     <div class="container">
+        {empty name="$info.pay_code"}
         <img class="center" src="{$info.pay_code}" alt="">
+        {else/}
+        <div style="height: 100vh;display: grid">
+        <div style="margin:auto">
+            暂无凭证，或者凭证丢失
+        </div>
+        
+        </div>
+        {/empty} 
     </div>
     
 </body>
