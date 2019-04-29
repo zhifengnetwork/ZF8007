@@ -190,3 +190,16 @@ function check_user(){
         exit;
     }
 }
+/**
+ * 调广告
+ * $ad_id  传一个广告位id
+ */
+function get_ad($ad_id){
+    if(is_numeric($ad_id) && $ad_id>0){
+        $ads=Db::name('ad')->where(['pid'=>$ad_id])->select();
+        if(isset($ads)&&!empty($ads)){
+            return $ads;
+        }
+    }
+    return array();
+}
