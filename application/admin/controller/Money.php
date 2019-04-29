@@ -8,6 +8,7 @@
 namespace app\admin\controller;
 
 use think\Db;
+use think\Exception;
 use think\Session;
 use think\Loader;
 class Money extends Base
@@ -54,7 +55,6 @@ class Money extends Base
     // 搜索条件
     public function s_condition($conditions, $datemins, $datemaxs)
     {
-        $time = " 23:59:59";
         if ($conditions) {
             $m_conditions = str_replace(' ', '', $conditions);
             $where['pack_name'] = ['like', "%$m_conditions%"];
@@ -189,4 +189,92 @@ class Money extends Base
         return $this->fetch();
     }
 
+    /**
+     * 提现审核
+     */
+    public function withdrawal()
+    {
+        $where['id'] = ['>',0];
+        $datemin = '';
+        $datemax = '';
+        $seach = isset($_GET['seach']) ? $_GET['seach'] : '';
+        $page = 10;
+        //搜索条件
+        if ($seach) {
+            $page = 0;
+            $time = " 23:59:59";
+//            if ($seach['m_conditions']){
+//                $m_conditions = str_replace(' ', '', $seach['m_conditions']);
+//                $where['nickname'] = ['like',"%$m_conditions%"];
+//                $ids = Db::name('users')->where($where)->field('id')->select();
+//                $lists = [];
+//                foreach($ids as $v){
+//                    array_push($lists,$v['id']);
+//                }
+//                $list = Db::name('withdraw_log')->where('user_id','in',$lists)->paginate($page);
+//                $count = count($list);
+//                $this->assign('list',$list);
+//                $this->assign('count',$count);
+//                dump($lists);die;
+//            }
+            if ($seach['datemin'] && $seach['datemax']) {
+                $datemin = strtotime($seach['datemin']);
+                $datemax = strtotime($seach['datemax'].$time);
+                $where['apply_time'] = [['>= time',$datemin],['<= time',$datemax],'and'];
+            } elseif ($seach['datemin']) {
+                $where['apply_time'] = ['>= time',strtotime($seach['datemin'])];
+            } elseif ($seach['datemax']) {
+                $where['apply_time'] = ['<= time',strtotime($seach['datemax'].$time)];
+            }
+        }
+
+        $this->assign('seach',$seach);
+        $list = Db::name('withdraw_log')->where($where)->paginate($page);
+        $count = count($list);
+        $this->assign('list',$list);
+        $this->assign('count',$count);
+
+        return $this->fetch();
+    }
+    //审核
+    public function audit()
+    {
+        $data = input('post.');
+        if ($_POST){
+            // 启动事务
+            Db::startTrans();
+            try{
+                //申请内容
+                $order = Db::name('withdraw_log')->where('id',$data['id'])->find();
+
+                //用户信息
+                $user = Db::name('users')->where('id',$order['user_id']);
+                //支付方式
+//                $way = Db::name('withdraw_way')->where('id',$order['withdraw_way'])->find();
+
+
+                //通过
+                if ($data['pay_status'] == 1){
+                    //减去用户佣金
+                    Db::name('users')->where('id',$order['user_id'])->setDec('commission',$order['money']);
+                    //改变状态
+                    Db::name('withdraw_log')->where('id',$data['id'])->update(['status'=>1]);
+                    //之后是否人工转账？？
+                }
+
+                //不通过
+                if ($data['pay_status'] == 2){
+                    Db::name('withdraw_log')->where('id',$data['id'])->update(['status'=>2]);
+                }
+
+                // 提交事务
+                Db::commit();
+                return json(['code'=>1]);
+            } catch (Exception $e){
+                //回滚事务
+                Db::rollback();
+                return json(['code'=>0]);
+            }
+        }
+    }
 }

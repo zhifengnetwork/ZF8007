@@ -8,7 +8,7 @@
 
     <section class="Hui-article-box">
         <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 资金管理 <span
-                class="c-gray en">&gt;</span> 套餐管理<a class="btn btn-success radius r"
+                class="c-gray en">&gt;</span> 支付审核<a class="btn btn-success radius r"
                 style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);"
                 title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
         <div class="Hui-article">
@@ -39,7 +39,7 @@
                     <table class="table table-border table-bordered table-hover table-bg table-sort">
                         <thead>
                             <tr class="text-c">
-                                <th width="25"><input type="checkbox" name="" value=""></th>
+                                <!-- <th width="25"><input type="checkbox" name="" value=""></th> -->
                                 <th width="80">ID</th>
                                 <th width="80">用户名</th>
                                 <th width="80">套餐名字</th>
@@ -54,7 +54,7 @@
                             {if condition="isset($list)"}
                             {volist name="list" id="vo" }
                             <tr class="text-c">
-                                <td><input type="checkbox" value="{$vo.id}" name="pack_id"></td>
+                                <!-- <td><input type="checkbox" value="{$vo.id}" name="pack_id"></td> -->
                                 <td>{$vo.id}</td>
                                 <td>{$vo.nickname}</td>
                                 <td>{$vo.pack_name}</td>
@@ -123,8 +123,8 @@
                         layer.close(index);
                         if(data.code == 1){
                             layer.msg('审核成功！', {icon: 1, time: 1000},function(){
-                                window.location.replace(location.href);
-                                open_closeAll();
+                                // window.location.replace(location.href);
+                                window.location.reload()
                              
                             });
                         }else{
@@ -137,9 +137,9 @@
                     $.post(url,{'id':id,'pay_status':2},function(data){
                         layer.close(index);
                         if(data.code == 1){
-                            layer.msg('审核成功！', {icon: 1, time: 1000},function(){
-                                window.location.replace(location.href);
-                                open_closeAll();
+                            layer.msg('审核不通过！', {icon: 1, time: 1000},function(){
+                                // window.location.replace(location.href);
+                                window.location.reload()
                             });
                         }else{
                             layer.msg('审核失败！', {icon: 2, anim: 6, time: 1000});

@@ -198,9 +198,7 @@ class Member extends Base
 
     public function audit(){
         $data = input('post.');
-
-        if($_POST){
-            
+        if($_POST){           
             // 启动事务
             Db::startTrans();
             try{
@@ -208,25 +206,27 @@ class Member extends Base
                 $res =  Db::name('user_pay_log')->update($data);
                 // 通过
                 if($data['pay_status']==1){
-                    //还要给用户添加对应时长
-                    $info = Db::name('user_pay_log')
-                        ->alias('p')
-                        ->join('package pa', 'pa.id = p.package_id')
-                        ->join('users u','u.id = p.user_id')
-                        ->where('p.id',$data['id'])
-                        ->field('pa.*,p.user_id,u.end_time')
-                        ->find();
-
-                    $time = $info['pack_time'];
-                     
-                    $end_time = strtotime(date('Y-m-d H:i:s', strtotime("+$time day",$info['end_time'])));
-                    $where = [
-                        'end_time' => $end_time,
-                        'id'       => $info['user_id']
-                    ];
-                    $user_add = Db::name('users')->update($where);
+                    //给用户添加对应时长
+                    $where = $this->add_condition($data);
+                    // 判断是否存在上级，存在则给上级加佣金
+                    $user_leader = Db::name('users')->where('id', $where['id'])->find();
+                    if($user_leader['first_leader']){
+                        // 上级用户
+                        Db::name('users')->where('id',$user_leader['first_leader'])->setInc('commission', $where['commission']);
+                        $rebate_data = [
+                            'order_id'      =>  $data['id'],
+                            'first_leader'  =>  $user_leader['first_leader'],
+                            'rebate_money'  =>  $where['commission'],
+                            'rebate_time'   =>  time()
+                        ];
+                        // 佣金表变动
+                        Db::name('rebate_log')->insert($rebate_data);                          
+                    }
+                    //下级用户
+                    unset($where['commission']);
+                    $user_add = Db::name('users')->update($where);          
+                   
                 }
-
                 // 提交事务
                 Db::commit();
                 return json(['code'=>1]);    
@@ -235,28 +235,27 @@ class Member extends Base
                 Db::rollback();
                 return json(['code'=>0]);
             }            
-
-        }
-        // $id = input('id/d');
-        // $status = input('status/d');
-        // // $user_id = session('admin_id');
-        // // $result['code'] = 0;
-        // if ($id && $user_id) {
-        //     Db::startTrans();
-        //     $bool = Db::name('comment')->where('id',$id)->update(['pay_status'=>$status,'utime'=>time()]);
-        //     if ($bool) {
-        //         $is_update = Db::name('article')->where(['id'=>$id])->setInc('comment');
-        //         if ($is_update) {
-        //             $result['code'] = 1;
-        //             Db::commit();
-        //         } else {
-        //             Db::rollback();
-        //         }
-        //     }
-        // }
-
-        // return json($result);        
+        }   
     }
+
+    // 条件：给用户添加时间
+    public function add_condition($data){
+        $info = Db::name('user_pay_log')
+            ->alias('p')
+            ->join('package pa', 'pa.id = p.package_id')
+            ->join('users u', 'u.id = p.user_id')
+            ->where('p.id', $data['id'])
+            ->field('pa.*,p.user_id,u.end_time')
+            ->find();
+        $time = $info['pack_time'];
+        $end_time = strtotime(date('Y-m-d H:i:s', strtotime("+$time day", $info['end_time'])));
+        $where = [
+            'end_time' => $end_time,
+            'id'       => $info['user_id'],
+            'commission' =>$info['rebate_money']
+        ]; 
+        return $where;       
+    }  
 
     public function show()
     {

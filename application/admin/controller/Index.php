@@ -33,8 +33,19 @@ class Index extends Base
 
     public function welcome()
     {
+        $data = Db::name('admin_log')->where('admin_id',Session::get('admin_id'))->order('addtime desc')->select();
+        $count = count($data);
+        $info = Db::name('admin')->where('id',Session::get('admin_id'))->find();
+
+        $server = $_SERVER;
+//        dump($server);die;
+        $this->assign('data',$data);
+        $this->assign('info',$info);
+        $this->assign('count',$count);
+        $this->assign('server',$server);
         return $this->fetch();
     }
+
     public function logout()
     {
         session::clear();

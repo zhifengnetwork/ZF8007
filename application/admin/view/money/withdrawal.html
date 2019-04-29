@@ -1,0 +1,140 @@
+<!--_meta 作为公共模版分离出去-->
+<!DOCTYPE HTML>
+<html>
+{include file='layout/header' /}
+
+<body>
+{include file='layout/menu' /}
+
+<section class="Hui-article-box">
+    <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 资金管理 <span
+            class="c-gray en">&gt;</span> 支付审核<a class="btn btn-success radius r"
+                                                 style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);"
+                                                 title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+    <div class="Hui-article">
+
+        <article class="cl pd-20">
+            <form method="GET" action="">
+                <div class="text-c">
+                    日期范围：
+                    {literal}
+                    <input type="text" onfocus="WdatePicker()" id="datemin" name="seach[datemin]" {if condition='isset($seach.datemin)'}value="{$seach.datemin}"{else /}value=""{/if} class="input-text Wdate" style="width:120px;">
+                    -
+                    <input type="text" onfocus="WdatePicker()" id="datemax" name="seach[datemax]" {if condition='isset($seach.datemax)'}value="{$seach.datemax}"{else /}value=""{/if} class="input-text Wdate" style="width:120px;">
+                    {/literal}
+                    <!--<input type="text" class="input-text" style="width:250px" value="{if condition='isset($seach.m_conditions)'}{$seach.m_conditions}{/if}" placeholder="输入用户名称"-->
+                           <!--id="m_conditions" name="seach[m_conditions]">-->
+                    <button type="submit" class="btn btn-success radius" id="m_search" name=""><i
+                            class="Hui-iconfont">&#xe665;</i> 搜索</button>
+                </div>
+            </form>
+            <div class="cl pd-5 bg-1 bk-gray mt-20"> 共有数据：<strong>{$count}</strong> 条</span> </div>
+            <div class="mt-20">
+                <table class="table table-border table-bordered table-hover table-bg table-sort">
+                    <thead>
+                    <tr class="text-c">
+                        <th width="25"><input type="checkbox" name="" value=""></th>
+                        <th width="80">ID</th>
+                        <th width="80">用户名</th>
+                        <th width="90">提现方式</th>
+                        <th width="90">提现金额</th>
+                        <th width="150">申请时间</th>
+                        <th width="90">审核状态</th>
+                        <th width="100">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach name="list" item="vo"}
+                    <tr class="text-c">
+                        <td><input type="checkbox" value="{$vo.id}" name="pack_id"></td>
+                        <td>{$key+1}</td>
+                        <td>{$vo.user_id|user_name}</td>
+                        <td>{$vo.withdraw_way}</td>
+                        <td>{$vo.money}</td>
+                        <td>{$vo.apply_time|date="Y-m-d H:m:s",###}</td>
+                        <td>
+                            {if condition="$vo.status eq 0"}
+                            <span class="label radius">未审核</span>
+                            {elseif condition="$vo.status eq 1"}
+                            <span class="label label-success radius">审核通过</span>
+                            {else /}
+                            <span class="label radius">审核不通过</span>
+                            {/if}
+                        </td>
+                        <td class="td-manage" data-id="{$vo.id}">
+                            <a title="审核" href="javascript:;" onclick="audit('{$vo.id}')" class="ml-5 elementcheck" style="text-decoration:none">
+                                <i class="Hui-iconfont">&#xe606;</i>
+                            </a>
+                        </td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+                {empty name="$list"}
+                <p style="text-align: center;height: 75px;line-height: 75px">暂无数据</p>
+                {/empty}
+                {$list->render()}
+            </div>
+        </article>
+    </div>
+</section>
+
+{include file='layout/footer' /}
+
+<script type="text/javascript">
+    /*用户-添加*/
+    function member_add(title, url, w, h) {
+        layer_show(title, url, w, h);
+    }
+    function audit(id){
+
+        url = "/admin/Money/audit"
+        layer.open({
+            title:'安全提示',
+            type:1,
+            content:'<div style="padding:15px 0px 10px 20px;font-size:14px">通过审核?</div>',
+            time:5000,
+            closeBtn:1,
+            btn:['通过','不通过','取消'],
+
+            //通过
+            yes:function(index,layero){
+                $.post(url,{'id':id,'pay_status':1},function(data){
+                    layer.close(index);
+                    if(data.code == 1){
+                        layer.msg('审核成功！', {icon: 1, time: 1000},function(){
+                            window.location.replace(location.href);
+                        });
+                    }else{
+                        layer.msg('审核失败！', {icon: 2, anim: 6, time: 1000});
+                    }
+                });
+            },
+            //不通过
+            btn2:function(index,layero){
+                $.post(url,{'id':id,'pay_status':2},function(data){
+                    layer.close(index);
+                    if(data.code == 1){
+                        layer.msg('审核不通过！', {icon: 1, time: 1000},function(){
+                            window.location.replace(location.href);
+                        });
+                    }else{
+                        layer.msg('审核失败！', {icon: 2, anim: 6, time: 1000});
+                    }
+                });
+            },
+            //取消
+            btn3:function(index,layero){
+                layer.close(index);
+            },
+            cancel:function(){
+                layer.close();
+            }
+        })
+    }
+
+</script>
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+
+</html>

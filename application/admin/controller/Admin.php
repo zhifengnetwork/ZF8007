@@ -105,7 +105,7 @@ class Admin extends Base
         if($data['act'] == 'edit'){
             $data1 = [
                 'name'    => $data['adminName'],
-                'password'=> md5($data['password']),
+                'password'=> pwd_encryption($data['password']),
                 'is_super'=> $data['adminRole'],
                 'addtime' => time()
             ];
