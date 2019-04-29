@@ -72,3 +72,12 @@ function check_user(){
         exit;
     }
 }
+
+/**
+ * 获取后台管理员昵称
+ */
+function get_admin_name($id){
+    if($id>0){
+        return Db::name('admin')->where(['id'=>$id])->value('name');
+    }
+}

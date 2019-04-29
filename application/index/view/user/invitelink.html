@@ -45,7 +45,7 @@
             		<!--分享-->
             		<div class="share">
             			<div class="ur publicEllipsis1" id="codeNum">{$url}</div>
-            			<a id="dynamic" data-clipboard-target="#codeNum">分享</a>
+            			<a id="dynamic" data-clipboard-target="#codeNum">复制地址</a>
             		</div>
             	</div>
             </div>
@@ -55,6 +55,7 @@
 		<script src="/__STATIC__/js/public.js"></script>
 		<script src="/__STATIC__/js/clipboard.js"></script>
 		<script src="/__STATIC__/js/jquery.zclip.min.js"></script>
+		<script type="text/javascript" src="/public/static/admin/lib/layer/2.4/layer.js"></script>
 	
 	<script>
 		$(document).ready(function () {
@@ -66,6 +67,7 @@
 
 				clipboard.on("success", function (e) {
 					console.log(e);
+					layer.msg('复制成功')
 				});
 
 				clipboard.on("error", function (e) {
