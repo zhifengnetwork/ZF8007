@@ -16,12 +16,12 @@ class Index extends Base
         //调用公告
         $article=Db::name('article')->where('type','0')->order('add_time desc')->find();
         if (isset($article['content'])&&$article['content']!=''){
-            if(strlen($article['content'])>66){
-                $flag="...";
-            }else{
-                $flag='';
-            }
-            $article['content']=substr($article['content'],0,66).$flag;
+//            if(strlen($article['content'])>66){
+//                $flag="...";
+//            }else{
+//                $flag='';
+//            }
+//            $article['content']=substr($article['content'],0,66).$flag;
         }else{
             $article['content']='暂无公告';
             $article['id']=0;
@@ -55,7 +55,7 @@ class Index extends Base
 //        $user_id=1;//在登录做好之前暂用
 //        echo $type;
         if(in_array($type,array(1,2,3,4))){
-            $page=10;
+            $page=15;
             $max=($num-1)*$page+1;
             $list=Db::name('interface_recorder')->where(['type'=>$type])->order('lottery_date desc')->limit($max,$page)->select();
 //print_r($list);die;

@@ -43,6 +43,9 @@
 	height: .16rem;
 	background: url(../../image/my/dow.png) no-repeat;
 	background-size: 100% 100%;
+	transition: 1s;
+	-moz-transition: 1s;
+	-webkit-transition: 1s;
 }
 .ack {
 	margin: .78rem auto 0;
@@ -55,4 +58,12 @@
 	color: #f9f7fb;
 	text-align: center;
 	line-height: .8rem;
+}
+
+.active {
+	transform: rotate(-180deg);
+	-webkit-transform: rotate(-180deg);
+	transition: .5s;
+	-moz-transition: .5s;
+	-webkit-transition: .5s;
 }

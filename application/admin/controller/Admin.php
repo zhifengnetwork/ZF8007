@@ -24,6 +24,7 @@ class Admin extends Base
     public function lists()
     {
         $where['id'] = ['>', 0];
+        $where['is_delete'] = 0;
         $datemin = '';
         $datemax = '';
         $seach = isset($_GET['seach']) ? $_GET['seach'] : '';
@@ -85,13 +86,13 @@ class Admin extends Base
         $data = input('post.');//dump($data);die;
         $return = ['status'=>0,'msg'=>'参数错误']; //初始化返回信息
         if($data['act'] == 'add'){
-            $is_name = Db::name('admin')->where('name',$data['adminName'])->find();
+            $is_name = Db::name('admin')->where(['name'=>$data['adminName'],'is_delete'=>0])->find();
             if(!empty($is_name)){
                 return json(['status'=>0,'msg'=>'已经有此管理员了！']);
             }
             $data1 = [
                 'name'    => $data['adminName'],
-                'password'=> md5($data['password']),
+                'password'=> pwd_encryption($data['password']),
                 'is_super'=> $data['adminRole'],
                 'addtime' => time()
             ];
@@ -138,8 +139,8 @@ class Admin extends Base
         if ($_POST){
             $id = json_decode($data['id'], true);
             $where['id'] = array('in', $id);
-            $res = Db::table('zf_admin')->where($where)->delete();
-            if($res){
+            $res = Db::name('admin')->where($where)->update(['is_delete'=>1]);
+            if($res == 1){
                 return json(['status'=>1,'msg'=>'删除成功']);
             }else {
                 return json(['status'=>1,'msg'=>'删除失败']);

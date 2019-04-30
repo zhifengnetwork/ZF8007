@@ -54,12 +54,36 @@
 }
 
 .notice{
+	padding: .05rem 0;
     overflow: hidden;
 	text-overflow: ellipsis;
     white-space: nowrap;
     max-width: 6.6rem;
     position: absolute;
     left: .6rem;
+    line-height: .35rem;
+}
+#scroll_div {
+    height:.3rem;
+    overflow: hidden;
+    white-space: nowrap;
+    width:5.85rem;
+    background-color: #212332;
+    color: #fff;
+    text-align: center;
+    float: left;
+    line-height: .35rem;
+}
+.scroll {
+	margin-left: 6.25rem;
+}
+.not {
+	margin-right: .1rem;
+	vertical-align: top;
+	float: left;
+}
+#scroll_begin,#scroll_end {
+    display: inline;
 }
 
 .fourGongGe{

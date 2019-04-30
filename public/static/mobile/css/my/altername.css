@@ -9,6 +9,7 @@
 	border: none;
 	outline: none;
 	border-radius: 4px;
+	font-size: .3rem;
 }
 input::-webkit-input-placeholder {
 	font-size: .3rem;
