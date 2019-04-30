@@ -53,7 +53,7 @@
 					success: function (data) {
 						if (data.code == 1) {
 							layer.msg(data.msg, { icon: 1, time: 1000 }, function () {
-								parent.location.reload();
+								window.history.back()
 							});
 						} else {
 							layer.msg(data.msg, { icon: 2, time: 1000 });
