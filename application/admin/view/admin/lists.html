@@ -105,7 +105,7 @@ function admin_del(obj,admin_id){
 			dataType: "json",
 			data: {'id':admin_id},
 			success: function(data){
-				if(data.code == 1){
+				if(data.status == 1){
 					$(obj).parents("tr").remove();
 					layer.msg('删除成功',{icon:1, time:1000});
 				}else {
