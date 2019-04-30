@@ -305,6 +305,7 @@ class User extends Base
         }
     }
 
+									
     /*
      * 提现
      */
