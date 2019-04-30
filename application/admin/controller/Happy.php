@@ -28,7 +28,7 @@ class Happy extends Base
         $racing_issue=$this->get_max_issue(3);
         $lottery_issue=$this->get_max_issue(4);
         //4个接口连接
-        $luck_url='http://api.b1api.com/t?p=json&t=bjpk10&limit=20&token=2B5AD08943A60F98';
+        $luck_url='http://api.b1api.com/t?p=json&t=bjpk10&limit=20&token=AE6DF84BF2D21BA2';
         $airship_url='https://api.happylottery.com/data/airship/last.xml';
         $racing_url='https://api.happylottery.com/data/racing/last.xml';
         $lottery_url='https://api.happylottery.com/data/lottery/last.xml';
@@ -71,7 +71,13 @@ class Happy extends Base
                 if(isset($luck_data) && !empty($luck_data)){
                     foreach ($luck_data as $key=>$value){
                         $lottery_time=strtotime($value['opentime']);
-                        $this->save_interface($type,$value['expect'],$value['opencode'],$lottery_time,time());
+                        $value['opencode']=explode(',',$value['opencode']);
+                        $opencode='';
+                        foreach ($value['opencode'] as $k=>$v){
+                            $opencode.=ltrim($v,0).',';
+                        }
+                        $opencode=rtrim($opencode,',');
+                        $this->save_interface($type,$value['expect'],$opencode,$lottery_time,time());
                         echo '存入一条类型为'.$type.'，期号为'.$value['expect'].'的数据/n';
                     }
                 }
@@ -81,7 +87,13 @@ class Happy extends Base
                         if($value['expect']>$max_issue){
                             //存起来
                             $lottery_time=strtotime($value['opentime']);
-                            $this->save_interface($type,$value['expect'],$value['opencode'],$lottery_time,time());
+                            $value['opencode']=explode(',',$value['opencode']);
+                            $opencode='';
+                            foreach ($value['opencode'] as $k=>$v){
+                                $opencode.=ltrim($v,0).',';
+                            }
+                            $opencode=rtrim($opencode,',');
+                            $this->save_interface($type,$value['expect'],$opencode,$lottery_time,time());
                             echo '存入一条类型为'.$type.'，期号为'.$value['expect'].'的数据/n';
                         }
                     }

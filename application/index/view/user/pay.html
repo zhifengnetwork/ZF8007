@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>支付宝编辑</title>
+		<script type="text/javascript" src="/__STATIC__/js/rem.js" ></script>
+		<link rel="stylesheet" type="text/css" href="/__STATIC__/css/public.css"/>
+		<link rel="stylesheet" type="text/css" href="/__STATIC__/css/header.css"/>
+		<link rel="stylesheet" type="text/css" href="/__STATIC__/css/my/pay.css"/>
+	</head>
+	<body>
+		<    class="wrapper">
+			<!--头部-->
+			<div class="lb_headWrap">
+				<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+                    <img class="lb_headWrap_return_img" src="/__STATIC__/image/back@2x.png"/>
+                </p>
+				<span>支付宝编辑</span>
+            </div>
+            <!--内容-->
+		<form action="" method="post" id="alipay" >
+            <div class="content">
+				<input type="hidden" id="user_id" value="{$user_id ?? ''}">
+            	<div class="minor">
+            		<!--支付宝账号-->
+            		<div class="bank_wrap">
+            			<div class="name">支付宝账号：</div>
+            			<div class="inp_wrap">
+            				<input class="inp put" type="text" id="account" value="{$info.account ?? ''}" placeholder="请输入支付宝号" />
+            			</div>
+            		</div>
+            		<!--输入姓名-->
+            		<div class="bank_wrap">
+            			<div class="name">姓名：</div>
+            			<div class="inp_wrap">
+            				<input class="inp" type="text" id="user_name" value="{$info.user_name ?? ''}" placeholder="请输入真实名字" />
+            			</div>
+            		</div>
+            		
+            	</div>
+            </div>
+            <!--按钮-->
+            <div class="btn_wrap">
+            	<a class="btn" href="javascript:submit()" >提交</a>
+            </div>
+		</div>
+		</form>
+		
+		<script src="/__STATIC__/js/jquery-1.8.3.js"></script>
+        <script src="/__STATIC__/js/public.js"></script>
+		<script src="/public/static/admin/lib/layer/2.4/layer.js"></script>
+		<script type="text/javascript">
+			function submit() {
+				var id=$('#user_id').val();
+				var account=$('#account').val();
+				var user_name=$('#user_name').val()
+				$.ajax({
+					type:"post",
+					url: "{:url('index/User/pay')}",
+					data: {'id':id,'account':account,'user_name':user_name},
+					dataType: "json",
+					success:function (data) {
+						if (data.status == 1){
+							layer.msg(data.msg, {icon:1, time:1000},function () {
+								window.location.reload()
+							})
+						} else {
+							layer.msg(data.msg, {icon:2, time:1000})
+						}
+					},
+					error:function (data) {
+						layer.msg('服务器繁忙，请稍后重试', {time:1000})
+					}
+				})
+			}
+		</script>
+	</body>
+</html>
