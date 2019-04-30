@@ -16,12 +16,12 @@ class Index extends Base
         //调用公告
         $article=Db::name('article')->where('type','0')->order('add_time desc')->find();
         if (isset($article['content'])&&$article['content']!=''){
-            if(strlen($article['content'])>66){
-                $flag="...";
-            }else{
-                $flag='';
-            }
-            $article['content']=substr($article['content'],0,66).$flag;
+//            if(strlen($article['content'])>66){
+//                $flag="...";
+//            }else{
+//                $flag='';
+//            }
+//            $article['content']=substr($article['content'],0,66).$flag;
         }else{
             $article['content']='暂无公告';
             $article['id']=0;
