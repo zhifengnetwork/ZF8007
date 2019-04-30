@@ -26,7 +26,7 @@
 					<div class="pay">
 						<div class="way">购买会员天数：</div>
 						<div class="pull_box time">
-							<p im="{$package.0.id}" id="pack">{$package.0.pack_name}：{$package.0.pack_time}天<span class="rot"></span></p>
+							<p im="{$package.0.id}" id="pack">{$package.0.pack_name}：{$package.0.pack_time}天</p><span class="rot"></span>
 							<ul class="info">
 								{foreach name="package" item="pack"}
 								<li im="{$pack.id}" onclick="sele(this)">{$pack.pack_name}：{$pack.pack_time}天</li>
@@ -37,7 +37,7 @@
 					<div class="pay">
 						<div class="way">支付方式</div>
 						<div class="pull_box pop">
-							<p im="{$pay.0.img}" id="default_img">{$pay.0.name}:{$pay.0.value}<span class="rotate"></span></p>
+							<p im="{$pay.0.img}" id="default_img">{$pay.0.name}:{$pay.0.value}</p><span class="rotate"></span>
 							<ul class="fl">
 	            				<li onclick="difficut(this)" im="{$pay.1.img}">{$pay.1.name}:{$pay.1.value}</li>
 	            			</ul>
