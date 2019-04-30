@@ -49,6 +49,7 @@ class Index extends Base
     //列表页
     public function lottery_list(){
         $type=input('type');
+        $type=(int)$type;
         $num=input('num',1);
         $is_ajax=input('is_ajax',0);
         $user_id=$this->user_id;
@@ -57,8 +58,12 @@ class Index extends Base
         if(in_array($type,array(1,2,3,4))){
             $page=15;
             $max=($num-1)*$page+1;
-            $list=Db::name('interface_recorder')->where(['type'=>$type])->order('lottery_date desc')->limit($max,$page)->select();
-//print_r($list);die;
+//            var_dump((int)$type);
+//            var_dump($max);
+//            var_dump($page);die;
+            $list=Db::name('interface_recorder')->where(['type'=>(int)$type])->order('lottery_date desc')->limit($max,$page)->select();
+//            $list=Db::query();
+//print_r("select * from zf_interface_recorder where type=$type");die;
             //把所有选择过的颜色存起来
             $all_color=array();
             foreach ($list as $key=>$value){
