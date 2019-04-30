@@ -234,7 +234,21 @@ class User extends Base
         if($_POST){
            $check = Session::get('user');
            if($check){ 
-                Session::delete('user');
+                // // 在线时长
+                // $t = Session::get('time');
+                // $t_out = time();
+                // $re_time = $t_out-$t;
+                // // 用户剩余套餐时间
+                // $e_time  = Db::name('users')->where('id',$this->user_id)->value('end_time');
+                // if($e_time){
+                //     $re_t    = $e_time - $re_time;
+                //     $data = [
+                //         'end_time' => $re_t
+                //     ];
+                //     Db::name('users')->where('id', $this->user_id)->update($data);
+                    Session::delete('user');
+                // }
+
                 $user = Session::get('user');
                 if (empty($user)) {
                     return json(['status' => 1, 'msg' => '退出成功！','url'=>'/index/login/index']);
