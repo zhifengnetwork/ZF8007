@@ -58,7 +58,8 @@ class Login extends Base
             $check_reg = $this->check_register($data);
             if($check_reg) return $check_reg;
             //注册成功，有一天时长 
-            $e_time = strtotime(date('Y-m-d H:i:s', strtotime('+1 day')));
+            // $e_time = strtotime(date('Y-m-d H:i:s', strtotime('+1 day')));
+            $e_time = 86400;
             $data1 = [
                 'mobile'         => $data['mobile'],
                 'password'       => pwd_encryption($data['password']),

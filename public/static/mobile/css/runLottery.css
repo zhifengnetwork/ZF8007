@@ -111,10 +111,11 @@ body{
 
 .result-info {
     background: #17182d;
-    padding: .32rem .05rem .32rem .1rem;
+    padding: .32rem .05rem 0 .1rem;
     overflow: hidden;
-    overflow-x: scroll; 
-    overflow-y: hidden;
+    /*overflow-x: scroll; */
+    /*overflow-y: hidden;*/
+    /*overflow-y: scroll;*/
 }
 
 .info-periods{
@@ -155,7 +156,8 @@ body{
 .soll{
     width: 70.7%;
     float: left;
-    overflow-y: scroll;
+    /*overflow-y: scroll;*/
+    overflow-x: scroll;
     display: flex;
     margin-left: .09rem;
 }
@@ -202,4 +204,70 @@ ul .item-soll-qi .qi-num{
 
 ul .item-soll-qi .qi-num.qi-num-red{
     background: #ac2c35;
+}
+
+/*加载中*/
+.loadingBox {
+    position: relative;
+    width: 100%;
+    height: .5rem;
+    font-size: .2rem;
+    line-height: .4rem;
+    color: #666;
+    text-align: center;
+    letter-spacing: .02rem;
+}
+.loadingBox:after {
+    content: " .";
+    position: absolute;
+    z-index: 1;
+    color: #666;
+    animation: loadingAn 1.5s linear infinite;
+    -webkit-animation: loadingAn 1.5s linear infinite;
+    -moz-animation: loadingAn 1.5s linear infinite;
+    -ms-animation: loadingAn 1.5s linear infinite;
+}
+@keyframes loadingAn{
+    0% {
+        content: " .";
+    }
+    50% {
+        content: " . .";
+    }
+    100% {
+        content: " . . .";
+    }
+}
+@-webkit-keyframes loadingAn {
+    0% {
+        content: " .";
+    }
+    50% {
+        content: " . .";
+    }
+    100% {
+        content: " . . .";
+    }
+}
+@-moz-keyframes loadingAn {
+    0% {
+        content: " .";
+    }
+    50% {
+        content: " . .";
+    }
+    100% {
+        content: " . . .";
+    }
+}
+@-ms-keyframes loadingAn {
+    0% {
+        content: " .";
+    }
+    50% {
+        content: " . .";
+    }
+    100% {
+        content: " . . .";
+    }
 }

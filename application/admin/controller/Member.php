@@ -254,7 +254,14 @@ class Member extends Base
             ->field('pa.*,p.user_id,u.end_time')
             ->find();
         $time = $info['pack_time'];
-        $end_time = strtotime(date('Y-m-d H:i:s', strtotime("+$time day", $info['end_time'])));
+        // 判断套餐是否过期
+        if($info['end_time'] < 1){
+             $end_time = $time*86400;
+        }else{
+              $t = $info['end_time'];
+              $end_time = $t+$time*86400;
+        } 
+          
         $where = [
             'end_time' => $end_time,
             'id'       => $info['user_id'],

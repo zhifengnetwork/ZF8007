@@ -49,16 +49,21 @@ class Index extends Base
     //列表页
     public function lottery_list(){
         $type=input('type');
+        $type=(int)$type;
         $num=input('num',1);
         $is_ajax=input('is_ajax',0);
-        $user_id=session('user.user_id');
+        $user_id=$this->user_id;
 //        $user_id=1;//在登录做好之前暂用
 //        echo $type;
         if(in_array($type,array(1,2,3,4))){
-            $page=10;
+            $page=15;
             $max=($num-1)*$page+1;
-            $list=Db::name('interface_recorder')->where(['type'=>$type])->order('lottery_date desc')->limit($max,$page)->select();
-//print_r($list);die;
+//            var_dump((int)$type);
+//            var_dump($max);
+//            var_dump($page);die;
+            $list=Db::name('interface_recorder')->where(['type'=>(int)$type])->order('lottery_date desc')->limit($max,$page)->select();
+//            $list=Db::query();
+//print_r("select * from zf_interface_recorder where type=$type");die;
             //把所有选择过的颜色存起来
             $all_color=array();
             foreach ($list as $key=>$value){
@@ -120,7 +125,7 @@ class Index extends Base
 
     //存颜色
     public function lottery_color(){
-        $user_id=session('user.user_id');
+        $user_id=$this->user_id;
 //        $user_id=1;//在前端登录做好之前用
         if(!isset($user_id) || $user_id<=0){
             $this->ajaxReturn(['status'=>-1,'msg'=>'请先登录']);
@@ -143,7 +148,7 @@ class Index extends Base
         }
     }
     //查颜色
-    public function get_lottery_color($user_id=1,$type,$num,$is_date=0){
+    public function get_lottery_color($user_id,$type,$num,$is_date=0){
         if($is_date){
             $start_color=array('FFFFFF','FFFFFF','FFFFFF','FFFFFF','FFFFFF','FFFFFF');
         }else{
@@ -163,7 +168,7 @@ class Index extends Base
     public function new_lottery(){
         $type=input('type');
         $lottery_date=input('lottery_date');
-        $user_id=session('user.user_id');
+        $user_id=$this->user_id;
 //        $user_id=1;//用到登录做好了
         if($user_id>0 && in_array($type,array(1,2,3,4)) && $lottery_date>0){
             $new_lottery=Db::name('interface_recorder')->where(['type'=>$type])->where('lottery_date','>',$lottery_date)->find();

@@ -446,4 +446,26 @@ class User extends Base
         return $this->fetch();
     }
 
+
+    /**
+     * 获取退出时间并更新套餐剩余时间
+     */
+    public function get_time(){
+        $e = input('post.end_time');
+        if($_POST){
+            $end_time   = time();
+            $start_time = Session::get('time');
+
+            $data1 = [
+                'end_time' => $e
+            ];            
+
+                $res = Db::name('users')->where('id', $this->user_id)->update($data1);
+                if($res){
+                    return json(['code'=>1]);
+                }else{
+                    return json(['code'=>0]);
+                }
+        }
+    }
 }
