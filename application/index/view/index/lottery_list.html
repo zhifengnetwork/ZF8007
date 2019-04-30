@@ -70,6 +70,8 @@
                           {/volist}
                     </div>
                 </div>
+                <!--加载中-->
+                <p class="loadingBox">加载中</p>
             </div>
         </div>
         <script src="/__STATIC__/js/jquery-1.8.3.js"></script>
@@ -158,9 +160,10 @@
                if($(window).scrollTop() >= h - wh - 10 && loadingdelay) {
                    loadingdelay = false;
                    // console.log(page);
-                   console.log(6666);
+                   // console.log(6666);
                    // return false;
                    //发送Ajax
+                   $(".loadingBox").show();
                    get_lottery_list();
 
                }
@@ -225,13 +228,16 @@
                            }
                            page++;
                            loadingdelay = true;
+                           $(".loadingBox").hide();
                        } else {
                            loadingdelay = true;
+                           $(".loadingBox").hide();
                            return false;
                        }
                    },
                    error: function(error){
                        loadingdelay = true;
+                       $(".loadingBox").hide();
                    }
                });
            }
