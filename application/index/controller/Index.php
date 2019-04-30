@@ -51,7 +51,7 @@ class Index extends Base
         $type=input('type');
         $num=input('num',1);
         $is_ajax=input('is_ajax',0);
-        $user_id=session('user.user_id');
+        $user_id=$this->user_id;
 //        $user_id=1;//在登录做好之前暂用
 //        echo $type;
         if(in_array($type,array(1,2,3,4))){
@@ -120,7 +120,7 @@ class Index extends Base
 
     //存颜色
     public function lottery_color(){
-        $user_id=session('user.user_id');
+        $user_id=$this->user_id;
 //        $user_id=1;//在前端登录做好之前用
         if(!isset($user_id) || $user_id<=0){
             $this->ajaxReturn(['status'=>-1,'msg'=>'请先登录']);
@@ -143,7 +143,7 @@ class Index extends Base
         }
     }
     //查颜色
-    public function get_lottery_color($user_id=1,$type,$num,$is_date=0){
+    public function get_lottery_color($user_id,$type,$num,$is_date=0){
         if($is_date){
             $start_color=array('FFFFFF','FFFFFF','FFFFFF','FFFFFF','FFFFFF','FFFFFF');
         }else{
@@ -163,7 +163,7 @@ class Index extends Base
     public function new_lottery(){
         $type=input('type');
         $lottery_date=input('lottery_date');
-        $user_id=session('user.user_id');
+        $user_id=$this->user_id;
 //        $user_id=1;//用到登录做好了
         if($user_id>0 && in_array($type,array(1,2,3,4)) && $lottery_date>0){
             $new_lottery=Db::name('interface_recorder')->where(['type'=>$type])->where('lottery_date','>',$lottery_date)->find();
