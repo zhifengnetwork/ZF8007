@@ -22,6 +22,7 @@ class Member extends Base
     public function lists()
     {
         $where['id'] = ['>', 0];
+        $where['is_delete'] = 0;
         $datemin = '';
         $datemax = '';
         $seach = isset($_GET['seach']) ? $_GET['seach'] : '';
@@ -82,13 +83,14 @@ class Member extends Base
         $data = input('post.');//dump($data);die;
         $return = ['status'=>0,'msg'=>'参数错误']; //初始化返回信息
         if($data['act'] == 'add'){
-            $is_name = Db::name('users')->where('nickname',$data['username'])->find();
+            $is_name = Db::name('users')->where(['nickname'=>$data['username'],'is_delete'=>0])->find();
             if(!empty($is_name)){
                 return json(['status'=>0,'msg'=>'已经有此会员了！']);
             }
             $data1 = [
                 'nickname'    => $data['username'],
                 'mobile'=> $data['mobile'],
+                'password' => pwd_encryption(123456),
                 'sex'   => $data['sex'],
                 'email' => $data['email'],
                 'register_time' => time()
@@ -110,9 +112,9 @@ class Member extends Base
             ];
             $res = Db::name('users')->where('id',$data['user_id'])->update($data1);
             if($res) {
-                return json(['status'=> 1, 'msg'=> '添加成功']);
+                return json(['status'=> 1, 'msg'=> '编辑成功']);
             }else {
-                return json(['status'=> 0, 'msg'=> '添加失败，数据库未响应']);
+                return json(['status'=> 0, 'msg'=> '编辑失败，数据库未响应']);
             }
         }
 
@@ -129,7 +131,11 @@ class Member extends Base
         }
         if ($data['act'] == 'change_password') {
             $newpassword = pwd_encryption($data['newpassword']);
-            $res = Db::name('users')->where('id', $data['id'])->update(['password' => $newpassword]);
+            $password = Db::name('users')->where('id',$data['id'])->value('password');
+            if ($newpassword == $password){
+                return json(['status'=>-1,'msg'=>'密码重复，无需修改']);
+            }
+            $res = Db::name('users')->update(['id'=>$data['id'],'password' => $newpassword]);
 
             if ($res) {
                 return json(['status' => 1, 'msg' => '修改成功']);
@@ -146,7 +152,7 @@ class Member extends Base
         if ($_POST){
             $id = json_decode($data['id'], true);
             $where['id'] = array('in', $id);
-            $res = Db::table('zf_users')->where($where)->delete();
+            $res = Db::table('zf_users')->where($where)->update(['is_delete'=>1]);
             if($res){
                 return json(['status'=>1,'msg'=>'删除成功']);
             }else {
