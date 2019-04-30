@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>选择提现方式</title>
+		<script type="text/javascript" src="/__STATIC__/js/rem.js" ></script>
+		<link rel="stylesheet" type="text/css" href="/__STATIC__/css/public.css"/>
+		<link rel="stylesheet" type="text/css" href="/__STATIC__/css/header.css"/>
+		<link rel="stylesheet" type="text/css" href="/__STATIC__/css/my/way.css"/>
+	</head>
+	<body>
+		<div class="wrapper">
+			<!--头部-->
+			<div class="lb_headWrap">
+				<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+                    <img class="lb_headWrap_return_img" src="/__STATIC__/image/back@2x.png"/>
+                </p>
+				<span>选择提现方式</span>
+            </div>
+            <!--内容-->
+            <div class="content">
+            	<!--银行卡-->
+            	<div class="clip_wrap active">
+					<input type="hidden" class="select_id" value="{$bank.id}">
+            		<div class="clip">
+            			<!---->
+            			<div class="bank_wrap">
+            				<div class="icon"></div>
+            				<div class="house">银行卡&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>{$bank.value}</span></div>
+            				<!--编辑按钮-->
+            				<a href="{:url('index/user/editcard')}" class="edit">编辑</a>
+            			</div>
+            			<!---->
+            			<div class="detail_wrap">
+            				<div class="arrive">提现到：</div>
+            				<div class="ive">
+            					<div class="name">
+        							<span>{$bank.account}</span>
+        							<!--未编辑前默认隐藏-->
+        							<span class="small">*{$bank.value}</span>
+            					</div>
+            					<!--未编辑前默认隐藏-->
+            					<div class="card">
+            						<span>6221 ********88</span>
+            					</div>
+            				</div>
+            			</div>
+            		</div>
+            	</div>
+            	
+            	<!--支付宝-->
+            	<div class="clip_wrap">
+					<input type="hidden" class="select_id" value="{$alipay.id}">
+            		<div class="clip">
+            			<!---->
+            			<div class="bank_wrap">
+            				<div class="ico"></div>
+            				<div class="house">支付宝</div>
+            				<!--编辑按钮-->
+            				<a href="{:url('index/user/pay')}" class="edit">编辑</a>
+            			</div>
+            			<!---->
+            			<div class="detail_wrap">
+            				<div class="arrive">提现到：</div>
+            				<div class="ive">
+            					<div class="name">
+            						<span>{$alipay.account}</span>
+            					</div>
+            					<!--未编辑前默认隐藏-->
+            					<div class="card">
+            						<span>138****8000</span>
+            					</div>
+            				</div>
+            			</div>
+            		</div>
+            	</div>
+            </div>
+            <!--确认按钮-->
+            <div class="ack_wrap">
+            	<a id="aa" href="/index/user/withdraw?selete={$bank.id}" class="ack">确定</a>
+            </div>
+        </div>
+        
+        <script src="/__STATIC__/js/jquery-1.8.3.js"></script>
+        <script src="/__STATIC__/js/public.js"></script>
+        <script>
+		$(function(){
+		    $(".clip_wrap").click(function() {
+		        $(this).siblings('.clip_wrap').removeClass('active');// 删除其他兄弟元素的样式
+		        $(this).addClass('active');// 添加当前元素的样式
+				var select = $(this).children('.select_id').val()
+				$('#aa').attr('href',"/index/user/withdraw?select="+select)
+				console.log(select)
+		    });
+		});
+
+		function submit() {
+
+		}
+        </script>
+	</body>
+</html>

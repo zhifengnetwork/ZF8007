@@ -265,6 +265,7 @@ class Money extends Base
                 //不通过
                 if ($data['pay_status'] == 2){
                     Db::name('withdraw_log')->where('id',$data['id'])->update(['status'=>2]);
+                    Db::name('users')->where('id',$order['user_id'])->setInc('commission',$order['money']);
                 }
 
                 // 提交事务

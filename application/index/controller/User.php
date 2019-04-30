@@ -312,9 +312,39 @@ class User extends Base
     public function withdraw()
     {
         $user_id = $this->user_id;
-        $commission = Db::name('id',$user_id)->value('commission');
+        if ($_GET){
+            $select = input('');
+            $select = (int)$select['select'];
+//        dump($select);die;
+            $way = Db::name('withdraw_way')->where('id',$select)->value('value');
+            $this->assign('way',$way);
+        }
+
+        if ($_POST){
+            $way = input('post.way');
+            if (empty($way)){
+                return json(['status'=>-1,'msg'=>'请选择支付方式']);
+            }
+            $money = input('post.money');
+            $res = Db::name('users')->where('id',$user_id)->setDec('commission',$money);
+            Db::name('withdraw_log')->insert([
+                'user_id' => $user_id,
+                'money' => $money,
+                'withdraw_way' => $way,
+                'status' => 0,
+                'apply_time' => time()
+            ]);
+            if ($res){
+                return json(['status'=>1,'msg'=>'提现成功']);
+            }else{
+                return json(['status'=>-1,'msg'=>'提现失败']);
+            }
+        }
+
+        $commission = Db::name('users')->where('id',$user_id)->value('commission');
 
         $this->assign('commission',$commission);
+
         return $this->fetch();
     }
 
@@ -323,44 +353,97 @@ class User extends Base
      */
     public function withdraw_way()
     {
-        $lists = Db::name('withdraw_way')->where('user_id',$this->user_id)->select();
-        $this->assign('lists',$lists);
+        $alipay = Db::name('withdraw_way')->where(['user_id'=>$this->user_id,'withdraw_way'=>0])->find();
+        $bank = Db::name('withdraw_way')->where(['user_id'=>$this->user_id,'withdraw_way'=>1])->find();
+
+        $this->assign('alipay',$alipay);
+        $this->assign('bank',$bank);
         return $this->fetch();
     }
 
     /*
-     * 编辑提现方式
+     * 提现支付宝编辑
      */
-    public function edit_withdraw()
+    public function pay()
     {
-        $data = input('post.');
-        if($_POST){
-            if ($data['payways'] == 'ali'){
-                $res = Db::name('withdraw_way')->where('id',$this->user_id)->update(['account'=>$data['account'],'user_name'=>$data['user_name']]);
-                if ($res) {
-                    return json(['status' => 1, 'msg' => '编辑成功']);
-                }else{
-                    return json(['status' => -1, 'msg' => '编辑失败']);
-                }
+        if ($_POST){
+            $data = input('post.');//dump($data);die;
+            $data1 = [
+                'user_id'=>$data['id'],
+                'withdraw_way'=>0,
+                'value'=>'支付宝',
+                'account'=>$data['account'],
+                'user_name'=>$data['user_name']
+            ];
+            $field = ['user_id'=>$data['id'],'withdraw_way'=>0];
+            //判断是否已经拥有数据
+            $is_has = Db::name('withdraw_way')->where($field)->find();
+            if ($is_has){
+                $res = Db::name('withdraw_way')->where($field)->update($data1);
+            }else{
+                $res = Db::name('withdraw_way')->insert($data1);
             }
-
-            if ($data['payways'] == 'bank'){
-                $res = Db::name('withdraw_way')->where('id',$this->user_id)->update([
-                    'withdraw_way'=>$data['bank'],
-                    'account'=>$data['account'],
-                    'user_name'=>$data['user_name'],
-                    'address'=>$data['address']
-                ]);
-                if ($res) {
-                    return json(['status' => 1, 'msg' => '编辑成功']);
-                }else{
-                    return json(['status' => -1, 'msg' => '编辑失败']);
-                }
+//            $res = Db::name('withdraw_way')
+//                ->where(['user_id'=>$data['id'],'withdraw_way'=>0])
+//                ->update(['account'=>$data['account'],'user_name'=>$data['user_name']]);
+            if ($res) {
+                return json(['status' => 1, 'msg' => '编辑成功']);
+            }else{
+                return json(['status' => -1, 'msg' => '编辑失败']);
             }
         }
+        $user_id = $this->user_id;
+        $info = Db::name('withdraw_way')->where(['user_id'=>$this->user_id,'withdraw_way'=>0])->find();
 
-        $list = Db::name('withdraw_way')->where('id',$this->user_id)->select();
-        $this->assign('list',$list);
+        $this->assign('user_id',$user_id);
+        $this->assign('info',$info);
         return $this->fetch();
     }
+
+    /*
+     * 提现银行编辑
+     */
+    public function editcard()
+    {
+        if ($_POST){
+            $data = input('post.');//dump($data);die;
+            $data1 = [
+                'user_id'=>$data['id'],
+                'withdraw_way'=>1,
+                'value'=>$data['value'],
+                'account'=>$data['account'],
+                'user_name'=>$data['user_name'],
+                'address'=>$data['address']
+            ];
+            $field = ['user_id'=>$data['id'],'withdraw_way'=>1];
+            //判断是否已经拥有数据
+            $is_has = Db::name('withdraw_way')->where($field)->find();
+            if ($is_has){
+                $res = Db::name('withdraw_way')->where($field)->update($data1);
+            }else{
+                $res = Db::name('withdraw_way')->insert($data1);
+            }
+
+//            $res = Db::name('withdraw_way')
+//                ->where(['user_id'=>$data['id'],'withdraw_way'=>1])
+//                ->update([
+//                'value'=>$data['value'],
+//                'account'=>$data['account'],
+//                'user_name'=>$data['user_name'],
+//                'address'=>$data['address']
+//            ]);
+            if ($res) {
+                return json(['status' => 1, 'msg' => '编辑成功']);
+            }else{
+                return json(['status' => -1, 'msg' => '编辑失败']);
+            }
+        }
+        $user_id = $this->user_id;
+        $info = Db::name('withdraw_way')->where(['user_id'=>$this->user_id,'withdraw_way'=>1])->find();
+//        dump($info);die;
+        $this->assign('user_id',$user_id);
+        $this->assign('info',$info);
+        return $this->fetch();
+    }
+
 }

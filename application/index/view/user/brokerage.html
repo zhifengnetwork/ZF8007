@@ -30,8 +30,11 @@
 	            <!--佣金明细-->
 	            <div class="det_wrap">
 	            	<div class="dets der">
-	            		<p>总佣金</p>
-	            		<p class="">￥{$info.commission}</p>
+						<div class="the">
+							<span>总佣金</span>
+							<a href="{:url('index/user/withdraw')}">提现</a>
+						</div>
+						<p class="">￥{$info.commission}</p>
 	            	</div>
 
 	            	<div class="dets">

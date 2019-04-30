@@ -62,9 +62,11 @@
                             {/if}
                         </td>
                         <td class="td-manage" data-id="{$vo.id}">
+                            {if condition="$vo.status eq 0"}
                             <a title="审核" href="javascript:;" onclick="audit('{$vo.id}')" class="ml-5 elementcheck" style="text-decoration:none">
                                 <i class="Hui-iconfont">&#xe606;</i>
                             </a>
+                            {/if}
                         </td>
                     </tr>
                     {/foreach}
