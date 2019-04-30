@@ -363,4 +363,51 @@ class User extends Base
         $this->assign('list',$list);
         return $this->fetch();
     }
+
+    /**
+     * 获取退出时间并更新套餐剩余时间
+     */
+    public function get_time(){
+        $e = input('post.end_time');
+        if($_POST){
+            $end_time   = time();
+            $start_time = Session::get('time');
+            // 在线时长
+            // $t = $end_time-$start_time;
+            // $t = $t;
+            $data1 = [
+                'end_time' => $e
+            ];            
+            // $res = Db::name('users')->where('id', 54)->update($data1);   
+            // exit;     
+            // exit;      
+            // 用户原本剩余套餐时间
+            // $user_etime1 = Db::name('users')->where('id', $this->user_id)->value('end_time');
+            // $user_etime1 = $user_etime1;
+            // $data = [
+            //     'end_time' => $user_etime1
+            // ];
+            // $res = Db::name('users')->where('id', 55)->update($data);
+            // exit;
+            // if($user_etime1){
+            // 当前用户套餐剩余时间
+            // $user_etime .= '000'; 
+            // $user_retime = $user_etime1-$t;
+                // $user_retime = $e - $t;
+                // if($user_retime<0){
+                //     $user_retime = 0;
+                // }
+                // $data = [
+                //     'end_time' => $user_retime
+                // ];
+                $res = Db::name('users')->where('id', $this->user_id)->update($data1);
+                if($res){
+                    return json(['code'=>1]);
+                }else{
+                    return json(['code'=>0]);
+                }
+            // }
+
+        }
+    }
 }

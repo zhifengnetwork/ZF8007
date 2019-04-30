@@ -54,7 +54,7 @@
 							<span id="time_s"></span>秒
 							</label>
 							</span>
-							<input type="hidden" name="e_time" id="e_time" value="{:date('Y-m-d,H:i:s',$info['end_time'])}">
+							<input type="text" name="e_time" id="e_time" value="{$info['end_time']}">
 							<input type="hidden" name="log_time" id="log_time" value="{:date('Y-m-d,H:i:s',$time)}">
 							<!-- <input type="text" id="time_d">天<input type="text" id="time_h">时<input type="text" id="time_m">分<input type="text"
 								id="time_s">秒 -->
@@ -173,32 +173,85 @@
 			$(function () {
 				show_time();
 				line()
+				
+			window.onbeforeunload = function ()  //author: meizz
+				{
+					var n = window.event.screenX - window.screenLeft;
+					var b = n > document.documentElement.scrollWidth - 20;
+					if (b && window.event.clientY < 0 || window.event.altKey) {
+						// var end_time = new Date();
+						var end_time = $('#e_time').val()
+						// window.location.href = "/index/user/get_time?id=1";
+						$.ajax({
+							url: '/index/user/get_time',
+							type: 'post',
+							dataType: 'json',
+							data: { 'end_time': end_time },
+							success: function (msg) {
+								// if (msg.code == 0) {
+								// 	layer.msg(msg.msg);
+								// 	flag = false;
+								// 	return false;
+								// } else {
+								// 	if (flag) {
+								// 		layer.msg('已发送');
+								// 	}
+								// }
+							}
+						});						
+						alert("是关闭");
+						//  window.event.returnValue = "www";  //这里可以放置你想做的操作代码
+
+					}
+					else {
+						// var end_time = new Date();
+						var end_time = $('#e_time').val()
+						// window.location.href = "/index/user/get_time?id=1";
+						$.ajax({
+							url: '/index/user/get_time',
+							type: 'post',
+							dataType: 'json',
+							data: { 'end_time': end_time },
+							success: function (msg) {
+								if(msg.code == 0) {
+									windo.location.reload()
+								}
+							}
+						});	
+
+						alert("是刷新");
+					}
+
+				}
 			});
-
-
+	
 			
 			function show_time() {
-				var time_start = new Date(); //设定当前时间
+				// var time_start = new Date(); //设定当前时间
 				// console.log(time_start)
 				var e_time = $('#e_time').val()
-				var time_end = new Date(e_time).getTime(); //设定目标时间
-				if(time_end< time_start){
+				// console.log(e_time);
+				var e_time1 = e_time-1
+				
+				// var time_end = new Date(e_time).getTime(); //设定目标时间
+				if(e_time < 1){
 					$("#lb").html('已过期！');
 					return false				
 				}
 				// // 计算时间差 
-				var time_distance = time_end - time_start;
+				var time_distance = e_time;
+				// console.log(time_distance)
 				// 天
-				var int_day = Math.floor(time_distance / 86400000)
-				time_distance -= int_day * 86400000;
+				var int_day = Math.floor(time_distance / 86400)
+				time_distance -= int_day * 86400;
 				// 时
-				var int_hour = Math.floor(time_distance / 3600000)
-				time_distance -= int_hour * 3600000;
+				var int_hour = Math.floor(time_distance / 3600)
+				time_distance -= int_hour * 3600;
 				// 分
-				var int_minute = Math.floor(time_distance / 60000)
-				time_distance -= int_minute * 60000;
+				var int_minute = Math.floor(time_distance / 60)
+				time_distance -= int_minute * 60;
 				// 秒 
-				var int_second = Math.floor(time_distance / 1000)
+				var int_second = Math.floor(time_distance / 1)
 				// 时分秒为单数时、前面加零 
 				if (int_day < 10) {
 					int_day = "0" + int_day;
@@ -217,6 +270,7 @@
 				$("#time_h").html(int_hour);
 				$("#time_m").html(int_minute);
 				$("#time_s").html(int_second);
+				$('#e_time').val(e_time1)
 				// 设置定时器
 				setTimeout("show_time()", 1000);
 			}
