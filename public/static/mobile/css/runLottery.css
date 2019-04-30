@@ -113,8 +113,9 @@ body{
     background: #17182d;
     padding: .32rem .05rem .32rem .1rem;
     overflow: hidden;
-    overflow-x: scroll; 
-    overflow-y: hidden;
+    /*overflow-x: scroll; */
+    /*overflow-y: hidden;*/
+    /*overflow-y: scroll;*/
 }
 
 .info-periods{
@@ -155,7 +156,8 @@ body{
 .soll{
     width: 70.7%;
     float: left;
-    overflow-y: scroll;
+    /*overflow-y: scroll;*/
+    overflow-x: scroll;
     display: flex;
     margin-left: .09rem;
 }

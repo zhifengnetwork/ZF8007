@@ -146,15 +146,20 @@
                setTimeout(get_new_lottery, 10000);
            // })
 
-           $('.soll').on("scroll", function(event) {
+           $(window).on("scroll", function(event) {
+               // console.log(2222);
                /*文档(页面)高度*/
                var h = $(document).height();
+               // console.log(h)
                /*可视窗口的高度*/
                var wh = $(window).height();
+               // console.log(wh)
                // console.log('一直在滚动！');
-               if($(window).scrollTop() >= h - wh - 50 && loadingdelay) {
+               if($(window).scrollTop() >= h - wh - 10 && loadingdelay) {
                    loadingdelay = false;
                    // console.log(page);
+                   console.log(6666);
+                   // return false;
                    //发送Ajax
                    get_lottery_list();
 

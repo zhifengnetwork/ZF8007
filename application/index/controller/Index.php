@@ -55,7 +55,7 @@ class Index extends Base
 //        $user_id=1;//在登录做好之前暂用
 //        echo $type;
         if(in_array($type,array(1,2,3,4))){
-            $page=10;
+            $page=15;
             $max=($num-1)*$page+1;
             $list=Db::name('interface_recorder')->where(['type'=>$type])->order('lottery_date desc')->limit($max,$page)->select();
 //print_r($list);die;
