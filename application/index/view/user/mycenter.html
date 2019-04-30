@@ -54,7 +54,7 @@
 							<span id="time_s"></span>秒
 							</label>
 							</span>
-							<input type="text" name="e_time" id="e_time" value="{$info['end_time']}">
+							<input type="hidden" name="e_time" id="e_time" value="{$info['end_time']}">
 							<input type="hidden" name="log_time" id="log_time" value="{:date('Y-m-d,H:i:s',$time)}">
 							<!-- <input type="text" id="time_d">天<input type="text" id="time_h">时<input type="text" id="time_m">分<input type="text"
 								id="time_s">秒 -->
@@ -189,25 +189,13 @@
 							dataType: 'json',
 							data: { 'end_time': end_time },
 							success: function (msg) {
-								// if (msg.code == 0) {
-								// 	layer.msg(msg.msg);
-								// 	flag = false;
-								// 	return false;
-								// } else {
-								// 	if (flag) {
-								// 		layer.msg('已发送');
-								// 	}
-								// }
+
 							}
 						});						
-						alert("是关闭");
-						//  window.event.returnValue = "www";  //这里可以放置你想做的操作代码
-
+						// 关闭
 					}
 					else {
-						// var end_time = new Date();
 						var end_time = $('#e_time').val()
-						// window.location.href = "/index/user/get_time?id=1";
 						$.ajax({
 							url: '/index/user/get_time',
 							type: 'post',
@@ -220,9 +208,8 @@
 							}
 						});	
 
-						alert("是刷新");
 					}
-
+                    // 刷新
 				}
 			});
 	
