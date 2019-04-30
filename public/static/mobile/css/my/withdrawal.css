@@ -1,3 +1,27 @@
+.basic_wrap {
+	padding: .3rem .25rem;
+}
+.data {
+	padding: .2rem .4rem;
+	background: #1f2034;
+	border-radius: 4px;
+	font-size: .3rem;
+	color: #f9f7fb;
+	line-height: .5rem;
+}
+.data div {
+	display: inline-block;
+	vertical-align: top;
+}
+.run {
+	margin-top: .1rem;
+	float: right;
+	width: .16rem;
+	height: .3rem;
+	background: url(../../image/my/arrow@2x.png) no-repeat;
+	background-size: 100% 100%;
+}
+
 .item_wrap {
 	margin: .4rem .24rem;
 	background-color: #1f2034;
