@@ -19,6 +19,15 @@
             <!---->
             <div class="content">
             	<div class="shortcut">
+					{empty name = "$user_id"}
+					{else/}
+					<div class="mobile">
+						<div class="mark">上级id:</div>
+						<div class="inp">
+							<input class="text" readonly type="text" name="first_leader" id="first_leader" value="{$user_id}" />
+						</div>
+					</div>
+					{/empty}
 					<form action="" method="POST">
 					<!--手机号-->
             		<div class="mobile">
