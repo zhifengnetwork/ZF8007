@@ -47,7 +47,7 @@ class Member extends Base
             }
         }
 
-        $list = Db::name('users')->where($where)->paginate($page);//dump($list);die;
+        $list = Db::name('users')->where($where)->order('id desc')->paginate($page);//dump($list);die;
         $count = count($list);
         $this->assign('seach',$seach);
 
@@ -188,6 +188,7 @@ class Member extends Base
                 ->join('package pa', 'pa.id = p.package_id')
                 ->where($where)
                 ->field( 'p.*,u.nickname,pa.pack_name')
+                ->order('id desc')
                 ->paginate(15, false, ['query' => request()->param()]);;
         $num = count($list);
         $this->assign('num',$num);
@@ -196,7 +197,7 @@ class Member extends Base
     }
 
     public function img(){
-        $id = input('id');
+        $id = input('get.id/d');
         $info = Db::name('user_pay_log')->where('id',$id)->find();
         $this->assign('info',$info); 
         return $this->fetch();

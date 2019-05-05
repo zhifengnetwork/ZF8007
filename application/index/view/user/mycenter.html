@@ -166,7 +166,12 @@
 			<!-- 底部 -->
          	<div class="bottomNavWrap container" id="bottomNavWrap" data-id="0"></div>
 		</div>
-		
+		<!--vip过期弹框==>默认隐藏-->
+		<div class="vip_wrap">
+			<div class="vip_up">
+				<p>您的VIP已经过期请及时充值</p>
+			</div>
+		</div>
 		<script src="/__STATIC__/js/jquery-1.8.3.js"></script>
 		<script src="/__STATIC__/js/bottom_nav.js"></script>
 		<script src="/public/static/admin/lib/layer/2.4/layer.js"></script>
@@ -174,43 +179,6 @@
 			$(function () {
 				show_time();
 				line()
-
-			// window.onbeforeunload = function ()  //author: meizz
-			// 	{
-			// 		var n = window.event.screenX - window.screenLeft;
-			// 		var b = n > document.documentElement.scrollWidth - 20;
-			// 		if (b && window.event.clientY < 0 || window.event.altKey) {
-			// 			// var end_time = new Date();
-			// 			var end_time = $('#e_time').val()
-			// 			// window.location.href = "/index/user/get_time?id=1";
-			// 			$.ajax({
-			// 				url: '/index/user/get_time',
-			// 				type: 'post',
-			// 				dataType: 'json',
-			// 				data: { 'end_time': end_time },
-			// 				success: function (msg) {
-
-			// 				}
-			// 			});						
-			// 			// 关闭
-			// 		}
-			// 		else {
-			// 			var end_time = $('#e_time').val()
-			// 			$.ajax({
-			// 				url: '/index/user/get_time',
-			// 				type: 'post',
-			// 				dataType: 'json',
-			// 				data: { 'end_time': end_time },
-			// 				success: function (msg) {
-			// 					if(msg.code == 0) {
-			// 						windo.location.reload()
-			// 					}
-			// 				}
-			// 			});	
-
-			// 		}
-            //         // 刷新
-			// 	}
 			});
 	
 			
@@ -225,6 +193,12 @@
 				// console.log(time_end);
 				if(time_end < time_start){
 					$("#lb").html('已过期！');
+					$(".vip_wrap").show();
+					$('.vip_wrap').click(function () {
+						if ($(".vip_wrap").css('display') == 'block') {
+							$(".vip_wrap").hide();
+						}
+					});					
 					return false
 				}
 				// // 计算时间差 
