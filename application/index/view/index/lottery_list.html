@@ -22,9 +22,11 @@
             <div class="history-box">
                 <p class="history-title">历史记录</p>
                 <div class="result">
-                <p class="history-result">{$typed}开奖结果</p>
+                <p class="history-result">{$typed}开奖结果</p><span id="count_down">{$min}:{$sec}</span>
                 <p class="history-time">{$list.0.lottery_time}</p>
                     <input type="hidden" id="lottery_date" value="{$list.0.lottery_date}" />
+                    <input type="hidden" id="min" value="{$min}" />
+                    <input type="hidden" id="sec" value="{$sec}" />
                 </div>
                 <div class="ballBox">
                     <ul class="ball-ls clearfloat">
@@ -77,6 +79,53 @@
         <script src="/__STATIC__/js/jquery-1.8.3.js"></script>
         <script src="/__STATIC__/js/public.js"></script>
         <script type="text/javascript">
+            var runtimes=0;
+            function set_count_down() {
+                var m=$("#min").val()
+                var s=$("#sec").val()
+                var total_time=parseInt(m)*60+parseInt(s)-runtimes;
+                // alert(total_time)
+                var min=Math.floor(total_time/60)%60;
+                // alert(min)
+                var sec=Math.floor(total_time)%60;
+                if(sec<10){
+                    sec='0'+sec;
+                }
+                $("#count_down").html(min+":"+sec);
+                console.log(min)
+                console.log(sec)
+                if(min==0 && sec==0){
+                    get_interface();
+                    get_new_lottery();
+                    $("#count_down").html('wating!');
+                    sleep(10000)
+                }
+                runtimes++;
+                setTimeout(set_count_down,1000);
+            }
+            window.onload=set_count_down;
+            function get_interface() {
+                $.ajax({
+                    type: "GET",
+                    url: '{:url(\'admin/Happy/happy_is_important\')}',
+                    cache: false,
+                    data: {},
+                    dataType: 'json',
+                    success: function(data){
+                        if (data.status==1){
+                            //要不要提示颜色变更成功之类的
+                        }
+                    }
+                })
+            }
+            //休眠几秒
+            function sleep(n) {
+
+                var start = new Date().getTime();
+
+                while(true)  if(new Date().getTime()-start > n) break;
+
+            }
            function colo(e,z){
             var val = $(e).prev().attr('value')
                 var s = $(e).attr('value')
@@ -146,6 +195,7 @@
                var type={$type};//游戏类型
                get_lottery_list();
                setTimeout(get_new_lottery, 10000);
+               // set_count_down();
            // })
 
            $(window).on("scroll", function(event) {
@@ -262,10 +312,14 @@
                             var str_news='';//最新的数据
                             // console.log(data)
                             if(data && data.lottery_time !=''){
+                                set_count_down();
                                 //替换最新的时间
                                 $(".history-time").html(data.lottery_time);
                                 //替换最新的期号
                                 $("#lottery_date").val(data.lottery_date);
+                                //替换倒计时
+                                $("#min").val(data.min)
+                                $("#sec").val(data.sec)
                                 //替换最新的数据
                                 if(type==4){
                                     var t=5;
