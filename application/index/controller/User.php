@@ -27,8 +27,13 @@ class User extends Base
     {
         
         $info = Db::name('users')->where('id', $this->user_id)->find();
+        // $online_time = Db::name('users')->where('id', $this->user_id)->value('online_time');
         $time = Session::get('time');
+         
+        // $time += $online_time;
+
         $this->assign('time',$time);
+        // $this->assign('online_time',$online_time);
         $this->assign('info',$info);
         return $this->fetch();
     }
@@ -233,22 +238,25 @@ class User extends Base
     public function logout(){
         if($_POST){
            $check = Session::get('user');
-           if($check){ 
+           if($check){
                 // // 在线时长
-                // $t = Session::get('time');
-                // $t_out = time();
-                // $re_time = $t_out-$t;
-                // // 用户剩余套餐时间
-                // $e_time  = Db::name('users')->where('id',$this->user_id)->value('end_time');
+                $o_time  = Db::name('users')->where('id', $this->user_id)->value('online_time');
+                $t = Session::get('time');
+                $t_out = time();
+                $online_time = $t_out-$t+$o_time;
+                $e_time  = Db::name('users')->where('id',$this->user_id)->update(['online_time'=>$online_time]);
+                if(!$e_time){
+                    return json(['status' => 0, 'msg' => '退出失败，请稍后再试！']);
+                }
                 // if($e_time){
                 //     $re_t    = $e_time - $re_time;
                 //     $data = [
                 //         'end_time' => $re_t
                 //     ];
                 //     Db::name('users')->where('id', $this->user_id)->update($data);
-                    Session::delete('user');
+                Session::delete('user');
                 // }
-
+                
                 $user = Session::get('user');
                 if (empty($user)) {
                     return json(['status' => 1, 'msg' => '退出成功！','url'=>'/index/login/index']);
