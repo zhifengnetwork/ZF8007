@@ -48,7 +48,7 @@ var loginTrue = [
  * 未登录=> 0;
  * 已登陆=> 1;
  * **/
-console.log($('#bottomNavWrap').attr('data-id'),111);
+// console.log($('#bottomNavWrap').attr('data-id'),111);
 
 if(Number($('#bottomNavWrap').attr('data-id')) == 0){
 	for(var l=0;l<bottomTabArrOne.length;l++){
@@ -59,7 +59,7 @@ if(Number($('#bottomNavWrap').attr('data-id')) == 0){
 		buttonNavUrl[q] = loginTrue[q]
 	}
 }
-console.log('最终路径:',buttonNavUrl);
+// console.log('最终路径:',buttonNavUrl);
 
 /*js动态创建-底部导航栏*/
 var botNavdStr = '';
