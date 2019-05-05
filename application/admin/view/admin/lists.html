@@ -48,7 +48,7 @@
 				<tbody>
 					{foreach name="list" item="vo"}
 					<tr class="text-c">
-						<td><input type="checkbox" value="1" name=""></td>
+						<td><input type="checkbox" value="{$vo.id}" name="pack_id"></td>
 						<td>{$vo.id}</td>
 						<td>{$vo.name}</td>
 						<td>{if condition="$vo.is_super eq 1"}超级管理员{else /}普通管理员{/if}</td>
