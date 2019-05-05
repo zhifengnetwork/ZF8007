@@ -188,6 +188,7 @@ class Member extends Base
                 ->join('package pa', 'pa.id = p.package_id')
                 ->where($where)
                 ->field( 'p.*,u.nickname,pa.pack_name')
+                ->order('id desc')
                 ->paginate(15, false, ['query' => request()->param()]);;
         $num = count($list);
         $this->assign('num',$num);

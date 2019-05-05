@@ -37,6 +37,7 @@ class Index extends Base
         $this->assign('happy_lottery',$happy_lottery);
         $this->assign('happy_car',$happy_car);
         $this->assign('happy_color',$happy_color);
+
         //看看用户到期了没有
         $user_id=$this->user_id;
 //        var_dump($user_id);
@@ -57,13 +58,13 @@ class Index extends Base
 //        echo $type;
         if(in_array($type,array(1,2,3,4))){
             $page=15;
-            $max=($num-1)*$page+1;
+            $max=($num-1)*$page;
 //            var_dump((int)$type);
 //            var_dump($max);
 //            var_dump($page);die;
             $list=Db::name('interface_recorder')->where(['type'=>(int)$type])->order('lottery_date desc')->limit($max,$page)->select();
 //            $list=Db::query();
-//print_r("select * from zf_interface_recorder where type=$type");die;
+//print_r($list);die;
             //把所有选择过的颜色存起来
             $all_color=array();
             foreach ($list as $key=>$value){
@@ -117,6 +118,33 @@ class Index extends Base
             }
             $this->assign('typed',$typed);
             $this->assign('type',$type);
+            //倒计时
+            if($type==2){
+                $s=30;
+            }elseif ($type==3){
+                $s=15;
+            }elseif ($type==4){
+                $s=45;
+            }else{
+                $s=0;
+            }
+            $min=date('i')%5;
+            $sec=date('s')-$s;
+            if($min==0 && $sec>0){
+                $min=4;
+                $sec=60+$sec;
+            }elseif ($sec<0){
+                $min=5-$min;
+                $sec=0-$sec;
+            }else{
+                $min=4-$min;
+                $sec=60-$sec;
+            }
+            if($sec<10){
+                $sec='0'.$sec;
+            }
+            $this->assign('min',$min);
+            $this->assign('sec',$sec);
             return $this->fetch();
         }else{
             echo '参数错误';
@@ -194,6 +222,33 @@ class Index extends Base
                     }
                 }
 //                var_dump($data);
+                //倒计时
+                if($type==2){
+                    $s=30;
+                }elseif ($type==3){
+                    $s=15;
+                }elseif ($type==4){
+                    $s=45;
+                }else{
+                    $s=0;
+                }
+                $min=date('i')%5;
+                $sec=date('s')-$s;
+                if($min==0 && $sec>0){
+                    $min=4;
+                    $sec=60-$sec;
+                }elseif ($sec<0){
+                    $min=5-$min;
+                    $sec=0-$sec;
+                }else{
+                    $min=4-$min;
+                    $sec=60-$sec;
+                }
+                if($sec<10){
+                    $sec='0'.$sec;
+                }
+                $data['min']=$min;
+                $data['sec']=$sec;
                 $this->ajaxReturn($data);
             }
         }
