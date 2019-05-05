@@ -27,13 +27,9 @@ class User extends Base
     {
         
         $info = Db::name('users')->where('id', $this->user_id)->find();
-        // $online_time = Db::name('users')->where('id', $this->user_id)->value('online_time');
+        // 登录时间
         $time = Session::get('time');
-         
-        // $time += $online_time;
-
         $this->assign('time',$time);
-        // $this->assign('online_time',$online_time);
         $this->assign('info',$info);
         return $this->fetch();
     }

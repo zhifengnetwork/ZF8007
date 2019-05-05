@@ -55,7 +55,7 @@
 							</label>
 							</span>
 							<input type="hidden" name="e_time" id="e_time" value="{:date('Y-m-d,H:i:s',$info['end_time'])}">
-							<!-- <input type="hidden" name="e_time" id="e_time" value="{$info['end_time']}"> -->
+						
 							<input type="hidden" name="log_time" id="log_time" value="{:date('Y-m-d,H:i:s',$time)}">
 							<!-- <input type="text" id="time_d">天<input type="text" id="time_h">时<input type="text" id="time_m">分<input type="text"
 								id="time_s">秒 -->
@@ -181,15 +181,12 @@
 				line()
 			});
 	
-			
+			// var a = $('#a').val()
 			function show_time() {
 				var time_start = new Date().getTime(); //设定当前时间
-				// console.log(time_start)
-				var e_time = $('#e_time').val()
-				// console.log(e_time);
-				// var e_time1 = e_time-1
-				
+				var e_time = $('#e_time').val()				
 				var time_end = new Date(e_time).getTime(); //设定目标时间
+
 				// console.log(time_end);
 				if(time_end < time_start){
 					$("#lb").html('已过期！');
@@ -234,10 +231,12 @@
 				$("#time_m").html(int_minute);
 				$("#time_s").html(int_second);
 				// $('#e_time').val(e_time1)
+				// e_time--;
+				// console.log(a)
 				// 设置定时器
 				setTimeout("show_time()", 1000);
 			}
-
+           
 			function line() {
 				var time_start = new Date(); //设定当前时间
 				var e_time = $('#log_time').val()
@@ -276,7 +275,8 @@
 				// 设置定时器
 				setTimeout("line()",1000);
 		}
-				
+ 
+
 		</script>		 
 
 	</body>
