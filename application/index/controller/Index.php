@@ -162,6 +162,7 @@ class Index extends Base
         $num=input('num');
         $group=input('group');
         $color=input('color');
+        $color=ltrim($color,'#');
 
 //        echo $type."~~~".$num."~~~".$group."~~~".$color;die;
         if(in_array($type,array(1,2,3,4)) && in_array($group,array(1,2,3,4,5,6)) && in_array($num,array(0,1,2,3,4,5,6,7,8,9,10)) && mb_strlen($color)==6){

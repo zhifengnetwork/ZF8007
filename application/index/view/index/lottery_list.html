@@ -38,14 +38,12 @@
                 <div class="select-color">
                 <div class=" select clearfloat">
                     {volist name="all_color" id="va" length="6" key="k"}
-                        <div class="colorSelect">
+                        <div class="colorSelect" data-state="{if condition='$k eq 1'}one{elseif condition='$k eq 2' /}two{elseif condition='$k eq 3' /}three{elseif condition='$k eq 4' /}four{elseif condition='$k eq 5' /}five{else /}six{/if}">
                             <P class="color-tit">第{$k}组</P>
                             <ul class="clearfloat tt">
                                 {volist name="all_color" id="ac" key="l"}
                                 <?php $j=($k-1)*10+$l;?>
-                                    <li class="color-item" >
-                                        <input class="jscolor {valueElement:valueSpan<?php echo ($k-1)*10+$l;?>,value:'',width:101,closable:true,closeText:'关闭'}" style="width:.48rem;height: .50rem; border-radius: 100%;border: 0;text-align:center;background-color:#{$ac[$k-1]}" disabled value="{if condition='($type eq 4) and ($l eq 10)'}0{else /}{$l}{/if}"><input type="hidden" value="{$ac[$k-1]}" id="valueSpan{$j}" onchange="color{$k-1}(this)" >
-                                    </li>
+                                    <li class="color-item" group="{$k}" style="background-color:#{$ac[$k-1]}">{if condition='($type eq 4) and ($l eq 10)'}0{else /}{$l}{/if}</li>
                                 {/volist}
                             </ul>
                         </div>
@@ -75,10 +73,101 @@
                 <!--加载中-->
                 <p class="loadingBox">加载中</p>
             </div>
+           <div class="hue_select_view" id="demo"></div>
         </div>
         <script src="/__STATIC__/js/jquery-1.8.3.js"></script>
         <script src="/__STATIC__/js/public.js"></script>
         <script type="text/javascript">
+            var color_data = ["#fd7e89","#ffffca","#bbffbb","#84ffc1","#80ffff","#0080ff","#ff80c0","#ff80ff","#df2912","#ffff00","#80ff00","#00ff40","#00ffff","#0080c0","#8080c0","#fe00ff","#bb0000","#ff8040","#00ff00","#008080","#004080","#8080ff","#800040","#ff0080","#800000","#f39901","#008000","#005329","#0000ff","#0000a0","#b300b3","#8000ff","#400000","#804000","#004000","#004040","#000080","#000040","#800080","#400080","#000000","#808000","#808040","#808080","#408080","#c0c0c0","#400040","#ffffff"];
+            var html = '';
+            html += '<div class="down_box">';
+            html += "<ul>";
+            for(j = 0; j <color_data.length; j++) {
+                html += '<li class="item_list" style="background:' + color_data[j] + '" onclick="back_but('+ j +')"> </li>';
+            }
+            html += "</ul>";
+            html += '</div>';
+            $('#demo').append(html);
+            /*选择色值*/
+            function back_but(_index){
+                // console.log(color_data[_index]);
+                // console.log(_index);
+                $(this_ele).css('background',color_data[_index]);
+                $('.hue_select_view').hide();
+                var val = $(this_ele).text();
+                var num = $(this_ele).parent().parent().attr('data-state');
+                // console.log(val);
+                // console.log(num);
+                var group=$(this_ele).attr('group');
+                console.log(group)
+                change_color(num,val,color_data[_index]);
+                corresponding_color(group,val,color_data[_index]);
+                // $(".one").each((element,i)=> {
+                //     if(num == 'one'){
+                //         if($(i).html()==val ){
+                //             $(i).css('background', color_data[_index]);
+                //         }
+                //     }
+                // });
+                // $(".two").each((element, i) => {
+                //     if(num == 'two') {
+                //         if($(i).html() == val) {
+                //             $(i).css('background', color_data[_index]);
+                //         }
+                //     }
+                // });
+                // $(".three").each((element,i)=> {
+                //     if(num == 'three'){
+                //         if($(i).html()==val ){
+                //             $(i).css('background',color_data[_index]);
+                //         }
+                //     }
+                // });
+                // $(".four").each((element,i)=> {
+                //     if(num == 'four'){
+                //         if($(i).html()==val ){
+                //             $(i).css('background',color_data[_index]);
+                //         }
+                //     }
+                // });
+                // $(".five").each((element,i)=> {
+                //     if(num == 'five'){
+                //         if($(i).html()==val ){
+                //             $(i).css('background',color_data[_index]);
+                //         }
+                //     }
+                // });
+                // $(".six").each((element,i)=> {
+                //     if(num == 'six'){
+                //         if($(i).html()==val ){
+                //             $(i).css('background',color_data[_index]);
+                //         }
+                //     }
+                // });
+            }
+            function change_color(num,val,color) {
+                $("."+num).each((element,i)=> {
+                    if($(i).html()==val ){
+                        $(i).css('background',color);
+                    }
+                });
+            }
+            /*对应色值数组的元素*/
+            var this_ele = null;
+            /*点击-对应的数值=>设置色值*/
+            function alert_color(_this){
+                $('.hue_select_view').show();
+                this_ele = _this;
+            }
+            $('.color-item').on('click',function(){
+                alert_color(this);
+            })
+
+            $('.hue_select_view').on('click',function() {
+                $('.hue_select_view').hide();
+            })
+
+
             var runtimes=0;
             function set_count_down() {
                 var m=$("#min").val()
@@ -88,17 +177,22 @@
                 var min=Math.floor(total_time/60)%60;
                 // alert(min)
                 var sec=Math.floor(total_time)%60;
+                // console.log(m)
+                // console.log(s)
+                // console.log(total_time)
+                // console.log(min)
+                // console.log(sec)
                 if(sec<10){
                     sec='0'+sec;
                 }
                 $("#count_down").html(min+":"+sec);
-                console.log(min)
-                console.log(sec)
+                // console.log(min)
+                // console.log(sec)
                 if(min==0 && sec==0){
                     get_interface();
                     get_new_lottery();
                     $("#count_down").html('wating!');
-                    sleep(10000)
+                    return false;
                 }
                 runtimes++;
                 setTimeout(set_count_down,1000);
@@ -112,9 +206,13 @@
                     data: {},
                     dataType: 'json',
                     success: function(data){
-                        if (data.status==1){
-                            //要不要提示颜色变更成功之类的
+                        console.log(data)
+                        if (!data && typeof data != "undefined" && data != 0){
+                            get_interface();
                         }
+                        // if (data.status==1){
+                        //     //要不要提示颜色变更成功之类的
+                        // }
                     }
                 })
             }
@@ -126,48 +224,48 @@
                 while(true)  if(new Date().getTime()-start > n) break;
 
             }
-           function colo(e,z){
-            var val = $(e).prev().attr('value')
-                var s = $(e).attr('value')
-                z.each((element,i)=> {
-                        if($(i).html()==val){
-                           $(i).css('background-color',`#${s}`)
-                        }
-                });
-           }
-            //    第一列
-            function color0(e){
-                colo(e,$(".one"))
-                corresponding_color(1,$(e).prev().val(),$(e).val())
-            }
-            //   第二列
-            function color1(e){
-                colo(e,$(".two"))
-                corresponding_color(2,$(e).prev().val(),$(e).val())
-            }
-            //   第三列
-            function color2(e){
-                colo(e,$(".three"))
-                corresponding_color(3,$(e).prev().val(),$(e).val())
-            }
-            //   第四列
-            function color3(e){
-                colo(e,$(".four"))
-                corresponding_color(4,$(e).prev().val(),$(e).val())
-            }
-            //   第五列
-            function color4(e){
-                colo(e,$(".five"))
-                corresponding_color(5,$(e).prev().val(),$(e).val())
-            }
-            //   第六列
-            function color5(e){
-                colo(e,$(".six"))
-                corresponding_color(6,$(e).prev().val(),$(e).val())
-            }
+           // function colo(e,z){
+           //  var val = $(e).prev().attr('value')
+           //      var s = $(e).attr('value')
+           //      z.each((element,i)=> {
+           //              if($(i).html()==val){
+           //                 $(i).css('background-color',`#${s}`)
+           //              }
+           //      });
+           // }
+           //  //    第一列
+           //  function color0(e){
+           //      colo(e,$(".one"))
+           //      corresponding_color(1,$(e).prev().val(),$(e).val())
+           //  }
+           //  //   第二列
+           //  function color1(e){
+           //      colo(e,$(".two"))
+           //      corresponding_color(2,$(e).prev().val(),$(e).val())
+           //  }
+           //  //   第三列
+           //  function color2(e){
+           //      colo(e,$(".three"))
+           //      corresponding_color(3,$(e).prev().val(),$(e).val())
+           //  }
+           //  //   第四列
+           //  function color3(e){
+           //      colo(e,$(".four"))
+           //      corresponding_color(4,$(e).prev().val(),$(e).val())
+           //  }
+           //  //   第五列
+           //  function color4(e){
+           //      colo(e,$(".five"))
+           //      corresponding_color(5,$(e).prev().val(),$(e).val())
+           //  }
+           //  //   第六列
+           //  function color5(e){
+           //      colo(e,$(".six"))
+           //      corresponding_color(6,$(e).prev().val(),$(e).val())
+           //  }
             //将颜色对应的存起来
            function corresponding_color(group,num,color) {
-               console.log(group+'```'+num+'````'+color)
+               // console.log(group+'```'+num+'````'+color)
                if(num>=0 && color !=''){
                    var type={$type};
                    $.ajax({
@@ -179,9 +277,9 @@
                        },
                        dataType: 'json',
                        success: function(data){
-                           if (data.status==1){
+                           // if (data.status==1){
                                //要不要提示颜色变更成功之类的
-                           }
+                           // }
                        }
                    })
                }
@@ -312,14 +410,12 @@
                             var str_news='';//最新的数据
                             // console.log(data)
                             if(data && data.lottery_time !=''){
-                                set_count_down();
+
                                 //替换最新的时间
                                 $(".history-time").html(data.lottery_time);
                                 //替换最新的期号
                                 $("#lottery_date").val(data.lottery_date);
-                                //替换倒计时
-                                $("#min").val(data.min)
-                                $("#sec").val(data.sec)
+
                                 //替换最新的数据
                                 if(type==4){
                                     var t=5;
@@ -359,6 +455,10 @@
                                 //     console.log(key,data.lottery_color[key]);
                                 //
                                 // });
+                                //替换倒计时
+                                $("#min").val(data.min)
+                                $("#sec").val(data.sec)
+                                set_count_down();
                             }
                         }
                     })
