@@ -123,10 +123,16 @@ class User extends Base
     //历史记录
     public function brokerage()
     {
-        $user_id = $this->user_id;//dump($user_id);die;
+        $user_id = $this->user_id;
         $info = Db::name('users')->where('id',$user_id)->find();
-        $team_ids = Db::name('users')->where('first_leader',$user_id)->field('id ,nickname, commission')->select();
-        $count = count($team_ids);
+        $team_ids = Db::name('rebate_log')->alias('r')
+            ->where(['r.first_leader'=>$user_id])
+//            ->join('zf_rebate_log l','r.order_id=l.id','left')
+//            ->field('r.*,l.*')
+            ->select();
+//        dump($team_ids);die;
+        $team = Db::name('users')->where('first_leader',$user_id)->select();//dump($team);
+        $count = count($team);
         $this->assign('info',$info);
         $this->assign('team_ids',$team_ids);
         $this->assign('count',$count);
