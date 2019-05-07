@@ -28,7 +28,7 @@ class Happy extends Base
         $racing_issue=$this->get_max_issue(3);
         $lottery_issue=$this->get_max_issue(4);
         //4个接口连接
-        $luck_url='http://api.b1api.com/t?p=json&t=bjpk10&limit=20&token=AE6DF84BF2D21BA2';
+        $luck_url='http://api.b1api.com/api?p=json&t=xyft&limit=1&token=6E84023D0C29F550';
         $airship_url='https://api.happylottery.com/data/airship/last.xml';
         $racing_url='https://api.happylottery.com/data/racing/last.xml';
         $lottery_url='https://api.happylottery.com/data/lottery/last.xml';

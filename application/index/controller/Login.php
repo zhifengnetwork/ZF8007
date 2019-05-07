@@ -90,7 +90,6 @@ class Login extends Base
     public function login_commit()
     {
         $data = input('post.'); 
-
         if($_POST){
             // 验证
 
@@ -160,7 +159,7 @@ class Login extends Base
                     return json(['code' => 1, 'msg' => '密码修改成功']);
                 
                 }else{
-                    return json(['code' => 0, 'msg' => '网络繁忙，请稍后再试']);
+                    return json(['code' => 0, 'msg' => '新密码和原密码一致']);
                 }                
            }
  
@@ -169,6 +168,7 @@ class Login extends Base
     }
 
     public function check_mobile($data){
+       
         if (empty($data['mobile'])) {
             return array('code' => 0, 'msg' => '请输入手机号');
         }

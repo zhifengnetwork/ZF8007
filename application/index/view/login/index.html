@@ -49,7 +49,7 @@
 			                			<div class="mark">验证码:</div>
 			                			<div class="inp">
 			                				<input class="text" type="number" name="code" id="code" placeholder="请输入验证码" />
-			                				<input class="gain" type="button" id="btn" value="获取验证码" onclick="settime(this)" />
+			                				<input class="gain" type="button" id="btn" value="获取验证码"  />
 			                			</div>
 			                		</div>
 			                	</div>
@@ -101,39 +101,7 @@
 				TouchSlide({
 					slideCell:"#leftTabBox"
 				});
-				//获取验证码
-	 			var countdown=60; 
-				function settime(val) { 
-					var reg = /^1[34578]\d{9}$/;  /*用户手机号*/
-					var phone = $(".phone");
-					var phoneS = $(".phone").val();
-					if (phone.val() == "") {
-						layer.msg('手机不能为空!', { time: 1000 }, function () {
 
-						});
-						return false
-					}
-					if (!reg.test(phone.val())) {
-						layer.msg('请输入正确的手机号!', { time: 1000 }, function () {
-
-						});
-						return false
-					}
-
-					if (countdown == 0) { 
-						val.removeAttribute("disabled");    
-						val.value="免费获取验证码"; 
-						countdown = 60; 
-						
-					} else { 
-						val.setAttribute("disabled", true);
-						val.value="重新发送(" + countdown + ")"; 
-						countdown--; 
-					} 
-					setTimeout(function() { 
-						settime(val) 
-					},1000) 
-				}
 				// 用来判断是验证码登录还是密码登录
                 function check_cl(val){
                    var check = $("#check").val(val);
@@ -159,26 +127,43 @@
 					var sms_type = $('#sms_type_id').val();
 
 					// 获取验证码
-					// var flag = true;
+					var flag = true;
 					$.ajax({
 						url: '/index/login/getPhoneVerify',
 						type: 'post',
+						async: false,
 						dataType: 'json',
 						data: { 'phone': phoneS, 'sms_type': sms_type },
 						success: function (msg) {
 							
 							if (msg.code == 0) {
 								layer.msg(msg.msg);
-								// flag = false;
+								flag = false;
 								return false;
 							}
 
 						}
 					});
-
+					if (flag) {
+						layer.msg('已发送');
+					}
+					// $(".verify").focus();
+					daojishi(60, $(this))
+					
 				})
-
-				
+				function daojishi(seconds, obj) {
+					if (seconds > 1) {
+						seconds--;
+						$("#btn").val(seconds + "重新获取 ").attr("disabled", true);
+						setTimeout(function () {
+							daojishi(seconds, obj);
+						}, 1000);
+					} else {
+						$("#btn").val("获取验证码").attr("disabled", false);//启用按
+						
+					}
+				}
+				// 登录
                 $('.login_btn').click(function(){
 					var code = $("#code").val();
 					var sms_type = $("#sms_type_id").val();
