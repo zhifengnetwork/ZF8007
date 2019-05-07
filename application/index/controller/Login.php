@@ -90,7 +90,6 @@ class Login extends Base
     public function login_commit()
     {
         $data = input('post.'); 
-
         if($_POST){
             // 验证
 
@@ -169,6 +168,7 @@ class Login extends Base
     }
 
     public function check_mobile($data){
+       
         if (empty($data['mobile'])) {
             return array('code' => 0, 'msg' => '请输入手机号');
         }
