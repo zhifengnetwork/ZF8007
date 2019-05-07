@@ -3,9 +3,7 @@ img {
 	max-width: 100%;
 	margin: 0 auto;
 }
-.content{
-	padding-bottom: 1.18rem;
-}
+
 .content .tu_wrap {
 	margin-bottom: .4rem;
 	padding: .4rem .25rem;
@@ -32,7 +30,7 @@ img {
 	margin-right: .2rem;
 	font-size: .32rem;
 	color: #eff0f7;
-
+	
 }
 .content .tu_wrap .right_zi .name_wrap .vip_img {
 	margin-right: .2rem;

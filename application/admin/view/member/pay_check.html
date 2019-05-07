@@ -56,7 +56,14 @@
                             <tr class="text-c">
                                 <!-- <td><input type="checkbox" value="{$vo.id}" name="pack_id"></td> -->
                                 <td>{$vo.id}</td>
-                                <td>{$vo.nickname}</td>
+                                <td>
+                                    {empty name="$vo.nickname"}
+                                    {$vo.mobile}
+                                    {else/}
+                                    {$vo.nickname}
+                                    {/empty}
+                                   
+                                </td>
                                 <td>{$vo.pack_name}</td>
                                 <td>{$vo.pay_money}</td>
                                 <td>
