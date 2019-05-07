@@ -37,16 +37,18 @@
                 </div>
                 <div class="select-color">
                 <div class=" select clearfloat">
-                    {volist name="all_color" id="va" length="6" key="k"}
+                    {volist name="all_color.font_color" id="va" key="k"}
+                        {if condition="$k<7"}
                         <div class="colorSelect" data-state="{if condition='$k eq 1'}one{elseif condition='$k eq 2' /}two{elseif condition='$k eq 3' /}three{elseif condition='$k eq 4' /}four{elseif condition='$k eq 5' /}five{else /}six{/if}">
                             <P class="color-tit">第{$k}组</P>
                             <ul class="clearfloat tt">
-                                {volist name="all_color" id="ac" key="l"}
+                                {volist name="all_color.color" id="ac" key="l"}
                                 <?php $j=($k-1)*10+$l;?>
-                                    <li class="color-item" group="{$k}" style="background-color:#{$ac[$k-1]}">{if condition='($type eq 4) and ($l eq 10)'}0{else /}{$l}{/if}</li>
+                                    <li class="color-item" group="{$k}" style="background-color:#{$ac[$k-1]};color:#{$all_color.font_color[$l][$k-1]}">{if condition='($type eq 4) and ($l eq 10)'}0{else /}{$l}{/if}</li>
                                 {/volist}
                             </ul>
                         </div>
+                    {/if}
                     {/volist}
                 </div>
                  </div>
@@ -101,17 +103,17 @@
                 // console.log(val);
                 // console.log(num);
                 var group=$(this_ele).attr('group');
-                console.log(group)
+                // console.log(group)
                 change_color(num,val,color_data[_index],color_zi[_index]);
-                corresponding_color(group,val,color_data[_index]);
+                corresponding_color(group,val,color_data[_index],color_zi[_index]);
             }
             function change_color(num,val,color,ziColor) {
                 $("."+num).each((element,i)=> {
                     if($(i).html()==val ){
                         $(i).css('background',color);
-                        console.log(color)
+                        // console.log(color)
                         $(i).css('color',ziColor);
-                        console.log(ziColor)
+                        // console.log(ziColor)
 
                     }
                 });
@@ -154,10 +156,10 @@
                 $("#count_down").html(min+":"+sec);
                 // console.log(min)
                 // console.log(sec)
-                if(min==0 &&sec<5){
-                    console.log(m)
-                    console.log(s)
-                }
+                // if(min==0 &&sec<5){
+                //     console.log(m)
+                //     console.log(s)
+                // }
                 if(min==0 && sec==5){
                     get_interface();
                 }else if(min==0 && sec==0){
@@ -189,7 +191,7 @@
                     // async:false,
                     dataType: 'json',
                     success: function(data){
-                        console.log(data)
+                        // console.log(data)
                         if (!data && typeof data != "undefined" && data != 0){
                             get_interface();
                         }
@@ -206,16 +208,16 @@
             }
 
             //将颜色对应的存起来
-           function corresponding_color(group,num,color) {
+           function corresponding_color(group,num,color,font_color) {
                // console.log(group+'```'+num+'````'+color)
-               if(num>=0 && color !=''){
+               if(num>=0 && color !='' && font_color!=''){
                    var type={$type};
                    $.ajax({
                        type: "POST",
                        url: '{:url(\'index/lottery_color\')}',
                        cache: false,
                        data: {
-                           num: num,group:group,type:type,color:color
+                           num: num,group:group,type:type,color:color,font_color:font_color
                        },
                        dataType: 'json',
                        success: function(data){
@@ -296,12 +298,12 @@
                                    // console.log(p[1])
                                    str_number+='<li class="item-soll">';
                                    str_number+='<ul class="clearfloat">';
-                                   str_number+='<li class="item-soll-qi"><div class="qi-num one" style="background-color:#'+data[j].lottery_new_color[k][0]+'">'+p[1]+'</div></li>';
-                                   str_number+='<li class="item-soll-qi"><div class="qi-num two" style="background-color:#'+data[j].lottery_new_color[k][1]+'">'+p[1]+'</div></li>';
-                                   str_number+='<li class="item-soll-qi"><div class="qi-num three" style="background-color:#'+data[j].lottery_new_color[k][2]+'">'+p[1]+'</div></li>';
-                                   str_number+='<li class="item-soll-qi"><div class="qi-num four" style="background-color:#'+data[j].lottery_new_color[k][3]+'">'+p[1]+'</div></li>';
-                                   str_number+='<li class="item-soll-qi"><div class="qi-num five" style="background-color:#'+data[j].lottery_new_color[k][4]+'">'+p[1]+'</div></li>';
-                                   str_number+='<li class="item-soll-qi"><div class="qi-num six" style="background-color:#'+data[j].lottery_new_color[k][5]+'">'+p[1]+'</div></li>';
+                                   str_number+='<li class="item-soll-qi"><div class="qi-num one" style="background-color:#'+data[j].lottery_new_color[k][0]+';color:#'+data[j].lottery_font_color[k][0]+'">'+p[1]+'</div></li>';
+                                   str_number+='<li class="item-soll-qi"><div class="qi-num two" style="background-color:#'+data[j].lottery_new_color[k][1]+';color:#'+data[j].lottery_font_color[k][1]+'">'+p[1]+'</div></li>';
+                                   str_number+='<li class="item-soll-qi"><div class="qi-num three" style="background-color:#'+data[j].lottery_new_color[k][2]+';color:#'+data[j].lottery_font_color[k][2]+'">'+p[1]+'</div></li>';
+                                   str_number+='<li class="item-soll-qi"><div class="qi-num four" style="background-color:#'+data[j].lottery_new_color[k][3]+';color:#'+data[j].lottery_font_color[k][3]+'">'+p[1]+'</div></li>';
+                                   str_number+='<li class="item-soll-qi"><div class="qi-num five" style="background-color:#'+data[j].lottery_new_color[k][4]+';color:#'+data[j].lottery_font_color[k][4]+'">'+p[1]+'</div></li>';
+                                   str_number+='<li class="item-soll-qi"><div class="qi-num six" style="background-color:#'+data[j].lottery_new_color[k][5]+';color:#'+data[j].lottery_font_color[k][5]+'">'+p[1]+'</div></li>';
                                    str_number+='</ul></li>';
                                    $("#lottery_number_"+l).append(str_number);
                                    l++;
@@ -373,12 +375,12 @@
                                     // console.log(p[1])
                                     str_number+='<li class="item-soll">';
                                     str_number+='<ul class="clearfloat">';
-                                    str_number+='<li class="item-soll-qi"><div class="qi-num one" style="background-color:#'+data.lottery_color[k][0]+'">'+p[1]+'</div></li>';
-                                    str_number+='<li class="item-soll-qi"><div class="qi-num two" style="background-color:#'+data.lottery_color[k][1]+'">'+p[1]+'</div></li>';
-                                    str_number+='<li class="item-soll-qi"><div class="qi-num three" style="background-color:#'+data.lottery_color[k][2]+'">'+p[1]+'</div></li>';
-                                    str_number+='<li class="item-soll-qi"><div class="qi-num four" style="background-color:#'+data.lottery_color[k][3]+'">'+p[1]+'</div></li>';
-                                    str_number+='<li class="item-soll-qi"><div class="qi-num five" style="background-color:#'+data.lottery_color[k][4]+'">'+p[1]+'</div></li>';
-                                    str_number+='<li class="item-soll-qi"><div class="qi-num six" style="background-color:#'+data.lottery_color[k][5]+'">'+p[1]+'</div></li>';
+                                    str_number+='<li class="item-soll-qi"><div class="qi-num one" style="background-color:#'+data.lottery_color[k][0]+';color:#'+data.font_color[k][0]+'">'+p[1]+'</div></li>';
+                                    str_number+='<li class="item-soll-qi"><div class="qi-num two" style="background-color:#'+data.lottery_color[k][1]+';color:#'+data.font_color[k][1]+'">'+p[1]+'</div></li>';
+                                    str_number+='<li class="item-soll-qi"><div class="qi-num three" style="background-color:#'+data.lottery_color[k][2]+';color:#'+data.font_color[k][2]+'">'+p[1]+'</div></li>';
+                                    str_number+='<li class="item-soll-qi"><div class="qi-num four" style="background-color:#'+data.lottery_color[k][3]+';color:#'+data.font_color[k][3]+'">'+p[1]+'</div></li>';
+                                    str_number+='<li class="item-soll-qi"><div class="qi-num five" style="background-color:#'+data.lottery_color[k][4]+';color:#'+data.font_color[k][4]+'">'+p[1]+'</div></li>';
+                                    str_number+='<li class="item-soll-qi"><div class="qi-num six" style="background-color:#'+data.lottery_color[k][5]+';color:#'+data.font_color[k][5]+'">'+p[1]+'</div></li>';
                                     str_number+='</ul></li>';
                                     $("#lottery_number_"+l).prepend(str_number);
                                     l++;
