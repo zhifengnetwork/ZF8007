@@ -55,7 +55,13 @@
 						{foreach name="team_ids" item="vo"}
 	            		<div class="data">
 		            		<div>{$vo.id}</div>
-		            		<div>{$vo.nickname}</div>
+		            		<div>
+								{empty name="$vo.nickname"}
+								{$vo.mobile}
+								{else/}
+								{$vo.nickname}
+								{/empty}
+							</div>
 		            		<div>{$vo.commission}</div>
 	            		</div>
 						{/foreach}

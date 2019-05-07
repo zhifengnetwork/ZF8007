@@ -340,10 +340,15 @@ class User extends Base
 
         if ($_POST){
             $way = input('post.way');
+           
             if (empty($way)){
                 return json(['status'=>-1,'msg'=>'请选择支付方式']);
             }
             $money = input('post.money');
+            $commission1 = Db::name('users')->where('id',$this->user_id)->value('commission');
+            if($money>$commission1){
+                return json(['status'=>-1,'msg'=>'余额不足']);
+            }
             $res = Db::name('users')->where('id',$user_id)->setDec('commission',$money);
             Db::name('withdraw_log')->insert([
                 'user_id' => $user_id,
@@ -424,7 +429,12 @@ class User extends Base
     public function editcard()
     {
         if ($_POST){
-            $data = input('post.');//dump($data);die;
+            $data = input('post.');
+            $UserValidate = Loader::Validate('Editcard');
+            if (!$UserValidate->check($data)) {
+                $baocuo = $UserValidate->getError();
+                return json(['status' => -1, 'msg' => $baocuo]);
+            }
             $data1 = [
                 'user_id'=>$data['id'],
                 'withdraw_way'=>1,

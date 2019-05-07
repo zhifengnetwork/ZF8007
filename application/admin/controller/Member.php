@@ -187,7 +187,7 @@ class Member extends Base
                 ->join('users u', 'u.id = p.user_id')
                 ->join('package pa', 'pa.id = p.package_id')
                 ->where($where)
-                ->field( 'p.*,u.nickname,pa.pack_name')
+                ->field( 'p.*,u.nickname,u.mobile,pa.pack_name')
                 ->order('id desc')
                 ->paginate(15, false, ['query' => request()->param()]);;
         $num = count($list);

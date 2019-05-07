@@ -47,7 +47,7 @@
             		<!---->
             		<div class="ance">
             			<span class="beg">零钱余额</span>
-            			<span class="beg">{$commission}</span>
+						<span class="beg">{$commission}</span>
             			<span class="all">全部提现</span>
             		</div>
             	</div>
@@ -73,7 +73,7 @@
 		function submit() {
 			var money=$('#money').val();
 			var way=$('#way').text()
-			console.log(way)
+			var remain_money = $('.beg').data('commission')
 			$.ajax({
 				type: "post",
 				url: "/index/User/withdraw",
