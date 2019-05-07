@@ -226,3 +226,15 @@ function get_withdraw_way($withdraw_way)
         ->value('value');
     return $withdraw_way;
 }
+
+//用户名
+function user_name($user_id){
+    $name = Db::name('users')->where('id',$user_id)->value('nickname');
+    return $name;
+}
+
+function get_name($order_id){
+    $user_id = Db::name('user_pay_log')->where('id',$order_id)->value('user_id');
+    $name = Db::name('users')->where('id',$user_id)->find();
+    return $name;
+}
