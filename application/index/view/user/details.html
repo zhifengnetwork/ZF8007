@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>提现详情</title>
+    <script type="text/javascript" src="/__STATIC__/js/rem.js" ></script>
+    <link rel="stylesheet" type="text/css" href="/__STATIC__/css/public.css"/>
+    <link rel="stylesheet" type="text/css" href="/__STATIC__/css/header.css"/>
+    <link rel="stylesheet" type="text/css" href="/__STATIC__/css/my/details.css"/>
+</head>
+<body>
+<div class="wrapper">
+    <!--头部-->
+    <div class="lb_headWrap">
+        <p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+            <img class="lb_headWrap_return_img" src="/__STATIC__/image/back@2x.png"/>
+        </p>
+        <span>提现详情</span>
+    </div>
+    <!--内容-->
+    <div class="content">
+        <div class="details_wrap">
+
+            <div class="ils">
+                <div class="img">
+                    <img src="/__STATIC__/image/my/bi.png" />
+                </div>
+                <div class="bank">余额提现-到{$info.withdraw_way|get_withdraw_way}</div>
+                <div class="sum">{$info.money}</div>
+            </div>
+
+            <div class="item_wrap">
+
+                <div class="item">
+                    <span class="left">当前状态</span>
+                    <span class="right">
+                        {if condition="$info.status eq 0"}审核中
+                        {elseif condition="$info.status eq 1"}提现已到账
+                        {elseif condition="$info.status eq 2"}提现失败
+                        {/if}
+                    </span>
+                </div>
+
+                <div class="item">
+                    <span class="left">提现金额</span>
+                    <span class="right">￥{$info.money}</span>
+                </div>
+
+                <!--<div class="item">-->
+                    <!--<span class="left">服务费</span>-->
+                    <!--<span class="right">￥0.30</span>-->
+                <!--</div>-->
+
+                <div class="item">
+                    <span class="left">申请时间</span>
+                    <span class="right">{$info.apply_time|date="Y-m-d H:i:s",###}</span>
+                </div>
+
+                <div class="item">
+                    <span class="left">到账时间</span>
+                    <span class="right">
+                        {if condition="$info.status eq 0"}审核中
+                        {elseif condition="$info.status eq 1"}{$info.record_time|date="Y-m-d H:i:s",###}
+                        {elseif condition="$info.status eq 2"}提现失败
+                        {/if}
+                    </span>
+                </div>
+
+                <div class="item">
+                    <span class="left">提现银行</span>
+                    <span class="right">{$info.withdraw_way|get_withdraw_way}</span>
+                </div>
+
+                <!--<div class="item">-->
+                    <!--<span class="left">提现单号</span>-->
+                    <!--<span class="right">20190501182900300123</span>-->
+                <!--</div>-->
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/__STATIC__/js/jquery-1.8.3.js"></script>
+<script src="/__STATIC__/js/public.js"></script>
+</body>
+</html>

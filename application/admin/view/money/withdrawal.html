@@ -51,7 +51,7 @@
                         <td>{$vo.user_id|user_name}</td>
                         <td>{$vo.withdraw_way}</td>
                         <td>{$vo.money}</td>
-                        <td>{$vo.apply_time|date="Y-m-d H:m:s",###}</td>
+                        <td>{$vo.apply_time|date="Y-m-d H:i:s",###}</td>
                         <td>
                             {if condition="$vo.status eq 0"}
                             <span class="label radius">未审核</span>
