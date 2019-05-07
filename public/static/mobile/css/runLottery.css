@@ -116,10 +116,10 @@ body{
 
 .result-info {
     background: #17182d;
-    padding: .32rem .05rem .32rem .1rem;
+    padding: .32rem .05rem 0 .1rem;
     overflow: hidden;
-    overflow-x: scroll;
-    overflow-y: hidden;
+    /*overflow-x: scroll;*/
+    /*overflow-y: hidden;*/
 }
 
 .info-periods{

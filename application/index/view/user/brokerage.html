@@ -54,6 +54,7 @@
 	            	<div class="data_wrap">
 						{foreach name="team_ids" item="vo"}
 	            		<div class="data">
+<<<<<<< HEAD
 		            		<div>{$vo.id}</div>
 		            		<div>
 								{empty name="$vo.nickname"}
@@ -63,6 +64,11 @@
 								{/empty}
 							</div>
 		            		<div>{$vo.commission}</div>
+=======
+		            		<div>{:get_name($vo.order_id)['id']}</div>
+		            		<div>{:get_name($vo.order_id)['nickname']}</div>
+		            		<div>{$vo.rebate_money}</div>
+>>>>>>> 07dd61da76bb50feb295a10ab1fbcf08cf2fd47a
 	            		</div>
 						{/foreach}
 	            	</div>

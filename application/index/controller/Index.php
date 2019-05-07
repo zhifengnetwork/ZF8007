@@ -239,7 +239,7 @@ class Index extends Base
                 $lottery_number=explode(',',$new_lottery['lottery_number']);
                 foreach ($lottery_number as $k=>$v){
                     $data['lottery_color'][$k."-".$v]=array('060835','060835','060835','060835','060835','060835');
-                    $data['font_color'][$k."-".$v]=array('000000','000000','000000','000000','000000','000000');
+                    $data['font_color'][$k."-".$v]=array('ffffff','ffffff','ffffff','ffffff','ffffff','ffffff');
                 }
 //                var_dump($data['lottery_color']);die;
                 //看看有没有配过色
