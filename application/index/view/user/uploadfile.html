@@ -37,9 +37,9 @@
 					<div class="pay">
 						<div class="way">支付方式</div>
 						<div class="pull_box pop">
-							<p im="{$pay.0.img}" id="default_img">{$pay.0.name}:{$pay.0.value}</p><span class="rotate"></span>
+							<p im="{$pay.0.img}?t='+new Date().getTime()" id="default_img">{$pay.0.name}:{$pay.0.value}</p><span class="rotate"></span>
 							<ul class="fl">
-	            				<li onclick="difficut(this)" im="{$pay.1.img}">{$pay.1.name}:{$pay.1.value}</li>
+	            				<li onclick="difficut(this)" im="{$pay.1.img}?t='+new Date().getTime()">{$pay.1.name}:{$pay.1.value}</li>
 	            			</ul>
 						</div>
 					</div>
@@ -48,7 +48,7 @@
             	<!--二维码-->
             	<div class="code_wrap">
             		<div class="code_img">
-            			<img id="code_img" src="{$pay.0.img}" />
+            			<img id="code_img" src="{$pay.0.img}?t='+new Date().getTime()" />
             		</div>
             	</div>
             	<!--上传图片区-->
@@ -149,9 +149,9 @@
 		console.log(old_value)
 		$('#default_img').attr('im',new_img);
 		$('#default_img').text(new_value);
-		$(obj).attr('im',old_img);
+		$(obj).attr('im',old_img+'?t='+new Date().getTime());
 		$(obj).text(old_value);
-		$('#code_img').attr('src',new_img);
+		$('#code_img').attr('src',new_img+'?t='+new Date().getTime());
 	}
 	function sele(obj) {
 		var new_pack=$(obj).attr('im');
