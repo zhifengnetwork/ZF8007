@@ -120,25 +120,31 @@ class Index extends Base
             $this->assign('type',$type);
             //倒计时
             if($type==2){
-                $s=30;
+                $s=40;
             }elseif ($type==3){
-                $s=15;
+                $s=25;
             }elseif ($type==4){
-                $s=45;
+                $s=55;
             }else{
-                $s=0;
+                $s=10;
             }
             $min=date('i')%5;
             $sec=date('s')-$s;
-            if($min==0 && $sec>0){
-                $min=4;
-                $sec=60+$sec;
-            }elseif ($sec<0){
-                $min=5-$min;
-                $sec=0-$sec;
+            if($min==0){
+                if($sec>0){
+                    $min=4;
+                    $sec=60-$sec;
+                }else{
+                    $sec=0-$sec;
+                }
             }else{
-                $min=4-$min;
-                $sec=60-$sec;
+                if($sec>0){
+                    $sec=60-$sec;
+                    $min=4-$min;
+                }else{
+                    $min=5-$min;
+                    $sec=0-$sec;
+                }
             }
             if($sec<10){
                 $sec='0'.$sec;
