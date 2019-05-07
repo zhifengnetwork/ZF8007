@@ -211,3 +211,18 @@ function get_ad($ad_id){
     }
     return array();
 }
+
+/**
+ * 获取提现方式
+ * $withdraw_way 提现方式id
+ */
+function get_withdraw_way($withdraw_way)
+{
+    $user_id = Session::get('user');
+    $withdraw_way = Db::name('withdraw_way')
+        ->where('user_id',$user_id['id'])
+        ->where('withdraw_way',$withdraw_way)
+//        ->find();
+        ->value('value');
+    return $withdraw_way;
+}

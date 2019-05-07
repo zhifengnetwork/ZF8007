@@ -1,0 +1,67 @@
+#date {
+	width: 30%;
+}
+.data_the {
+	margin: .5rem 0 0 .24rem;
+}
+.the {
+	color: #fff;
+	letter-spacing: 1px;
+	font-size: .36rem;
+}
+.list_wrap {
+	position: relative;
+}
+.arrows {
+	position: absolute;
+	top: .15rem;
+	left: 1.95rem;
+	z-index: 0;
+	width: .32rem;
+	height: .17rem;
+	background: url(../../image/my/dow.png) no-repeat;
+	background-size: 100% 100%;
+}
+
+.result_list {
+	margin: .24rem;
+	background-color: #1f2034;
+	border-radius: 4px;
+}
+.item_soll {
+	padding: .2rem .24rem;
+}
+.item_soll div {
+	display: inline-block;
+	vertical-align: top;
+}
+
+.imges {
+	margin: .1rem .24rem 0 0;
+	width: .72rem;
+	height: .72rem;
+}
+.imges img {
+	display: block;
+	max-width: 100%;
+	margin: 0 auto;
+}
+
+.star {
+	width: 53%;
+	color: #fff;
+}
+.star p:nth-child(1) {
+	margin: 0 0 .15rem 0;
+	font-size: .3rem;
+}
+.star p:nth-child(2) {
+	font-size: .26rem;
+	letter-spacing: 1px;
+}
+.sum {
+	margin: .2rem 0 0 .45rem;
+	font-size: .4rem;
+	letter-spacing: 1px;
+	color: #fff;
+}

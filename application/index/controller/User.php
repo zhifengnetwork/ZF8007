@@ -464,6 +464,44 @@ class User extends Base
         return $this->fetch();
     }
 
+    /**
+     * 提现记录
+     */
+    public function record()
+    {
+        $time=input('time','');
+        $where['user_id'] = $this->user_id;
+        if($time!=''){
+            $time = strtotime($time);//dump($time);
+            $start_time=strtotime(date('Y-m-1 00:00:00',$time));//dump($start_time);
+            $next_time = strtotime('+1 month', $start_time);//dump($next_time);//die;
+//            $next_time = strtotime(date('Y-m-1 00:00:00',$next_time));dump($next_time);//die;
+//            $where['apply_time'] = ['>',$start_time];
+            $where['apply_time'] = [['>= time',$start_time],['<= time',$next_time],'and'];
+        }
+
+        $info = Db::name('withdraw_log')
+            ->where($where)
+            ->select();
+
+        $time = $time ? date('Y-m',$time) : '全部';
+        $this->assign('time',$time);
+        $this->assign('info',$info);
+        return $this->fetch();
+    }
+
+    /**
+     * 提现详情
+     */
+    public function details()
+    {
+        $id = input('id/d');//dump($id);//die;
+        $info = Db::name('withdraw_log')
+            ->where('id',$id)
+            ->find();//dump($info);die;
+        $this->assign('info',$info);
+        return $this->fetch();
+    }
 
     /**
      * 获取退出时间并更新套餐剩余时间
