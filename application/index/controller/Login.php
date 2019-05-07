@@ -159,7 +159,7 @@ class Login extends Base
                     return json(['code' => 1, 'msg' => '密码修改成功']);
                 
                 }else{
-                    return json(['code' => 0, 'msg' => '网络繁忙，请稍后再试']);
+                    return json(['code' => 0, 'msg' => '新密码和原密码一致']);
                 }                
            }
  
