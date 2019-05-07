@@ -256,9 +256,9 @@ class Money extends Base
                 //通过
                 if ($data['pay_status'] == 1){
                     //减去用户佣金
-                    Db::name('users')->where('id',$order['user_id'])->setDec('commission',$order['money']);
+//                    Db::name('users')->where('id',$order['user_id'])->setDec('commission',$order['money']);
                     //改变状态
-                    Db::name('withdraw_log')->where('id',$data['id'])->update(['status'=>1]);
+                    Db::name('withdraw_log')->where('id',$data['id'])->update(['status'=>1,'record_time'=>time()]);
                     //之后是否人工转账？？
                 }
 

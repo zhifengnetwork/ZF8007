@@ -37,18 +37,16 @@
                 </div>
                 <div class="select-color">
                 <div class=" select clearfloat">
-                    {volist name="all_color.font_color" id="va" key="k"}
-                        {if condition="$k<7"}
+                    {volist name="all_color" id="va" length="6" key="k"}
                         <div class="colorSelect" data-state="{if condition='$k eq 1'}one{elseif condition='$k eq 2' /}two{elseif condition='$k eq 3' /}three{elseif condition='$k eq 4' /}four{elseif condition='$k eq 5' /}five{else /}six{/if}">
                             <P class="color-tit">第{$k}组</P>
                             <ul class="clearfloat tt">
-                                {volist name="all_color.color" id="ac" key="l"}
+                                {volist name="all_color" id="ac" key="l"}
                                 <?php $j=($k-1)*10+$l;?>
-                                    <li class="color-item" group="{$k}" style="background-color:#{$ac[$k-1]};color:#{$all_color.font_color[$l][$k-1]}">{if condition='($type eq 4) and ($l eq 10)'}0{else /}{$l}{/if}</li>
+                                    <li class="color-item" group="{$k}" style="background-color:#{$ac[$k-1]}">{if condition='($type eq 4) and ($l eq 10)'}0{else /}{$l}{/if}</li>
                                 {/volist}
                             </ul>
                         </div>
-                    {/if}
                     {/volist}
                 </div>
                  </div>
@@ -81,7 +79,6 @@
         <script src="/__STATIC__/js/public.js"></script>
         <script type="text/javascript">
             var color_data = ["#fd7e89","#ffffca","#bbffbb","#84ffc1","#80ffff","#0080ff","#ff80c0","#ff80ff","#df2912","#ffff00","#80ff00","#00ff40","#00ffff","#0080c0","#8080c0","#fe00ff","#bb0000","#ff8040","#00ff00","#008080","#004080","#8080ff","#800040","#ff0080","#800000","#f39901","#008000","#005329","#0000ff","#0000a0","#b300b3","#8000ff","#400000","#804000","#004000","#004040","#000080","#000040","#800080","#400080","#000000","#808000","#808040","#808080","#408080","#c0c0c0","#400040","#ffffff"];
-            var color_zi = ["#7FFF8A","#00FFFF","#1897DE","#2E9BE1"," #F653FC","#E86813","#7E0BDA","#662313","#1D2DC5","#1C6190","#A21B1E","#30123C","#ED06E1","#DE872A","#E65361","#051328","#7247DB","#338D27","#220306","#B43607","#4DDBBD","#D49BA6","#1EA227","#192D64","#E45C19","#5A504B","#9E09F5","#DE5121","#D7171C","#32D211","#C1E01D","#F92FC8","#29FCD8","#F668BF","#7DDDE3","#0EE066","#D92F5D","#07FB79","#F57286","#2555F5","#DAF4DD","#DBDBF8","#DE0AAD","#F15238","#943053","#E892CA","#F84F48","#010828"];
             var html = '';
             html += '<div class="down_box">';
             html += "<ul>";
@@ -96,25 +93,62 @@
                 // console.log(color_data[_index]);
                 // console.log(_index);
                 $(this_ele).css('background',color_data[_index]);
-                $(this_ele).css('color',color_zi[_index]);
                 $('.hue_select_view').hide();
                 var val = $(this_ele).text();
                 var num = $(this_ele).parent().parent().attr('data-state');
                 // console.log(val);
                 // console.log(num);
                 var group=$(this_ele).attr('group');
-                // console.log(group)
-                change_color(num,val,color_data[_index],color_zi[_index]);
-                corresponding_color(group,val,color_data[_index],color_zi[_index]);
+                console.log(group)
+                change_color(num,val,color_data[_index]);
+                corresponding_color(group,val,color_data[_index]);
+                // $(".one").each((element,i)=> {
+                //     if(num == 'one'){
+                //         if($(i).html()==val ){
+                //             $(i).css('background', color_data[_index]);
+                //         }
+                //     }
+                // });
+                // $(".two").each((element, i) => {
+                //     if(num == 'two') {
+                //         if($(i).html() == val) {
+                //             $(i).css('background', color_data[_index]);
+                //         }
+                //     }
+                // });
+                // $(".three").each((element,i)=> {
+                //     if(num == 'three'){
+                //         if($(i).html()==val ){
+                //             $(i).css('background',color_data[_index]);
+                //         }
+                //     }
+                // });
+                // $(".four").each((element,i)=> {
+                //     if(num == 'four'){
+                //         if($(i).html()==val ){
+                //             $(i).css('background',color_data[_index]);
+                //         }
+                //     }
+                // });
+                // $(".five").each((element,i)=> {
+                //     if(num == 'five'){
+                //         if($(i).html()==val ){
+                //             $(i).css('background',color_data[_index]);
+                //         }
+                //     }
+                // });
+                // $(".six").each((element,i)=> {
+                //     if(num == 'six'){
+                //         if($(i).html()==val ){
+                //             $(i).css('background',color_data[_index]);
+                //         }
+                //     }
+                // });
             }
-            function change_color(num,val,color,ziColor) {
+            function change_color(num,val,color) {
                 $("."+num).each((element,i)=> {
                     if($(i).html()==val ){
                         $(i).css('background',color);
-                        // console.log(color)
-                        $(i).css('color',ziColor);
-                        // console.log(ziColor)
-
                     }
                 });
             }
@@ -156,23 +190,14 @@
                 $("#count_down").html(min+":"+sec);
                 // console.log(min)
                 // console.log(sec)
-                // if(min==0 &&sec<5){
-                //     console.log(m)
-                //     console.log(s)
-                // }
-                // if(min==0 && sec==5){
-                //     get_interface();
-                // }else
-                if(min==0 && sec==0){
-                    // stopCount(sto1);
-                    clearTimeout(sto1);
-                    clearTimeout(sto2);
-                    get_new_lottery();
-
-                    // stopCount(sto2);
+                if(min==0 && sec==5){
+                    get_interface();
+                }else if(min==0 && sec==0){
+                    stopCount(sto1)
+                    stopCount(sto2)
                     $("#count_down").html('wating!');
-
-                    return false;
+                    get_new_lottery();
+                    // return false;
 
                 }
                 runtimes++;
@@ -192,10 +217,13 @@
                     // async:false,
                     dataType: 'json',
                     success: function(data){
-                        // console.log(data)
+                        console.log(data)
                         if (!data && typeof data != "undefined" && data != 0){
                             get_interface();
                         }
+                        // if (data.status==1){
+                        //     //要不要提示颜色变更成功之类的
+                        // }
                     }
                 })
             }
@@ -207,18 +235,56 @@
                 while(true)  if(new Date().getTime()-start > n) break;
 
             }
-
+           // function colo(e,z){
+           //  var val = $(e).prev().attr('value')
+           //      var s = $(e).attr('value')
+           //      z.each((element,i)=> {
+           //              if($(i).html()==val){
+           //                 $(i).css('background-color',`#${s}`)
+           //              }
+           //      });
+           // }
+           //  //    第一列
+           //  function color0(e){
+           //      colo(e,$(".one"))
+           //      corresponding_color(1,$(e).prev().val(),$(e).val())
+           //  }
+           //  //   第二列
+           //  function color1(e){
+           //      colo(e,$(".two"))
+           //      corresponding_color(2,$(e).prev().val(),$(e).val())
+           //  }
+           //  //   第三列
+           //  function color2(e){
+           //      colo(e,$(".three"))
+           //      corresponding_color(3,$(e).prev().val(),$(e).val())
+           //  }
+           //  //   第四列
+           //  function color3(e){
+           //      colo(e,$(".four"))
+           //      corresponding_color(4,$(e).prev().val(),$(e).val())
+           //  }
+           //  //   第五列
+           //  function color4(e){
+           //      colo(e,$(".five"))
+           //      corresponding_color(5,$(e).prev().val(),$(e).val())
+           //  }
+           //  //   第六列
+           //  function color5(e){
+           //      colo(e,$(".six"))
+           //      corresponding_color(6,$(e).prev().val(),$(e).val())
+           //  }
             //将颜色对应的存起来
-           function corresponding_color(group,num,color,font_color) {
+           function corresponding_color(group,num,color) {
                // console.log(group+'```'+num+'````'+color)
-               if(num>=0 && color !='' && font_color!=''){
+               if(num>=0 && color !=''){
                    var type={$type};
                    $.ajax({
                        type: "POST",
                        url: '{:url(\'index/lottery_color\')}',
                        cache: false,
                        data: {
-                           num: num,group:group,type:type,color:color,font_color:font_color
+                           num: num,group:group,type:type,color:color
                        },
                        dataType: 'json',
                        success: function(data){
@@ -280,6 +346,15 @@
                        var strData = "";
                        // console.log(data)
                        if(data&&data.date!='') {
+                           // for(var i=0;i<data.length;i++){
+                           //     strData += '<div class="dataTerm">';
+                           //     strData += '<p class="dataTermNum">'+data[i].ordernum+'</p>';
+                           //     strData += '<p class="dataTermText">'+data[i].note+'</p>';
+                           //     strData += '</div>';
+                           // }
+                           //
+                           // /*追加数据*/
+                           // $('.dataWrap').append(strData);
                            //先搞期号
                            var str_date='';
                            for(var i in data){
@@ -299,12 +374,12 @@
                                    // console.log(p[1])
                                    str_number+='<li class="item-soll">';
                                    str_number+='<ul class="clearfloat">';
-                                   str_number+='<li class="item-soll-qi"><div class="qi-num one" style="background-color:#'+data[j].lottery_new_color[k][0]+';color:#'+data[j].lottery_font_color[k][0]+'">'+p[1]+'</div></li>';
-                                   str_number+='<li class="item-soll-qi"><div class="qi-num two" style="background-color:#'+data[j].lottery_new_color[k][1]+';color:#'+data[j].lottery_font_color[k][1]+'">'+p[1]+'</div></li>';
-                                   str_number+='<li class="item-soll-qi"><div class="qi-num three" style="background-color:#'+data[j].lottery_new_color[k][2]+';color:#'+data[j].lottery_font_color[k][2]+'">'+p[1]+'</div></li>';
-                                   str_number+='<li class="item-soll-qi"><div class="qi-num four" style="background-color:#'+data[j].lottery_new_color[k][3]+';color:#'+data[j].lottery_font_color[k][3]+'">'+p[1]+'</div></li>';
-                                   str_number+='<li class="item-soll-qi"><div class="qi-num five" style="background-color:#'+data[j].lottery_new_color[k][4]+';color:#'+data[j].lottery_font_color[k][4]+'">'+p[1]+'</div></li>';
-                                   str_number+='<li class="item-soll-qi"><div class="qi-num six" style="background-color:#'+data[j].lottery_new_color[k][5]+';color:#'+data[j].lottery_font_color[k][5]+'">'+p[1]+'</div></li>';
+                                   str_number+='<li class="item-soll-qi"><div class="qi-num one" style="background-color:#'+data[j].lottery_new_color[k][0]+'">'+p[1]+'</div></li>';
+                                   str_number+='<li class="item-soll-qi"><div class="qi-num two" style="background-color:#'+data[j].lottery_new_color[k][1]+'">'+p[1]+'</div></li>';
+                                   str_number+='<li class="item-soll-qi"><div class="qi-num three" style="background-color:#'+data[j].lottery_new_color[k][2]+'">'+p[1]+'</div></li>';
+                                   str_number+='<li class="item-soll-qi"><div class="qi-num four" style="background-color:#'+data[j].lottery_new_color[k][3]+'">'+p[1]+'</div></li>';
+                                   str_number+='<li class="item-soll-qi"><div class="qi-num five" style="background-color:#'+data[j].lottery_new_color[k][4]+'">'+p[1]+'</div></li>';
+                                   str_number+='<li class="item-soll-qi"><div class="qi-num six" style="background-color:#'+data[j].lottery_new_color[k][5]+'">'+p[1]+'</div></li>';
                                    str_number+='</ul></li>';
                                    $("#lottery_number_"+l).append(str_number);
                                    l++;
@@ -376,21 +451,24 @@
                                     // console.log(p[1])
                                     str_number+='<li class="item-soll">';
                                     str_number+='<ul class="clearfloat">';
-                                    str_number+='<li class="item-soll-qi"><div class="qi-num one" style="background-color:#'+data.lottery_color[k][0]+';color:#'+data.font_color[k][0]+'">'+p[1]+'</div></li>';
-                                    str_number+='<li class="item-soll-qi"><div class="qi-num two" style="background-color:#'+data.lottery_color[k][1]+';color:#'+data.font_color[k][1]+'">'+p[1]+'</div></li>';
-                                    str_number+='<li class="item-soll-qi"><div class="qi-num three" style="background-color:#'+data.lottery_color[k][2]+';color:#'+data.font_color[k][2]+'">'+p[1]+'</div></li>';
-                                    str_number+='<li class="item-soll-qi"><div class="qi-num four" style="background-color:#'+data.lottery_color[k][3]+';color:#'+data.font_color[k][3]+'">'+p[1]+'</div></li>';
-                                    str_number+='<li class="item-soll-qi"><div class="qi-num five" style="background-color:#'+data.lottery_color[k][4]+';color:#'+data.font_color[k][4]+'">'+p[1]+'</div></li>';
-                                    str_number+='<li class="item-soll-qi"><div class="qi-num six" style="background-color:#'+data.lottery_color[k][5]+';color:#'+data.font_color[k][5]+'">'+p[1]+'</div></li>';
+                                    str_number+='<li class="item-soll-qi"><div class="qi-num one" style="background-color:#'+data.lottery_color[k][0]+'">'+p[1]+'</div></li>';
+                                    str_number+='<li class="item-soll-qi"><div class="qi-num two" style="background-color:#'+data.lottery_color[k][1]+'">'+p[1]+'</div></li>';
+                                    str_number+='<li class="item-soll-qi"><div class="qi-num three" style="background-color:#'+data.lottery_color[k][2]+'">'+p[1]+'</div></li>';
+                                    str_number+='<li class="item-soll-qi"><div class="qi-num four" style="background-color:#'+data.lottery_color[k][3]+'">'+p[1]+'</div></li>';
+                                    str_number+='<li class="item-soll-qi"><div class="qi-num five" style="background-color:#'+data.lottery_color[k][4]+'">'+p[1]+'</div></li>';
+                                    str_number+='<li class="item-soll-qi"><div class="qi-num six" style="background-color:#'+data.lottery_color[k][5]+'">'+p[1]+'</div></li>';
                                     str_number+='</ul></li>';
                                     $("#lottery_number_"+l).prepend(str_number);
                                     l++;
                                 }
-
+                                // Object.keys(data.lottery_color).forEach(function(key){
+                                //
+                                //     console.log(key,data.lottery_color[key]);
+                                //
+                                // });
                                 //替换倒计时
                                 $("#min").val(data.min)
                                 $("#sec").val(data.sec)
-                                runtimes=0;
                                 set_count_down();
                             }
                         }

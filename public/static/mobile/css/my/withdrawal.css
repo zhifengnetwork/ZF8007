@@ -93,3 +93,11 @@ input::-webkit-inner-spin-button {
 	letter-spacing: 1px;
 	color: #f9f7fb;
 }
+
+.record {
+	position: absolute;
+	top: 0;
+	right: .24rem;
+	font-size: .32rem;
+	color: #fff;
+}

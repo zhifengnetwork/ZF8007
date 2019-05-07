@@ -77,12 +77,15 @@ class Index extends Base
             }
             if($type==4){
                 for($i=1;$i<10;$i++){
-                    $all_color[$i]=$this->get_lottery_color($user_id,$type,$i,1);
+                    $all_color['color'][$i]=$this->get_lottery_color($user_id,$type,$i,1);
+                    $all_color['font_color'][$i]=$this->get_font_color($user_id,$type,$i,1);
                 }
-                $all_color[10]=$this->get_lottery_color($user_id,$type,0,1);
+                $all_color['color'][10]=$this->get_lottery_color($user_id,$type,0,1);
+                $all_color['font_color'][10]=$this->get_font_color($user_id,$type,0,1);
             }else{
                 for($i=1;$i<11;$i++){
-                    $all_color[$i]=$this->get_lottery_color($user_id,$type,$i,1);
+                    $all_color['color'][$i]=$this->get_lottery_color($user_id,$type,$i,1);
+                    $all_color['font_color'][$i]=$this->get_font_color($user_id,$type,$i,1);
                 }
             }
 //            var_dump($list);die;
@@ -112,6 +115,7 @@ class Index extends Base
                 foreach ($list as $ke=>$val){
                     foreach($val['lottery_number'] as $l=>$p){
                         $list[$ke]['lottery_new_color'][$l.'-'.$p]=$this->get_lottery_color($user_id,$type,$p);
+                        $list[$ke]['lottery_font_color'][$l.'-'.$p]=$this->get_font_color($user_id,$type,$p);
                     }
                 }
                 $this->ajaxReturn($list);
@@ -120,25 +124,31 @@ class Index extends Base
             $this->assign('type',$type);
             //倒计时
             if($type==2){
-                $s=30;
+                $s=40;
             }elseif ($type==3){
-                $s=15;
+                $s=25;
             }elseif ($type==4){
-                $s=45;
+                $s=55;
             }else{
-                $s=0;
+                $s=10;
             }
             $min=date('i')%5;
             $sec=date('s')-$s;
-            if($min==0 && $sec>0){
-                $min=4;
-                $sec=60+$sec;
-            }elseif ($sec<0){
-                $min=5-$min;
-                $sec=0-$sec;
+            if($min==0){
+                if($sec>0){
+                    $min=4;
+                    $sec=60-$sec;
+                }else{
+                    $sec=0-$sec;
+                }
             }else{
-                $min=4-$min;
-                $sec=60-$sec;
+                if($sec>0){
+                    $sec=60-$sec;
+                    $min=4-$min;
+                }else{
+                    $min=5-$min;
+                    $sec=0-$sec;
+                }
             }
             if($sec<10){
                 $sec='0'.$sec;
@@ -162,15 +172,18 @@ class Index extends Base
         $num=input('num');
         $group=input('group');
         $color=input('color');
+        $font_color=input('font_color');
+        $color=ltrim($color,'#');
+        $font_color=ltrim($font_color,'#');
 
 //        echo $type."~~~".$num."~~~".$group."~~~".$color;die;
         if(in_array($type,array(1,2,3,4)) && in_array($group,array(1,2,3,4,5,6)) && in_array($num,array(0,1,2,3,4,5,6,7,8,9,10)) && mb_strlen($color)==6){
             //先看看有没有记录
             $is_have=Db::name('lottery_color')->where(['type'=>$type,'user_id'=>$user_id,'group'=>$group,'number'=>$num])->count();
             if($is_have){
-                $res=Db::name('lottery_color')->where(['type'=>$type,'user_id'=>$user_id,'group'=>$group,'number'=>$num])->update(['color'=>$color,'update_time'=>time()]);
+                $res=Db::name('lottery_color')->where(['type'=>$type,'user_id'=>$user_id,'group'=>$group,'number'=>$num])->update(['color'=>$color,'font_color'=>$font_color,'update_time'=>time()]);
             }else{
-                $res=Db::name('lottery_color')->insert(['user_id'=>$user_id,'type'=>$type,'group'=>$group,'number'=>$num,'color'=>$color,'create_time'=>time(),'update_time'=>time()]);
+                $res=Db::name('lottery_color')->insert(['user_id'=>$user_id,'type'=>$type,'group'=>$group,'number'=>$num,'color'=>$color,'font_color'=>$font_color,'create_time'=>time(),'update_time'=>time()]);
             }
             $this->ajaxReturn(['status'=>$res,'mas'=>'变更成功']);
         }
@@ -187,6 +200,23 @@ class Index extends Base
             if(isset($lottery_color)&&!empty($lottery_color)){
                 foreach($lottery_color as $key=>$value){
                     $start_color[$value['group']-1]=$value['color'];
+                }
+            }
+        }
+        return $start_color;
+    }
+    //查数字本身颜色
+    public function get_font_color($user_id,$type,$num,$is_date=0){
+        if($is_date){
+            $start_color=array('000000','000000','000000','000000','000000','000000');
+        }else{
+            $start_color=array('eff0f7','eff0f7','eff0f7','eff0f7','eff0f7','eff0f7');
+        }
+        if(in_array($type,array(1,2,3,4)) && in_array($num,array(0,1,2,3,4,5,6,7,8,9,10)) && $user_id>0){
+            $lottery_color=Db::name('lottery_color')->where(['type'=>$type,'user_id'=>$user_id,'number'=>$num])->select();
+            if(isset($lottery_color)&&!empty($lottery_color)){
+                foreach($lottery_color as $key=>$value){
+                    $start_color[$value['group']-1]=$value['font_color'];
                 }
             }
         }
@@ -209,6 +239,7 @@ class Index extends Base
                 $lottery_number=explode(',',$new_lottery['lottery_number']);
                 foreach ($lottery_number as $k=>$v){
                     $data['lottery_color'][$k."-".$v]=array('060835','060835','060835','060835','060835','060835');
+                    $data['font_color'][$k."-".$v]=array('000000','000000','000000','000000','000000','000000');
                 }
 //                var_dump($data['lottery_color']);die;
                 //看看有没有配过色
@@ -218,6 +249,7 @@ class Index extends Base
                     foreach ($lottery_color as $key=>$value){
                         foreach ($lottery_number as $ke=>$va){
                             $data['lottery_color'][$ke.'-'.$value['number']][$value['group']-1]=$value['color'];
+                            $data['font_color'][$ke.'-'.$value['number']][$value['group']-1]=$value['font_color'];
                         }
                     }
                 }
