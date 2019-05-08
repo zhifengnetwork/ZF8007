@@ -182,7 +182,7 @@ class User extends Base
         $pay_way[0]['img'] = $pay_way[2]['value'];
         $pay_way[1]['img'] = $pay_way[3]['value'];
 
-        $package = Db::name('package')->select();//dump($package);die;
+        $package = Db::name('package')->order('pack_time asc')->select();
         $this->assign('pay',$pay_way);
         $this->assign('package',$package);//dump($package);die;
         return $this->fetch();

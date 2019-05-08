@@ -149,8 +149,6 @@ class Money extends Base
                 return json(['status'=>-1,'msg'=>'操作失败']);
             }
         }
- 
-        // Db::name('admin')->where('name', $data['name'])->select();
     }
 
     /**
@@ -183,7 +181,7 @@ class Money extends Base
         }
 
         $this->assign('seach',$seach);
-        $list = Db::name('rebate_log')->where($where)->paginate($page);
+        $list = Db::name('rebate_log')->where($where)->order('id desc')->paginate($page);
         $count = count($list);
         $this->assign('list',$list);
         $this->assign('count',$count);
@@ -204,20 +202,6 @@ class Money extends Base
         if ($seach) {
             $page = 0;
             $time = " 23:59:59";
-//            if ($seach['m_conditions']){
-//                $m_conditions = str_replace(' ', '', $seach['m_conditions']);
-//                $where['nickname'] = ['like',"%$m_conditions%"];
-//                $ids = Db::name('users')->where($where)->field('id')->select();
-//                $lists = [];
-//                foreach($ids as $v){
-//                    array_push($lists,$v['id']);
-//                }
-//                $list = Db::name('withdraw_log')->where('user_id','in',$lists)->paginate($page);
-//                $count = count($list);
-//                $this->assign('list',$list);
-//                $this->assign('count',$count);
-//                dump($lists);die;
-//            }
             if ($seach['datemin'] && $seach['datemax']) {
                 $datemin = strtotime($seach['datemin']);
                 $datemax = strtotime($seach['datemax'].$time);
@@ -230,7 +214,7 @@ class Money extends Base
         }
 
         $this->assign('seach',$seach);
-        $list = Db::name('withdraw_log')->where($where)->paginate($page);
+        $list = Db::name('withdraw_log')->where($where)->order('id desc')->paginate($page);
         $count = count($list);
         $this->assign('list',$list);
         $this->assign('count',$count);
@@ -256,16 +240,15 @@ class Money extends Base
 
                 //通过
                 if ($data['pay_status'] == 1){
-                    //减去用户佣金
-//                    Db::name('users')->where('id',$order['user_id'])->setDec('commission',$order['money']);
                     //改变状态
                     Db::name('withdraw_log')->where('id',$data['id'])->update(['status'=>1,'record_time'=>time()]);
-                    //之后是否人工转账？？
+                    //之后请人工转账？？
                 }
 
                 //不通过
                 if ($data['pay_status'] == 2){
                     Db::name('withdraw_log')->where('id',$data['id'])->update(['status'=>2]);
+                    //把钱返回给用户
                     Db::name('users')->where('id',$order['user_id'])->setInc('commission',$order['money']);
                 }
 
