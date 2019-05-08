@@ -25,7 +25,7 @@
                 <table class="table table-border table-bordered table-hover table-bg table-sort">
                     <thead>
                     <tr class="text-c">
-                        <th width="25"><input type="checkbox" name="" value=""></th>
+                        <!--<th width="25"><input type="checkbox" name="" value=""></th>-->
                         <th width="80">订单ID</th>
                         <th width="100">用户名</th>
                         <th width="150">返佣金额</th>
@@ -35,7 +35,7 @@
                     <tbody>
                     {foreach name="list" item="vo"}
                     <tr class="text-c">
-                        <td><input type="checkbox" value="1" name=""></td>
+                        <!--<td><input type="checkbox" value="1" name=""></td>-->
                         <td>{$vo.order_id}</td>
                         <td>{$vo.first_leader|user_name}</u></td>
                         <td>{$vo.rebate_money}</td>
@@ -45,6 +45,7 @@
                     </tbody>
                 </table>
             </div>
+            {$list->render()}
         </article>
     </div>
 </section>

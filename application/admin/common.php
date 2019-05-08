@@ -83,3 +83,11 @@ function get_admin_name($id){
         return Db::name('admin')->where(['id'=>$id])->value('name');
     }
 }
+
+function get_withdraw_way($withdraw_id,$user_id)
+{
+    $value = Db::name('withdraw_way')
+        ->where(['user_id'=>$user_id,'withdraw_way'=>$withdraw_id])
+        ->value('value');
+    return $value;
+}
