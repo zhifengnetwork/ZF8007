@@ -127,8 +127,6 @@ class User extends Base
         $info = Db::name('users')->where('id',$user_id)->find();
         $team_ids = Db::name('rebate_log')->alias('r')
             ->where(['r.first_leader'=>$user_id])
-//            ->join('zf_rebate_log l','r.order_id=l.id','left')
-//            ->field('r.*,l.*')
             ->select();
 //        dump($team_ids);die;
         $team = Db::name('users')->where('first_leader',$user_id)->select();//dump($team);
@@ -142,6 +140,7 @@ class User extends Base
     public function notice()
     {
         $data = Db::name('article')->where('type','0')->order('add_time desc')->find();
+//        $data['content'] = strip_tags($data['content']);
         $this->assign('data',$data);
         return $this->fetch();
     }
@@ -150,6 +149,7 @@ class User extends Base
     public function disclaimer()
     {
         $data = Db::name('article')->where('type','1')->order('add_time desc')->find();
+//        $data['content'] = strip_tags($data['content']);
         $this->assign('data',$data);
         return $this->fetch();
     }
@@ -158,6 +158,7 @@ class User extends Base
     public function use_notice()
     {
         $data = Db::name('article')->where('type','2')->order('add_time desc')->find();
+//        $data['content'] = strip_tags($data['content']);
         $this->assign('data',$data);
         return $this->fetch();
     }
