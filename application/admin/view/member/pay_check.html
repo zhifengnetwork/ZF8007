@@ -67,12 +67,13 @@
                                 <td>{$vo.pack_name}</td>
                                 <td>{$vo.pay_money}</td>
                                 <td>
-                                    {empty name="vo.pay_code"}
-                                    <span>无凭证上传</span>
-                                    {else /}
-                                    <a href="#" onclick="member_add('查看凭证','/admin/member/img?id={$vo.id}','500','500')">点击查看</a>
-                                    {/empty}
-                                    
+                                    {if condition="empty($vo.pay_code)" }
+                                            <span>无凭证上传</span>
+                                    {elseif condition="$vo.pay_code eq 666"/}
+                                            <span>余额支付</span>
+                                    {else/}
+                                            <a href="#" onclick="member_add('查看凭证','/admin/member/img?id={$vo.id}','500','500')">点击查看</a>
+                                    {/if}
                                 </td>
                                 <td width="40">{:date('Y-m-d,H:i:s',$vo.pay_time)}</td>
                                 <td class="td-status">
