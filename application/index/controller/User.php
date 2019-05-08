@@ -195,6 +195,10 @@ class User extends Base
             //余额支付
             if($data['pays'] == '余额支付'){
                 $packs = Db::name('package')->where('id', $data['pack'])->find();
+                $commission2 = Db::name('users')->where('id',$this->user_id)->value('commission');//dump($packs['pack_money']);die;
+                if ($packs['pack_money'] > $commission2){
+                    return json(['status' => -1, 'msg' => '提现失败，余额不足']);
+                }
                 //先把钱扣了再说，审核不通过会返还
                 Db::name('users')->where('id',$this->user_id)->setDec('commission',$packs['pack_money']);
                 $res = Db::name('user_pay_log')->insert([
