@@ -181,7 +181,7 @@ class User extends Base
         $pay_way[0]['img'] = $pay_way[2]['value'];
         $pay_way[1]['img'] = $pay_way[3]['value'];
 
-        $package = Db::name('package')->select();
+        $package = Db::name('package')->select();//dump($package);die;
         $this->assign('pay',$pay_way);
         $this->assign('package',$package);//dump($package);die;
         return $this->fetch();
@@ -191,6 +191,28 @@ class User extends Base
     {
         if ($_POST) {
             $data = input('post.');//dump($data);die;
+            //余额支付
+            if($data['pays'] == '余额支付'){
+                $packs = Db::name('package')->where('id', $data['pack'])->find();
+                //先把钱扣了再说，审核不通过会返还
+                Db::name('users')->where('id',$this->user_id)->setDec('commission',$packs['pack_money']);
+                $res = Db::name('user_pay_log')->insert([
+                    'user_id' => $this->user_id,
+                    'package_id' => $data['pack'],
+                    'pay_money' => $packs['pack_money'],
+                    'pay_status' => 0,
+                    'pay_time' => time(),
+                    'pay_code' => 666,
+                    'pay_way' => '余额支付'
+                ]);
+                if ($res){
+                    return json(['status' => 1, 'msg' => '提交成功']);
+                }else{
+                    return json(['status' => -1, 'msg' => '提交失败']);
+                }
+            }
+
+            //线下支付
             if (empty($data['files'])) {
                 return json(['status' => -1, 'msg' => '请选择凭证上传']);
             }
