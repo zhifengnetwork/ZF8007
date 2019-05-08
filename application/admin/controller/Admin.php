@@ -140,10 +140,10 @@ class Admin extends Base
             $id = json_decode($data['id'], true);
             $where['id'] = array('in', $id);
             $res = Db::name('admin')->where($where)->update(['is_delete'=>1]);
-            if($res == 1){
+            if($res){
                 return json(['status'=>1,'msg'=>'删除成功']);
             }else {
-                return json(['status'=>1,'msg'=>'删除失败']);
+                return json(['status'=>-1,'msg'=>'删除失败']);
             }
         }
     }
