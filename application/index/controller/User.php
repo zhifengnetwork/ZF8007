@@ -361,7 +361,7 @@ class User extends Base
         $user_id = $this->user_id;
         if ($_GET){
             $select = input('');
-            $select = (int)$select['selete'];
+            $select = (int)$select['select'];
 //        dump($select);die;
             $way = Db::name('withdraw_way')->where('id',$select)->value('value');
             $this->assign('way',$way);
