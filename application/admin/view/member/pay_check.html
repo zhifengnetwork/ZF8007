@@ -28,7 +28,7 @@
                     value="{$seach.datemax|date='Y-m-d H:i:s',###}" {else/} value="" {/if} id="datemax" name="seach[datemax]"
                     class="input-text Wdate" style="width:180px;">
                 <input type="text" class="input-text" style="width:250px"
-                    value="{if condition='isset($seach.m_conditions)'}{$seach.m_conditions}{/if}" placeholder="输入套餐名称"
+                    value="{if condition='isset($seach.m_conditions)'}{$seach.m_conditions}{/if}" placeholder="输入用戶名称"
                     id="m_conditions" name="seach[m_conditions]">
                     <button type="submit" class="btn btn-success radius" id="" name=""><i
                             class="Hui-iconfont">&#xe665;</i> 搜套餐</button>
@@ -56,16 +56,24 @@
                             <tr class="text-c">
                                 <!-- <td><input type="checkbox" value="{$vo.id}" name="pack_id"></td> -->
                                 <td>{$vo.id}</td>
-                                <td>{$vo.nickname}</td>
+                                <td>
+                                    {empty name="$vo.nickname"}
+                                    {$vo.mobile}
+                                    {else/}
+                                    {$vo.nickname}
+                                    {/empty}
+                                   
+                                </td>
                                 <td>{$vo.pack_name}</td>
                                 <td>{$vo.pay_money}</td>
                                 <td>
-                                    {empty name="vo.pay_code"}
-                                    <span>无凭证上传</span>
-                                    {else /}
-                                    <a href="#" onclick="member_add('查看凭证','/admin/member/img?id={$vo.id}','500','500')">点击查看</a>
-                                    {/empty}
-                                    
+                                    {if condition="empty($vo.pay_code)" }
+                                            <span>无凭证上传</span>
+                                    {elseif condition="$vo.pay_code eq 666"/}
+                                            <span>余额支付</span>
+                                    {else/}
+                                            <a href="#" onclick="member_add('查看凭证','/admin/member/img?id={$vo.id}','500','500')">点击查看</a>
+                                    {/if}
                                 </td>
                                 <td width="40">{:date('Y-m-d,H:i:s',$vo.pay_time)}</td>
                                 <td class="td-status">

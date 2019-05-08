@@ -146,7 +146,6 @@
 			}
 			// $(".verify").focus();
 			daojishi(60, $(this))
-			$(".phone").attr("disabled", "disabled") 
         })
         function daojishi(seconds,obj){
             if (seconds > 1){
@@ -157,7 +156,6 @@
                     },1000);
                 }else{
                     $(obj).val("获取验证码").attr("disabled", false);//启用按
-                    $(".phone").attr("disabled",false)
                 }
         }
         $('.signin_btn').click(function(){

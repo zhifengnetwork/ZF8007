@@ -127,8 +127,6 @@ class User extends Base
         $info = Db::name('users')->where('id',$user_id)->find();
         $team_ids = Db::name('rebate_log')->alias('r')
             ->where(['r.first_leader'=>$user_id])
-//            ->join('zf_rebate_log l','r.order_id=l.id','left')
-//            ->field('r.*,l.*')
             ->select();
 //        dump($team_ids);die;
         $team = Db::name('users')->where('first_leader',$user_id)->select();//dump($team);
@@ -142,6 +140,7 @@ class User extends Base
     public function notice()
     {
         $data = Db::name('article')->where('type','0')->order('add_time desc')->find();
+//        $data['content'] = strip_tags($data['content']);
         $this->assign('data',$data);
         return $this->fetch();
     }
@@ -150,6 +149,7 @@ class User extends Base
     public function disclaimer()
     {
         $data = Db::name('article')->where('type','1')->order('add_time desc')->find();
+//        $data['content'] = strip_tags($data['content']);
         $this->assign('data',$data);
         return $this->fetch();
     }
@@ -158,6 +158,7 @@ class User extends Base
     public function use_notice()
     {
         $data = Db::name('article')->where('type','2')->order('add_time desc')->find();
+//        $data['content'] = strip_tags($data['content']);
         $this->assign('data',$data);
         return $this->fetch();
     }
@@ -181,7 +182,7 @@ class User extends Base
         $pay_way[0]['img'] = $pay_way[2]['value'];
         $pay_way[1]['img'] = $pay_way[3]['value'];
 
-        $package = Db::name('package')->select();
+        $package = Db::name('package')->select();//dump($package);die;
         $this->assign('pay',$pay_way);
         $this->assign('package',$package);//dump($package);die;
         return $this->fetch();
@@ -191,6 +192,28 @@ class User extends Base
     {
         if ($_POST) {
             $data = input('post.');//dump($data);die;
+            //余额支付
+            if($data['pays'] == '余额支付'){
+                $packs = Db::name('package')->where('id', $data['pack'])->find();
+                //先把钱扣了再说，审核不通过会返还
+                Db::name('users')->where('id',$this->user_id)->setDec('commission',$packs['pack_money']);
+                $res = Db::name('user_pay_log')->insert([
+                    'user_id' => $this->user_id,
+                    'package_id' => $data['pack'],
+                    'pay_money' => $packs['pack_money'],
+                    'pay_status' => 0,
+                    'pay_time' => time(),
+                    'pay_code' => 666,
+                    'pay_way' => '余额支付'
+                ]);
+                if ($res){
+                    return json(['status' => 1, 'msg' => '提交成功']);
+                }else{
+                    return json(['status' => -1, 'msg' => '提交失败']);
+                }
+            }
+
+            //线下支付
             if (empty($data['files'])) {
                 return json(['status' => -1, 'msg' => '请选择凭证上传']);
             }
@@ -346,10 +369,15 @@ class User extends Base
 
         if ($_POST){
             $way = input('post.way');
+           
             if (empty($way)){
                 return json(['status'=>-1,'msg'=>'请选择支付方式']);
             }
             $money = input('post.money');
+            $commission1 = Db::name('users')->where('id',$this->user_id)->value('commission');
+            if($money>$commission1){
+                return json(['status'=>-1,'msg'=>'余额不足']);
+            }
             $res = Db::name('users')->where('id',$user_id)->setDec('commission',$money);
             Db::name('withdraw_log')->insert([
                 'user_id' => $user_id,
@@ -430,7 +458,12 @@ class User extends Base
     public function editcard()
     {
         if ($_POST){
-            $data = input('post.');//dump($data);die;
+            $data = input('post.');
+            $UserValidate = Loader::Validate('Editcard');
+            if (!$UserValidate->check($data)) {
+                $baocuo = $UserValidate->getError();
+                return json(['status' => -1, 'msg' => $baocuo]);
+            }
             $data1 = [
                 'user_id'=>$data['id'],
                 'withdraw_way'=>1,

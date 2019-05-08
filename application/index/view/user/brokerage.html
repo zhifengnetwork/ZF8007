@@ -54,9 +54,11 @@
 	            	<div class="data_wrap">
 						{foreach name="team_ids" item="vo"}
 	            		<div class="data">
+
 		            		<div>{:get_name($vo.order_id)['id']}</div>
 		            		<div>{:get_name($vo.order_id)['nickname']}</div>
 		            		<div>{$vo.rebate_money}</div>
+
 	            		</div>
 						{/foreach}
 	            	</div>

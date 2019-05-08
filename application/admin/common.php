@@ -43,17 +43,19 @@ function adminLog($log_info)
  function s_condition($data,$name)
 {
     $time = " 23:59:59";
-    if ($data['m_conditions']) {
+//    $where['user_id'] = ['>', 0];
+     $where = '';
+    if ($data['m_conditions'] && !empty($data['m_conditions'])) {
         $m_conditions = str_replace(' ', '', $data['m_conditions']);
         $where[$name] = ['like', "%$m_conditions%"];
     }
-    if ($data['datemin'] && $data['datemax']) {
+    if (!empty($data['datemin']) && !empty($data['datemax'])) {
         $datemin = strtotime($data['datemin']);
         $datemax = strtotime($data['datemax']);
         $where['pay_time'] = [['>= time', $datemin], ['<= time', $datemax], 'and'];
-    } elseif ($data['datemin']) {
+    } elseif (!empty($data['datemin'])) {
         $where['pay_time'] = ['>= time', strtotime($data['datemin'])];
-    } elseif ($data['datemax']) {
+    } elseif (!empty($data['datemax'])) {
         $where['pay_time'] = ['<= time', strtotime($data['datemax'])];
     }
     return $where;

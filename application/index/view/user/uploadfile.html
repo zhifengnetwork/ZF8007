@@ -26,10 +26,10 @@
 					<div class="pay">
 						<div class="way">购买会员天数：</div>
 						<div class="pull_box time">
-							<p im="{$package.0.id}" id="pack">{$package.0.pack_name}：{$package.0.pack_time}天</p><span class="rot"></span>
+							<p im="{$package.0.id}" id="pack">{$package.0.pack_name}(￥{$package.0.pack_money})：{$package.0.pack_time}天</p><span class="rot"></span>
 							<ul class="info">
 								{foreach name="package" item="pack"}
-								<li im="{$pack.id}" onclick="sele(this)">{$pack.pack_name}：{$pack.pack_time}天</li>
+								<li im="{$pack.id}" onclick="sele(this)">{$pack.pack_name}(￥{$pack.pack_money})：{$pack.pack_time}天</li>
 								{/foreach}
 							</ul>
 						</div>
@@ -40,6 +40,7 @@
 							<p im="{$pay.0.img}" id="default_img">{$pay.0.name}:{$pay.0.value}</p><span class="rotate"></span>
 							<ul class="fl">
 	            				<li onclick="difficut(this)" im="{$pay.1.img}">{$pay.1.name}:{$pay.1.value}</li>
+								<li onclick="difficut(this)" im="commission_pay">余额支付</li>
 	            			</ul>
 						</div>
 					</div>
@@ -145,13 +146,23 @@
 		var new_value=$(obj).text();
 		var old_img=$('#default_img').attr('im');
 		var old_value=$('#default_img').text();
-		console.log(new_value)
-		console.log(old_value)
+		// console.log(new_value)
+		// console.log(old_value)
 		$('#default_img').attr('im',new_img);
 		$('#default_img').text(new_value);
-		$(obj).attr('im',old_img);
+		$(obj).attr('im',old_img+'?t='+new Date().getTime());
 		$(obj).text(old_value);
-		$('#code_img').attr('src',new_img);
+		if(new_img == "commission_pay"){
+			$('.code_wrap').hide()
+			$('.pix_tu').hide()
+		}else{
+			$('.code_wrap').show()
+			$('.pix_tu').show()
+			$('#code_img').attr('src',new_img+'?t='+new Date().getTime());
+		}
+		if(old_img=='commission_pay'){
+			$(obj).attr('im',old_img);
+		}
 	}
 	function sele(obj) {
 		var new_pack=$(obj).attr('im');
