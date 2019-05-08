@@ -10,9 +10,9 @@ class Editcard extends validate
     protected $rule = [
         'value'         => 'require|chsAlpha',
         'user_name'     => 'require|chsAlpha',
-        // 'account'       => 'number',
-        'address'       => 'chsAlphaNum',
         'account'       =>  'require|alphaNum', 
+        'address'       => 'chsAlphaNum',
+        
     ];
     protected $message = [
         
@@ -25,11 +25,11 @@ class Editcard extends validate
         'account.require'          => '请填写账号',
         
     ];
-    protected $scene = [
-        'editcard' => [ 'value', 'user_name','account','address'],
-        'pay' => [ 'account','user_name', ],
-        // 'del' => ['admin_id'],
-    ];
+    // protected $scene = [
+    //     'editcard' => [ 'value', 'user_name','account','address'],
+    //     'pay' => [ 'account','user_name',],
+    //     // 'del' => ['admin_id'],
+    // ];
 
 
 }
