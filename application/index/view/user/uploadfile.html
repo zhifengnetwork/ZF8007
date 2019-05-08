@@ -149,9 +149,9 @@
 		console.log(old_value)
 		$('#default_img').attr('im',new_img);
 		$('#default_img').text(new_value);
-		$(obj).attr('im',old_img);
+		$(obj).attr('im',old_img+'?t='+new Date().getTime());
 		$(obj).text(old_value);
-		$('#code_img').attr('src',new_img);
+		$('#code_img').attr('src',new_img+'?t='+new Date().getTime());
 	}
 	function sele(obj) {
 		var new_pack=$(obj).attr('im');

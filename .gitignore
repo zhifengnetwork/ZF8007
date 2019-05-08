@@ -4,5 +4,5 @@ composer.lock
 application/database.php
 .vscode
 runtime
-public/upload/
-uploads/
+public/upload/*
+uploads/*

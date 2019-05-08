@@ -170,6 +170,7 @@ class Member extends Base
         $datemax        = isset($seach['datemax']) ? $seach['datemax'] : '';
        
         $where = '';
+//        $where['id'] = ['>', 0];
         if($seach){
             // 搜索条件
             $name = 'pack_name|nickname';
