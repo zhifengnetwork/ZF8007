@@ -62,6 +62,7 @@ class Login extends Base
             // $e_time = 86400;
             $data1 = [
                 'mobile'         => $data['mobile'],
+                'nickname'       => $data['mobile'],
                 'password'       => pwd_encryption($data['password']),
                 'register_time'  => time(),
                 'register_method'=> 'mobile',
