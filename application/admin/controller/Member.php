@@ -210,10 +210,11 @@ class Member extends Base
             // 启动事务
             Db::startTrans();
             try{
-                $data['utime'] = time();
-                $res =  Db::name('user_pay_log')->update($data);
+
                 // 通过
                 if($data['pay_status']==1){
+                    $data['utime'] = time();
+                    $res =  Db::name('user_pay_log')->update($data);                    
                     //给用户添加对应时长
                     $where = $this->add_condition($data);
                     // 判断是否存在上级，存在则给上级加佣金
@@ -234,6 +235,16 @@ class Member extends Base
                     unset($where['commission']);
                     $user_add = Db::name('users')->update($where);          
                    
+                }else{
+                    $data['utime'] = time();
+                    $res =  Db::name('user_pay_log')->update($data);
+                    //套餐id 通过套餐id 获取支付金额
+                    $pack_info = Db::name('user_pay_log')->where('id',$data['id'])->find();
+                    if($pack_info){
+                        // 返还对应的金额
+                        $re_user = Db::name('users')->where('id', $pack_info['user_id'])->setInc('commission', $pack_info['pay_money']);
+                    }
+
                 }
                 // 提交事务
                 Db::commit();

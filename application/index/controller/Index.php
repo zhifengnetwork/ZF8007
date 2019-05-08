@@ -225,6 +225,7 @@ class Index extends Base
     //获取最新一条记录
     public function new_lottery(){
         $type=input('type');
+        
         $lottery_date=input('lottery_date');
         $user_id=$this->user_id;
 //        $user_id=1;//用到登录做好了
