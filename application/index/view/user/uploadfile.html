@@ -153,10 +153,10 @@
 		$(obj).attr('im',old_img+'?t='+new Date().getTime());
 		$(obj).text(old_value);
 		if(new_img == "commission_pay"){
-			$('#code_img').hide()
+			$('.code_wrap').hide()
 			$('.pix_tu').hide()
 		}else{
-			$('#code_img').show()
+			$('.code_wrap').show()
 			$('.pix_tu').show()
 			$('#code_img').attr('src',new_img+'?t='+new Date().getTime());
 		}
