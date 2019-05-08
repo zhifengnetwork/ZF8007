@@ -265,7 +265,7 @@ class Index extends Base
                 }elseif ($type==4){
                     $s=45;
                 }else{
-                    $s=0;
+                    $s=5;
                 }
                 $min=date('i')%5;
                 $sec=date('s')-$s;
