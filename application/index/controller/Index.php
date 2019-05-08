@@ -16,12 +16,14 @@ class Index extends Base
         //调用公告
         $article=Db::name('article')->where('type','0')->order('add_time desc')->find();
         if (isset($article['content'])&&$article['content']!=''){
+            $article['content']=strip_tags($article['content']);
 //            if(strlen($article['content'])>66){
 //                $flag="...";
 //            }else{
 //                $flag='';
 //            }
 //            $article['content']=substr($article['content'],0,66).$flag;
+
         }else{
             $article['content']='暂无公告';
             $article['id']=0;
@@ -124,13 +126,13 @@ class Index extends Base
             $this->assign('type',$type);
             //倒计时
             if($type==2){
-                $s=40;
+                $s=35;
             }elseif ($type==3){
-                $s=25;
+                $s=20;
             }elseif ($type==4){
-                $s=55;
+                $s=50;
             }else{
-                $s=10;
+                $s=0;
             }
             $min=date('i')%5;
             $sec=date('s')-$s;
@@ -263,10 +265,11 @@ class Index extends Base
                 }elseif ($type==4){
                     $s=45;
                 }else{
-                    $s=0;
+                    $s=5;
                 }
                 $min=date('i')%5;
                 $sec=date('s')-$s;
+
                 if($min==0 && $sec>0){
                     $min=4;
                     $sec=60-$sec;
@@ -277,11 +280,17 @@ class Index extends Base
                     $min=4-$min;
                     $sec=60-$sec;
                 }
+                if($type==1){
+                    if($min==0){
+                        $min=5+$min;
+                    }
+                }
                 if($sec<10){
                     $sec='0'.$sec;
                 }
                 $data['min']=$min;
                 $data['sec']=$sec;
+
                 $this->ajaxReturn($data);
             }
         }

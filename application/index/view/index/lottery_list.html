@@ -166,7 +166,7 @@
                 if(min==0 && sec==0){
                     // stopCount(sto1);
                     clearTimeout(sto1);
-                    clearTimeout(sto2);
+                    // clearTimeout(sto2);
                     get_new_lottery();
 
                     // stopCount(sto2);
@@ -237,7 +237,7 @@
                var page = 1;
                var type={$type};//游戏类型
                get_lottery_list();
-               setTimeout(get_new_lottery, 1000);
+               // setTimeout(get_new_lottery, 1000);
                // set_count_down();
            // })
 
@@ -393,12 +393,14 @@
                                 $("#sec").val(data.sec)
                                 runtimes=0;
                                 set_count_down();
+                            }else{
+                                get_new_lottery()
                             }
                         }
                     })
                 }
                // if(min<max){
-                   sto2=setTimeout(get_new_lottery,10000);
+               //     sto2=setTimeout(get_new_lottery,10000);
                // }
            }
 
