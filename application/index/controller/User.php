@@ -530,6 +530,7 @@ class User extends Base
 
         $info = Db::name('withdraw_log')
             ->where($where)
+            ->order('id desc')
             ->select();
 
         $time = $time ? date('Y-m',$time) : '全部';
