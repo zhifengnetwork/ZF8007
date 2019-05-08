@@ -57,8 +57,18 @@ class Login extends Base
             // 验证
             $check_reg = $this->check_register($data);
             if($check_reg) return $check_reg;
+            // 获取配置信息，通过配置信息获取时长
+            $config = Db::name('config')->where('type','base_setting')->select();
+            foreach ($config as $key => $value) {
+                # code...
+                // dump($value);
+                $new_config = array();
+                $new_config=$value['value'];
+                $new_config1[$value['name']]=$new_config;
+            }
+            $day = $new_config1[ 'website_day'];
             //注册成功，有一天时长 
-            $e_time = strtotime(date('Y-m-d H:i:s', strtotime('+1 day')));
+            $e_time = strtotime(date('Y-m-d H:i:s', strtotime("+$day day")));
             // $e_time = 86400;
             $data1 = [
                 'mobile'         => $data['mobile'],
@@ -200,12 +210,12 @@ class Login extends Base
             return json(['code' => 0, 'msg' => '两次密码输入不一致']);
         }
             // 验证码
-            $checkData['sms_type'] = $data['sms_type'];
-            $checkData['code'] = $data['code'];
-            $checkData['phone'] = $data['mobile'];            
-            $res = checkPhoneCode($checkData);
-            if($res['code']==0){
-                return json(['code'=>0,'msg'=> $res['msg']]);
-            }        
+            // $checkData['sms_type'] = $data['sms_type'];
+            // $checkData['code'] = $data['code'];
+            // $checkData['phone'] = $data['mobile'];            
+            // $res = checkPhoneCode($checkData);
+            // if($res['code']==0){
+            //     return json(['code'=>0,'msg'=> $res['msg']]);
+            // }        
     }
 }
