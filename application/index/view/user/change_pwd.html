@@ -95,12 +95,13 @@
 					countdown = 60; 
 				} else { 
 					val.setAttribute("disabled", true); 
-					val.value="重新发送(" + countdown + ")"; 
-					countdown--; 
+					val.value="重新发送(" + countdown + ")";
+					setTimeout(function() {
+						settime(val)
+					},1000);
+					countdown--;
 				} 
-				setTimeout(function() { 
-					settime(val) 
-				},1000) 
+
 			}
 			
 			$(function(){

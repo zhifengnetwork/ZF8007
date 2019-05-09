@@ -64,6 +64,11 @@ class Index extends Base
 //                $max=1;
 //            }else{
             $max=($num-1)*$page;
+            if($max==90){
+                $page=10;
+            }elseif ($max>90){
+                return false;
+            }
 //            }
 
 //            var_dump((int)$type);
