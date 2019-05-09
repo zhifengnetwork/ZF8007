@@ -167,7 +167,16 @@ class Happy extends Base
         try{
             Db::name('interface_recorder')->insert($data);
         }catch(\Exception $e){
-            echo "重复插入异常";
+            echo "重复插入异常/n";
+        }
+    }
+    //每天晚上删除前一天的数据
+    public function delete_history(){
+        $time=strtotime('-2 day');
+        try{
+            Db::name('interface_recorder')->where('add_time','<',$time)->delete();
+        }catch(\Exception $e){
+            echo "删除数据异常/n";
         }
     }
 }
