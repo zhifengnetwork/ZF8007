@@ -9,7 +9,7 @@ class Editcard extends validate
 
     protected $rule = [
         'value'         => 'require|chsAlpha|max:30',
-        'user_name'     => 'require|chsAlpha',
+        'user_name'     => 'require|chsAlpha|max:30',
         'account'       =>  'require|alphaNum|length:16,19', 
         'address'       => 'chsAlphaNum',
         
@@ -21,7 +21,8 @@ class Editcard extends validate
         'value.chsAlpha'          => '银行名称必须是汉字或者字母',
         'value.max'               => '银行名称最长30位',
         'user_name.require'       => '请填写姓名',
-        'user_name.chsAlpha'      => '姓名必须是数字或者字母',
+        'user_name.require'       => '请填写姓名',
+        'user_name.max'           => '姓名长度30位',
         'account.alphaNum'        => '请填写数字或者字母',
         'address.chsAlphaNum'     => '地址是汉字字母或者数字',
         'account.require'         => '请填写卡号',
