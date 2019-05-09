@@ -22,7 +22,7 @@ class Hope extends Base
      * 5、插入日志记录
      */
     public function happy_is_important(){
-        $lockfile = '/tmp/mytest.lock';
+        $lockfile = '/tmp/cartest.lock';
 
         if(file_exists($lockfile)){
             exit();
