@@ -136,11 +136,11 @@ class Index extends Base
             $this->assign('type',$type);
             //倒计时
             if($type==2){
-                $s=30;
+                $s=35;
             }elseif ($type==3){
-                $s=15;
+                $s=20;
             }elseif ($type==4){
-                $s=45;
+                $s=50;
             }else{
                 $s=0;
             }
@@ -284,13 +284,13 @@ class Index extends Base
 //                var_dump($data);
                 //倒计时
                 if($type==2){
-                    $s=30;
+                    $s=35;
                 }elseif ($type==3){
-                    $s=15;
+                    $s=20;
                 }elseif ($type==4){
-                    $s=45;
+                    $s=50;
                 }else{
-                    $s=5;
+                    $s=0;
                 }
                 $min=date('i')%5;
                 $sec=date('s')-$s;
@@ -314,7 +314,7 @@ class Index extends Base
                     $sec='0'.$sec;
                 }
                 $data['min']=$min;
-                $data['sec']=$sec;
+                $data['sec']=(int)$sec;
 
                 $this->ajaxReturn($data);
             }

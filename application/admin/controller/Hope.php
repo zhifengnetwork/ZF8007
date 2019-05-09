@@ -11,7 +11,7 @@ header("Content-type: text/html; charset=utf-8");
 date_default_timezone_set("PRC");
 use think\Db;
 
-class Happy extends Base
+class Hope extends Base
 {
     /**
      * 每分钟向接口发送一次请求  将期号大于表中最大期号的数据存起来
@@ -22,6 +22,14 @@ class Happy extends Base
      * 5、插入日志记录
      */
     public function happy_is_important(){
+        $lockfile = '/tmp/mytest.lock';
+
+        if(file_exists($lockfile)){
+            exit();
+        }else{
+            file_put_contents($lockfile, 1, true);
+        }
+
         //获取四个最大的期号   1幸运飞艇  2快乐飞艇  3快乐赛车  4快乐时时彩
         $luck_issue=$this->get_max_issue(1);
         $airship_issue=$this->get_max_issue(2);
@@ -36,6 +44,8 @@ class Happy extends Base
         $this->deposit($airship_issue,$airship_url,2);
         $this->deposit($racing_issue,$racing_url,3);
         $this->deposit($lottery_issue,$lottery_url,4);
+
+        unlink($lockfile);
     }
 
     public function deposit($max_issue,$url,$type){
@@ -165,18 +175,9 @@ class Happy extends Base
         $data['add_time']=$add_time;
         $data['type_lottery_date']=$type."_".$lottery_date;
         try{
-            Db::name('interface_recorder')->insert($data);
+            Db::name('interface_recorder_test')->insert($data);
         }catch(\Exception $e){
-            echo "重复插入异常/n";
-        }
-    }
-    //每天晚上删除前一天的数据
-    public function delete_history(){
-        $time=strtotime('-2 day');
-        try{
-            Db::name('interface_recorder')->where('add_time','<',$time)->delete();
-        }catch(\Exception $e){
-            echo "删除数据异常/n";
+            echo $type."重复插入异常/n";
         }
     }
 }
