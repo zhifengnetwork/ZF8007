@@ -424,8 +424,8 @@ class User extends Base
     {
         if ($_POST){
             $data = input('post.'); //dump($data);die;
-            $UserValidate = Loader::Validate('Editcard');
-            if (!$UserValidate->scene('pay')->check($data)) {
+            $UserValidate = Loader::Validate('Pay');
+            if (!$UserValidate->check($data)) {
                 $baocuo = $UserValidate->getError();
                 return json(['status' => -1, 'msg' => $baocuo]);
             }
@@ -469,7 +469,7 @@ class User extends Base
         if ($_POST){
             $data = input('post.');
             $UserValidate = Loader::Validate('Editcard');
-            if (!$UserValidate->scene('editcard')->check($data)) {
+            if (!$UserValidate->check($data)) {
                 $baocuo = $UserValidate->getError();
                 return json(['status' => -1, 'msg' => $baocuo]);
             }
@@ -530,6 +530,7 @@ class User extends Base
 
         $info = Db::name('withdraw_log')
             ->where($where)
+            ->order('id desc')
             ->select();
 
         $time = $time ? date('Y-m',$time) : '全部';
