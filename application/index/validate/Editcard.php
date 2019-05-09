@@ -25,7 +25,7 @@ class Editcard extends validate
         'account.alphaNum'        => '请填写数字或者字母',
         'address.chsAlphaNum'     => '地址是汉字字母或者数字',
         'account.require'         => '请填写卡号',
-        'account.length'          => '银行卡号长度16-19位',
+        'account.length'          => '请输入正确的银行卡号',
         
     ];
     // protected $scene = [
