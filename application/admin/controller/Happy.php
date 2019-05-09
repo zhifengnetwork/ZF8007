@@ -163,6 +163,11 @@ class Happy extends Base
         $data['lottery_number']=$lottery_number;
         $data['lottery_time']=$lottery_time;
         $data['add_time']=$add_time;
-        Db::name('interface_recorder')->insert($data);
+        $data['type_lottery_date']=$type."_".$lottery_date;
+        try{
+            Db::name('interface_recorder')->insert($data);
+        }catch(\Exception $e){
+            echo "重复插入异常";
+        }
     }
 }

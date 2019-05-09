@@ -197,7 +197,7 @@ class Login extends Base
         $res = checkPhoneCode($checkData);
         if ($res['code'] == 0) {
             return json(['code' => 0, 'msg' => $res['msg']]);
-        }            
+        }
     }
 
     public function check_register($data){
