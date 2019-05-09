@@ -136,11 +136,11 @@ class Index extends Base
             $this->assign('type',$type);
             //倒计时
             if($type==2){
-                $s=35;
+                $s=30;
             }elseif ($type==3){
-                $s=20;
+                $s=15;
             }elseif ($type==4){
-                $s=50;
+                $s=45;
             }else{
                 $s=0;
             }
