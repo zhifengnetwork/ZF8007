@@ -60,7 +60,12 @@ class Index extends Base
 //        echo $type;
         if(in_array($type,array(1,2,3,4))){
             $page=15;
+//            if($num==0){
+//                $max=1;
+//            }else{
             $max=($num-1)*$page;
+//            }
+
 //            var_dump((int)$type);
 //            var_dump($max);
 //            var_dump($page);die;
@@ -154,6 +159,21 @@ class Index extends Base
             }
             if($sec<10){
                 $sec='0'.$sec;
+            }
+            if($type==1){
+                $close_start_time=strtotime(date('Y-m-d 04:04:00',time()));
+                $close_end_time=strtotime(date("Y-m-d 13:09:00",time()));
+                if(time()>=$close_start_time && time()<=$close_end_time){
+                    $min=99;
+                    $sec=99;
+                }
+            }else{
+                $close_start_time=strtotime(date('Y-m-d 06:26:00',time()));
+                $close_end_time=strtotime(date("Y-m-d 07:26:00",time()));
+                if(time()>=$close_start_time && time()<=$close_end_time){
+                    $min=99;
+                    $sec=99;
+                }
             }
             $this->assign('min',$min);
             $this->assign('sec',$sec);
