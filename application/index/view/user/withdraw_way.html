@@ -28,7 +28,7 @@
             			<!---->
             			<div class="bank_wrap">
             				<div class="icon"></div>
-            				<div class="house">银行卡&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>{$bank.value}</span></div>
+            				<div class="house">银行卡</div>
             				<!--编辑按钮-->
             				<a href="{:url('index/user/editcard')}" class="edit">编辑</a>
             			</div>
@@ -37,13 +37,13 @@
             				<div class="arrive">提现到：</div>
             				<div class="ive">
             					<div class="name">
-        							<span>{$bank.account}</span>
+        							<span>{$bank.value}</span>
         							<!--未编辑前默认隐藏-->
-        							<span class="small">*{$bank.value}</span>
+        							<span class="small">*{$bank.user_name}</span>
             					</div>
             					<!--未编辑前默认隐藏-->
             					<div class="card">
-            						<span>6221 ********88</span>
+            						<span>{$bank.account}</span>
             					</div>
             				</div>
             			</div>
@@ -66,11 +66,11 @@
             				<div class="arrive">提现到：</div>
             				<div class="ive">
             					<div class="name">
-            						<span>{$alipay.account}</span>
+            						<span>{$alipay.user_name}</span>
             					</div>
             					<!--未编辑前默认隐藏-->
             					<div class="card">
-            						<span>138****8000</span>
+            						<span>{$alipay.account}</span>
             					</div>
             				</div>
             			</div>

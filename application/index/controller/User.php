@@ -367,26 +367,34 @@ class User extends Base
             $select = input('');
             $select = (int)$select['select'];
 //        dump($select);die;
-            $way = Db::name('withdraw_way')->where('id',$select)->value('value');
+            $way = Db::name('withdraw_way')->where('id',$select)->value('value');//dump($way);die;
             $this->assign('way',$way);
         }
 
         if ($_POST){
             $way = input('post.way');
-           
+
             if (empty($way)){
                 return json(['status'=>-1,'msg'=>'请选择支付方式']);
             }
-            $money = input('post.money');
-            $commission1 = Db::name('users')->where('id',$this->user_id)->value('commission');
+            $money = input('post.money');//要提现金额
+            $commission1 = Db::name('users')->where('id',$this->user_id)->value('commission');//用户余额
+            $limit_money = Db::name('config')->where(['name'=>'website_money','type'=>'base_setting'])->value('value');//限制能达到提现的额度   dump($limit_money);die;
+            if($limit_money>$commission1){
+                return json(['status'=>-1,'msg'=>'余额达到￥'.$limit_money.'才能提现']);
+            }
             if($money>$commission1){
                 return json(['status'=>-1,'msg'=>'余额不足']);
             }
+            $withdraw_way = Db::name('withdraw_way')->where(['user_id'=>$user_id,'value'=>$way])->value('withdraw_way');
+//            dump($withdraw_way);die;
+            //先把余额的钱扣了，审核不通过会返还
             $res = Db::name('users')->where('id',$user_id)->setDec('commission',$money);
+            //写记录
             Db::name('withdraw_log')->insert([
                 'user_id' => $user_id,
                 'money' => $money,
-                'withdraw_way' => $way,
+                'withdraw_way' => $withdraw_way,
                 'status' => 0,
                 'apply_time' => time()
             ]);
