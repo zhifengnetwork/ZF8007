@@ -27,7 +27,7 @@ class Hope extends Base
         if(file_exists($lockfile)){
             exit();
         }else{
-            file_put_contents($lockfile, 1, true);
+            fopen($lockfile,'w+x');
         }
 
         //获取四个最大的期号   1幸运飞艇  2快乐飞艇  3快乐赛车  4快乐时时彩
@@ -51,6 +51,7 @@ class Hope extends Base
     public function deposit($max_issue,$url,$type){
         if($max_issue!=0){
             $luck_data=$this->get_interface_infomation($url);
+//            var_dump($luck_data);die;
             if($max_issue==1){
                 if(isset($luck_data) && !empty($luck_data)){
                     foreach ($luck_data as $key=>$value){
@@ -174,6 +175,7 @@ class Hope extends Base
         $data['lottery_time']=$lottery_time;
         $data['add_time']=$add_time;
         $data['type_lottery_date']=$type."_".$lottery_date;
+        echo 123;
         try{
             Db::name('interface_recorder_test')->insert($data);
         }catch(\Exception $e){
