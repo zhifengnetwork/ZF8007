@@ -28,6 +28,7 @@ class Hope extends Base
             exit();
         }else{
             fopen($lockfile,'w+x');
+            chmod($lockfile,0777);
         }
 
         //获取四个最大的期号   1幸运飞艇  2快乐飞艇  3快乐赛车  4快乐时时彩
