@@ -11,7 +11,7 @@ header("Content-type: text/html; charset=utf-8");
 date_default_timezone_set("PRC");
 use think\Db;
 
-class Hope extends Base
+class Happy
 {
     /**
      * 每分钟向接口发送一次请求  将期号大于表中最大期号的数据存起来
@@ -22,53 +22,65 @@ class Hope extends Base
      * 5、插入日志记录
      */
     public function happy_is_important(){
-        $lockfile = '/tmp/cartest.lock';
-
-        if(file_exists($lockfile)){
-            exit();
-        }else{
-            fopen($lockfile,'w+x');
-            chmod($lockfile,0777);
+        //幸运飞艇每天4点06-13点09分是闭市的   不在请求
+        $luck_start=strtotime(date('Y-m-d 04:06:00',time()));
+        $luck_end=strtotime(date('Y-m-d 13:09:00',time()));
+        if(time()<$luck_start || time()>$luck_end){
+            $luck_issue=$this->get_max_issue(1);
+            $luck_url='http://api.b1api.com/api?p=json&t=xyft&limit=1&token=6E84023D0C29F550';
+            $this->deposit_luck($luck_issue,$luck_url,1);
         }
+        //快乐飞艇 快乐赛车 快乐时时彩  每天6点26-7:30闭市   不再发送请求
+        $happy_start=strtotime(date('Y-m-d 06:26:00',time()));
+        $happy_end=strtotime(date('Y-m-d 07:03:00',time()));
+        if(time()<$happy_start || time()>$happy_end){
+            //获取四个最大的期号   1幸运飞艇  2快乐飞艇  3快乐赛车  4快乐时时彩
 
-        //获取四个最大的期号   1幸运飞艇  2快乐飞艇  3快乐赛车  4快乐时时彩
-        $luck_issue=$this->get_max_issue(1);
-        $airship_issue=$this->get_max_issue(2);
-        $racing_issue=$this->get_max_issue(3);
-        $lottery_issue=$this->get_max_issue(4);
-        //4个接口连接
-        $luck_url='http://api.b1api.com/api?p=json&t=xyft&limit=1&token=6E84023D0C29F550';
-        $airship_url='https://api.happylottery.com/data/airship/last.xml';
-        $racing_url='https://api.happylottery.com/data/racing/last.xml';
-        $lottery_url='https://api.happylottery.com/data/lottery/last.xml';
-        $this->deposit_luck($luck_issue,$luck_url,1);
-        $this->deposit($airship_issue,$airship_url,2);
-        $this->deposit($racing_issue,$racing_url,3);
-        $this->deposit($lottery_issue,$lottery_url,4);
+            $airship_issue=$this->get_max_issue(2);
+            $racing_issue=$this->get_max_issue(3);
+            $lottery_issue=$this->get_max_issue(4);
+            //4个接口连接
 
-        unlink($lockfile);
+            $airship_url='https://api.happylottery.com/data/airship/last.xml';
+            $racing_url='https://api.happylottery.com/data/racing/last.xml';
+            $lottery_url='https://api.happylottery.com/data/lottery/last.xml';
+
+            $this->deposit($airship_issue,$airship_url,2);
+            $this->deposit($racing_issue,$racing_url,3);
+            $this->deposit($lottery_issue,$lottery_url,4);
+        }
     }
 
     public function deposit($max_issue,$url,$type){
         if($max_issue!=0){
-            $luck_data=$this->get_interface_infomation($url);
-//            var_dump($luck_data);die;
-            if($max_issue==1){
-                if(isset($luck_data) && !empty($luck_data)){
-                    foreach ($luck_data as $key=>$value){
-                        $lottery_time=strtotime($value['time']);
-                        $this->save_interface($type,$value['issue'],$value['numbers'],$lottery_time,time());
-                        echo '存入一条类型为'.$type.'，期号为'.$value['issue'].'的数据/n';
-                    }
-                }
+            $lockfile='a.txt';
+            if(file_exists($lockfile)){
+                exit();
             }else{
-                if(isset($luck_data) && !empty($luck_data)){
-                    foreach ($luck_data as $key=>$value){
-                        if($value['issue']>$max_issue){
-                            //存起来
+                $file=fopen($lockfile,'w+x');
+                fwrite($file,'123');
+                fclose($file);
+            }
+            $luck_data=$this->get_interface_infomation($url);
+            if(isset($luck_data) && !empty($luck_data)){
+                unlink($lockfile);
+                if($max_issue==1){
+                    if(isset($luck_data) && !empty($luck_data)){
+                        foreach ($luck_data as $key=>$value){
                             $lottery_time=strtotime($value['time']);
                             $this->save_interface($type,$value['issue'],$value['numbers'],$lottery_time,time());
                             echo '存入一条类型为'.$type.'，期号为'.$value['issue'].'的数据/n';
+                        }
+                    }
+                }else{
+                    if(isset($luck_data) && !empty($luck_data)){
+                        foreach ($luck_data as $key=>$value){
+                            if($value['issue']>$max_issue){
+                                //存起来
+                                $lottery_time=strtotime($value['time']);
+                                $this->save_interface($type,$value['issue'],$value['numbers'],$lottery_time,time());
+                                echo '存入一条类型为'.$type.'，期号为'.$value['issue'].'的数据/n';
+                            }
                         }
                     }
                 }
@@ -120,7 +132,7 @@ class Hope extends Base
      */
     public function get_max_issue($type){
         if(in_array($type,array(1,2,3,4))){
-            $max_issue=Db::name('interface_recorder')->where(['type'=>$type])->order('lottery_date desc')->find();
+            $max_issue=Db::name('interface_recorder_test')->where(['type'=>$type])->order('lottery_date desc')->find();
             if(isset($max_issue)){
                 return $max_issue['lottery_date'];
             }else{
@@ -167,6 +179,8 @@ class Hope extends Base
         $json = json_decode($html,true);
         if (isset($json['row'])){
             return $json['data'];
+        }else{
+            return 0;
         }
     }
     private function save_interface($type,$lottery_date,$lottery_number,$lottery_time,$add_time){
@@ -176,11 +190,10 @@ class Hope extends Base
         $data['lottery_time']=$lottery_time;
         $data['add_time']=$add_time;
         $data['type_lottery_date']=$type."_".$lottery_date;
-        echo 123;
         try{
             Db::name('interface_recorder_test')->insert($data);
         }catch(\Exception $e){
-            echo $type."重复插入异常/n";
+            echo "重复插入异常/n";
         }
     }
 }
