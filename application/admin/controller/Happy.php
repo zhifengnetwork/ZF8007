@@ -11,7 +11,7 @@ header("Content-type: text/html; charset=utf-8");
 date_default_timezone_set("PRC");
 use think\Db;
 
-class Happy extends Base
+class Happy
 {
     /**
      * 每分钟向接口发送一次请求  将期号大于表中最大期号的数据存起来
@@ -22,20 +22,33 @@ class Happy extends Base
      * 5、插入日志记录
      */
     public function happy_is_important(){
-        //获取四个最大的期号   1幸运飞艇  2快乐飞艇  3快乐赛车  4快乐时时彩
-        $luck_issue=$this->get_max_issue(1);
-        $airship_issue=$this->get_max_issue(2);
-        $racing_issue=$this->get_max_issue(3);
-        $lottery_issue=$this->get_max_issue(4);
-        //4个接口连接
-        $luck_url='http://api.b1api.com/api?p=json&t=xyft&limit=1&token=6E84023D0C29F550';
-        $airship_url='https://api.happylottery.com/data/airship/last.xml';
-        $racing_url='https://api.happylottery.com/data/racing/last.xml';
-        $lottery_url='https://api.happylottery.com/data/lottery/last.xml';
-        $this->deposit_luck($luck_issue,$luck_url,1);
-        $this->deposit($airship_issue,$airship_url,2);
-        $this->deposit($racing_issue,$racing_url,3);
-        $this->deposit($lottery_issue,$lottery_url,4);
+        //幸运飞艇每天4点06-13点09分是闭市的   不在请求
+        $luck_start=strtotime(date('Y-m-d 04:06:00',time()));
+        $luck_end=strtotime(date('Y-m-d 13:09:00',time()));
+        if(time()<$luck_start || time()>$luck_end){
+            $luck_issue=$this->get_max_issue(1);
+            $luck_url='http://api.b1api.com/api?p=json&t=xyft&limit=1&token=6E84023D0C29F550';
+            $this->deposit_luck($luck_issue,$luck_url,1);
+        }
+        //快乐飞艇 快乐赛车 快乐时时彩  每天6点26-7:30闭市   不再发送请求
+        $happy_start=strtotime(date('Y-m-d 06:26:00',time()));
+        $happy_end=strtotime(date('Y-m-d 07:03:00',time()));
+        if(time()<$happy_start || time()>$happy_end){
+            //获取四个最大的期号   1幸运飞艇  2快乐飞艇  3快乐赛车  4快乐时时彩
+
+            $airship_issue=$this->get_max_issue(2);
+            $racing_issue=$this->get_max_issue(3);
+            $lottery_issue=$this->get_max_issue(4);
+            //4个接口连接
+
+            $airship_url='https://api.happylottery.com/data/airship/last.xml';
+            $racing_url='https://api.happylottery.com/data/racing/last.xml';
+            $lottery_url='https://api.happylottery.com/data/lottery/last.xml';
+
+            $this->deposit($airship_issue,$airship_url,2);
+            $this->deposit($racing_issue,$racing_url,3);
+            $this->deposit($lottery_issue,$lottery_url,4);
+        }
     }
 
     public function deposit($max_issue,$url,$type){
