@@ -11,7 +11,7 @@ header("Content-type: text/html; charset=utf-8");
 date_default_timezone_set("PRC");
 use think\Db;
 
-class Happy
+class Hope
 {
     /**
      * 每分钟向接口发送一次请求  将期号大于表中最大期号的数据存起来
