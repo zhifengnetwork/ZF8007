@@ -140,6 +140,10 @@
             function set_count_down() {
                 var m=$("#min").val()
                 var s=$("#sec").val()
+                if(m==99 || s==99){
+                    $("#count_down").html('已闭市');
+                    return false;
+                }
                 var total_time=parseInt(m)*60+parseInt(s)-runtimes;
                 // alert(total_time)
                 var min=Math.floor(total_time/60)%60;
@@ -310,6 +314,7 @@
                                    l++;
                                }
                            }
+                           // console.log($("#lottery_number_1").eq(-1).html())
                            page++;
                            loadingdelay = true;
                            $(".loadingBox").hide();
@@ -385,8 +390,10 @@
                                     str_number+='<li class="item-soll-qi"><div class="qi-num six" style="background-color:#'+data.lottery_color[k][5]+';color:#'+data.font_color[k][5]+'">'+p[1]+'</div></li>';
                                     str_number+='</ul></li>';
                                     $("#lottery_number_"+l).prepend(str_number);
+                                    $("#lottery_number_"+l).children().eq(-1).remove();
                                     l++;
                                 }
+                                $("#lottery_date_str").children().eq(-1).remove();
 
                                 //替换倒计时
                                 $("#min").val(data.min)

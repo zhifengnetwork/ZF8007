@@ -60,7 +60,17 @@ class Index extends Base
 //        echo $type;
         if(in_array($type,array(1,2,3,4))){
             $page=15;
+//            if($num==0){
+//                $max=1;
+//            }else{
             $max=($num-1)*$page;
+            if($max==90){
+                $page=10;
+            }elseif ($max>90){
+                return false;
+            }
+//            }
+
 //            var_dump((int)$type);
 //            var_dump($max);
 //            var_dump($page);die;
@@ -154,6 +164,21 @@ class Index extends Base
             }
             if($sec<10){
                 $sec='0'.$sec;
+            }
+            if($type==1){
+                $close_start_time=strtotime(date('Y-m-d 04:04:00',time()));
+                $close_end_time=strtotime(date("Y-m-d 13:09:00",time()));
+                if(time()>=$close_start_time && time()<=$close_end_time){
+                    $min=99;
+                    $sec=99;
+                }
+            }else{
+                $close_start_time=strtotime(date('Y-m-d 06:26:00',time()));
+                $close_end_time=strtotime(date("Y-m-d 07:26:00",time()));
+                if(time()>=$close_start_time && time()<=$close_end_time){
+                    $min=99;
+                    $sec=99;
+                }
             }
             $this->assign('min',$min);
             $this->assign('sec',$sec);
@@ -259,13 +284,13 @@ class Index extends Base
 //                var_dump($data);
                 //倒计时
                 if($type==2){
-                    $s=30;
+                    $s=35;
                 }elseif ($type==3){
-                    $s=15;
+                    $s=20;
                 }elseif ($type==4){
-                    $s=45;
+                    $s=50;
                 }else{
-                    $s=5;
+                    $s=0;
                 }
                 $min=date('i')%5;
                 $sec=date('s')-$s;
@@ -289,7 +314,7 @@ class Index extends Base
                     $sec='0'.$sec;
                 }
                 $data['min']=$min;
-                $data['sec']=$sec;
+                $data['sec']=(int)$sec;
 
                 $this->ajaxReturn($data);
             }
