@@ -111,24 +111,20 @@
                 <td>{$server["SERVER_PORT"]}</td>
             </tr>
             <tr>
-                <td>服务器IIS版本</td>
-                <td>{$server["SERVER_ADDR"]}</td>
+                <td>服务器版本</td>
+                <td>{$server["SERVER_SOFTWARE"]}</td>
             </tr>
             <tr>
                 <td>本文件所在文件夹</td>
-                <td>{$server["SERVER_ADDR"]}</td>
+                <td>{$server["REQUEST_URI"]}</td>
             </tr>
             <tr>
                 <td>服务器操作系统</td>
-                <td>{$server["SERVER_ADDR"]}</td>
+                <td>Linux</td>
             </tr>
             <tr>
                 <td>系统所在文件夹</td>
-                <td>{$server["SERVER_ADDR"]}</td>
-            </tr>
-            <tr>
-                <td>服务器脚本超时时间</td>
-                <td>{$server["SERVER_ADDR"]}秒</td>
+                <td>{$server["HTTP_REFERER"]}</td>
             </tr>
             <tr>
                 <td>服务器的语言种类</td>
@@ -136,11 +132,7 @@
             </tr>
             <tr>
                 <td>服务器当前时间</td>
-                <td>{$server["SERVER_ADDR"]}</td>
-            </tr>
-            <tr>
-                <td>服务器上次启动到现在已运行</td>
-                <td>{$server["SERVER_ADDR"]}分钟</td>
+                <td>{$server["REQUEST_TIME"]|date="Y-m-d H:i:s",###}</td>
             </tr>
             </tbody>
         </table>
