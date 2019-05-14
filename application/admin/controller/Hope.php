@@ -57,7 +57,7 @@ class Hope
             if(file_exists($lockfile)){
                 exit();
             }else{
-                $file=fopen($lockfile,'w+x');
+                $file=fopen($lockfile,'a+');
                 fwrite($file,'123');
                 fclose($file);
             }
