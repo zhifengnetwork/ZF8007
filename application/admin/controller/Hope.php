@@ -63,7 +63,12 @@ class Hope
             }
             $luck_data=$this->get_interface_infomation($url);
             if(isset($luck_data) && !empty($luck_data)){
-                unlink($lockfile);
+                if(unlink($lockfile)){
+                    echo '文件删除成功';
+                }else{
+                    echo '文件删除失败';
+                }
+
                 if($max_issue==1){
                     if(isset($luck_data) && !empty($luck_data)){
                         foreach ($luck_data as $key=>$value){
