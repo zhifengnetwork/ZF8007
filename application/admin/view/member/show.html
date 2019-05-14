@@ -1,9 +1,24 @@
 <!DOCTYPE HTML>
 <html>
-{include file='layout/header' /}
+<script type="text/javascript" src="/__STATIC__/lib/html5.js"></script>
+<script type="text/javascript" src="/__STATIC__/lib/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="/__STATIC__/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="/__STATIC__/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="/__STATIC__/lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="/__STATIC__/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="/__STATIC__/h-ui.admin/css/style.css" />
+<!--[if IE 6]>
+<script type="text/javascript" src="http://lib.h-ui.net/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
 <body>
 <div class="cl pd-20" style=" background-color:#5bacb6">
-  <img class="avatar size-XL l" src="static/h-ui/images/user.png">
+  {empty name="$info.avatar"}
+  <img class="avatar size-XL l" src="/__STATIC__/h-ui/images/user.png">
+  {else /}
+  <img class="avatar size-XL l" src="{$info.avatar}">
+  {/empty}
   <dl style="margin-left:80px; color:#fff">
     <dt><span class="f-18">{$info.nickname}</span> <span class="pl-10 f-12">余额：{$info.commission}</span></dt>
     <!--<dd class="pt-10 f-12" style="margin-left:0">这家伙很懒，什么也没有留下</dd>-->
