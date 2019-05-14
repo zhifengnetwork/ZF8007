@@ -32,6 +32,7 @@
 							<th width="40">性别</th>
 							<th width="200">手机</th>
 							<th width="200">邮箱</th>
+							<th width="80">上级名称</th>
 							<th width="80">套餐结束时间</th>
 							<th width="200">加入时间</th>
 							<th width="70">状态</th>
@@ -52,6 +53,12 @@
 							</td>
 							<td>{$vo.mobile}</td>
 							<td>{$vo.email}</td>
+							<td>{empty name="$vo.first_leader"}
+								无上级
+								{else /}
+								{$vo.first_leader|user_name}
+								{/empty}
+							</td>
 							<td >{$vo.end_time|date="Y-m-d H:i:s",###}</td>
 							<td>{$vo.register_time|date="Y-m-d H:i:s",###}</td>
 							<td class="td-status">
