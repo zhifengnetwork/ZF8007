@@ -215,7 +215,7 @@ class Money extends Base
 
         $this->assign('seach',$seach);
         $list = Db::name('withdraw_log')->where($where)->order('id desc')->paginate($page);
-        $count = count($list);
+        $count = Db::name('withdraw_log')->count('*');
         $this->assign('list',$list);
         $this->assign('count',$count);
 

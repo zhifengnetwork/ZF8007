@@ -34,11 +34,12 @@
                     <thead>
                     <tr class="text-c">
                         <th width="25"><input type="checkbox" name="" value=""></th>
-                        <th width="80">ID</th>
+                        <th width="40">ID</th>
                         <th width="80">用户名</th>
                         <th width="90">提现方式</th>
+                        <th width="100">提现账号</th>
                         <th width="90">提现金额</th>
-                        <th width="150">申请时间</th>
+                        <th width="100">申请时间</th>
                         <th width="90">审核状态</th>
                         <th width="100">操作</th>
                     </tr>
@@ -49,7 +50,14 @@
                         <td><input type="checkbox" value="{$vo.id}" name="pack_id"></td>
                         <td>{$vo.id}</td>
                         <td>{$vo.user_id|user_name}</td>
-                        <td>{:get_withdraw_way($vo.withdraw_way,$vo.user_id)}</td>
+                        <td>
+                            {if condition="{:get_withdraw_way($vo.withdraw_way,$vo.user_id)['address'] eq ''"}
+                                {:get_withdraw_way($vo.withdraw_way,$vo.user_id)['value']}
+                            {else /}
+                                {:get_withdraw_way($vo.withdraw_way,$vo.user_id)['value']}({:get_withdraw_way($vo.withdraw_way,$vo.user_id)['address']})
+                            {/if}
+                        </td>
+                        <td>{:get_withdraw_way($vo.withdraw_way,$vo.user_id)['account']}</td>
                         <td>{$vo.money}</td>
                         <td>{$vo.apply_time|date="Y-m-d H:i:s",###}</td>
                         <td>
