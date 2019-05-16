@@ -2,6 +2,36 @@
 <html>
 <head>
     {include file="layout/header"}
+    <style>
+        .td_hover {
+            display: block;
+            width: 300px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .td_hover img {
+            margin: 0 auto;
+            display: block;
+            border: 0;
+            width: 100px;
+            transform: scale(1);
+            transition: all 1s ease 0s;
+            -webkit-transform: scale(1);
+            -webkit-transform: all 1s ease 0s;
+        }
+
+        .td_hover:hover img {
+            transform: scale(3);
+            transition: all 1s ease 0s;
+            -webkit-transform: scale(3);
+            -webkit-transform: all 1s ease 0s;
+            z-index: 1001;
+        }
+        .td_hover:hover {
+            z-index: 1;
+        }
+    </style>
 </head>
 {include file="layout/menu"}
 <body>
@@ -51,7 +81,7 @@
                     <td><input type="checkbox" value="{$vo.id}" name="pack_id"></td>
                     <td>{$vo.name}</td>
                     <td>{$vo.user_id|get_admin_name}</td>
-                    <td><img src="{$vo.image}" alt=""></td>
+                    <td class="td_hover"><img src="{$vo.image}" alt="" /></td>
                     <td>{:date('Y-m-d,H:s:i',$vo.add_time)}</td>
                     <td>{:date('Y-m-d,H:s:i',$vo.update_time)}</td>
                     <td class="td-manage">
