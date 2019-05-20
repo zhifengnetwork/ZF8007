@@ -166,7 +166,10 @@ body{
 }
 
 .result-soll{
-    margin-left:.09rem;
+    /*margin-left:.09rem;*/
+    /*display: inline-block;*/
+    /*white-space: nowrap;*/
+    margin-left:.18rem;
     display: inline-block;
     white-space: nowrap;
 }
