@@ -587,23 +587,26 @@ class User extends Base
     public function my_team(){
         //先查一级下级
         $first_team=Db::name('users')->where(['first_leader'=>$this->user_id])->field('id,nickname')->select();
+        $second_team=array();
         if(is_array($first_team)&&!empty($first_team)){
             foreach ($first_team as $key=>$value){
                 $first_team[$key]['level']='1级';
                 $first_team[$key]['leader_name']=session('user.nickname');
                 //再查二级下级
-                $second_team=Db::name('users')->where(['first_leader'=>$value['id']])->field('id,nickname')->select();
-                if(is_array($second_team)&&!empty($second_team)){
-                    foreach ($second_team as $k=>$v){
-                        $second_team[$k]['level']="2级";
-                        $second_team[$k]['leader_name']=$value['nickname'];
+//                var_dump($value);
+                $second=Db::name('users')->where(['first_leader'=>$value['id']])->field('id,nickname')->select();
+
+                if(is_array($second)&&!empty($second)){
+                    foreach ($second as $k=>$v){
+                        $v['level']="2级";
+                        $v['leader_name']=$value['nickname'];
+                        $second_team[]=$v;
                     }
                 }
-
+//                var_dump($second_team);die;
             }
-        }else{
-            $second_team=array();
         }
+//        var_dump($second_team);die;
         $this->assign('first',$first_team);
         $this->assign('second',$second_team);
         return $this->fetch();
