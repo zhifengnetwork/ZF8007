@@ -37,6 +37,7 @@
                         <th width="40">ID</th>
                         <th width="80">用户名</th>
                         <th width="90">提现方式</th>
+                        <th width="90">提现人姓名</th>
                         <th width="100">提现账号</th>
                         <th width="90">提现金额</th>
                         <th width="100">申请时间</th>
@@ -57,6 +58,7 @@
                                 {:get_withdraw_way($vo.withdraw_way,$vo.user_id)['value']}({:get_withdraw_way($vo.withdraw_way,$vo.user_id)['address']})
                             {/if}
                         </td>
+                        <td>{:get_withdraw_way($vo.withdraw_way,$vo.user_id)['user_name']}</td>
                         <td>{:get_withdraw_way($vo.withdraw_way,$vo.user_id)['account']}</td>
                         <td>{$vo.money}</td>
                         <td>{$vo.apply_time|date="Y-m-d H:i:s",###}</td>
