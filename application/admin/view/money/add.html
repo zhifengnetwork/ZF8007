@@ -30,7 +30,7 @@
                 <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>套餐名：</label>
                 <div class="formControls col-xs-8 col-sm-6">
                     <input type="text" class="input-text" value="{if condition=" isset($info)"}{$info.pack_name}{/if}"
-                        placeholder="请填写套餐名" id="name" name="name">
+                        placeholder="请填写套餐名" id="name" name="name" />
                 </div>
             </div>
             <div class="row cl">
@@ -48,10 +48,17 @@
                 </div>
             </div>
             <div class="row cl">
-                <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>返佣：</label>
+                <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>一级返佣：</label>
                 <div class="formControls col-xs-8 col-sm-6 unit">
                     <input type="text" class="input-text" autocomplete="off" value="{if condition="
-                        isset($info)"}{$info.rebate_money}{/if}" placeholder="请填写返佣金额" id="rebate" 元 name="rebate"><span style="padding: 5px;">元</span>
+                        isset($info)"}{$info.first_rebate_money}{/if}" placeholder="请填写一级返佣金额" id="first_rebate" 元 name="first_rebate"><span style="padding: 5px;">元</span>
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>二级返佣：</label>
+                <div class="formControls col-xs-8 col-sm-6 unit">
+                    <input type="text" class="input-text" autocomplete="off" value="{if condition="
+                        isset($info)"}{$info.second_rebate_money}{/if}" placeholder="请填写二级返佣金额" id="second_rebate" 元 name="second_rebate"><span style="padding: 5px;">元</span>
                 </div>
             </div>
             <div class="row cl">
@@ -81,7 +88,8 @@
                     var name = $("#name").val()
                     var time = $("#time ").val()
                     var money = $("#money").val()
-                    var rebate = $("#rebate").val()
+                    var first_rebate = $("#first_rebate").val()
+                    var second_rebate = $("#second_rebate").val()
                     if (!name) {
                         layer.msg('套餐名必须填写', { icon: 2, time: 1000 });
                         return false;
@@ -94,15 +102,19 @@
                         layer.msg('套餐金额必须填写', { icon: 2, time: 1000 });
                         return false;
                     }
-                    if (!rebate) {
-                        layer.msg('返佣金额必须填写', { icon: 2, time: 1000 });
+                    if (!first_rebate) {
+                        layer.msg('一级返佣金额必须填写', { icon: 2, time: 1000 });
+                        return false;
+                    }
+                    if (!second_rebate) {
+                        layer.msg('二级返佣金额必须填写', { icon: 2, time: 1000 });
                         return false;
                     }
 
                     $.ajax({
                         type: 'post',
                         url: "{:url('admin/money/add')}",
-                        data: { 'id': id, 'pack_name': name, 'pack_time': time, 'pack_money': money, 'rebate_money': rebate, },
+                        data: { 'id': id, 'pack_name': name, 'pack_time': time, 'pack_money': money, 'first_rebate_money': first_rebate,'second_rebate_money': second_rebate },
 
                         success: function (data) {
 

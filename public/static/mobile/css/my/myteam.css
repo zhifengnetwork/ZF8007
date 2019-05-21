@@ -1,0 +1,34 @@
+.wrapper {
+	width: 100%;
+	height: 100%;
+} 
+.list {
+	font-size: 0;
+}
+.list ul li {
+	display: inline-block;
+	vertical-align: top;
+	width: 25%;
+	font-size: .3rem;
+	letter-spacing: 1px;
+	color: #f9f7fb;
+	text-align: center;
+	line-height: .75rem;
+}
+
+.item_wrap {
+	background: #1f2034;
+	font-size: 0;
+}
+.item_wrap .rank {
+	border-bottom: 2px solid #383a60;
+}
+.item_wrap .item li {
+	display: inline-block;
+	vertical-align: top;
+	width: 25%;
+	font-size: .24rem;
+	color: #f9f7fb;
+	text-align: center;
+	line-height: .65rem;
+}

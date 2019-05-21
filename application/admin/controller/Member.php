@@ -210,30 +210,45 @@ class Member extends Base
             // 启动事务
             Db::startTrans();
             try{
-
                 // 通过
                 if($data['pay_status']==1){
                     $data['utime'] = time();
                     $res =  Db::name('user_pay_log')->update($data);                    
                     //给用户添加对应时长
                     $where = $this->add_condition($data);
+//                    var_dump($where);die;
                     // 判断是否存在上级，存在则给上级加佣金
                     $user_leader = Db::name('users')->where('id', $where['id'])->find();
                     if($user_leader['first_leader']){
                         // 上级用户
-                        Db::name('users')->where('id',$user_leader['first_leader'])->setInc('commission', $where['commission']);
+                        Db::name('users')->where('id',$user_leader['first_leader'])->setInc('commission', $where['first_commission']);
                         $rebate_data = [
                             'order_id'      =>  $data['id'],
                             'first_leader'  =>  $user_leader['first_leader'],
-                            'rebate_money'  =>  $where['commission'],
+                            'rebate_money'  =>  $where['first_commission'],
                             'rebate_time'   =>  time()
                         ];
                         // 佣金表变动
-                        Db::name('rebate_log')->insert($rebate_data);                          
+                        Db::name('rebate_log')->insert($rebate_data);
+                        //再看看上级有没有上级了
+                        $user_up_leader = Db::name('users')->where('id', $user_leader['first_leader'])->find();
+                        if(isset($user_up_leader)&&$user_up_leader['first_leader']){
+                            // 上级用户
+                            Db::name('users')->where('id',$user_up_leader['first_leader'])->setInc('commission', $where['second_commission']);
+                            $rebate_data = [
+                                'order_id'      =>  $data['id'],
+                                'first_leader'  =>  $user_up_leader['first_leader'],
+                                'rebate_money'  =>  $where['second_commission'],
+                                'rebate_time'   =>  time()
+                            ];
+                            // 佣金表变动
+                            Db::name('rebate_log')->insert($rebate_data);
+                        }
                     }
                     //下级用户
-                    unset($where['commission']);
-                    $user_add = Db::name('users')->update($where);          
+                    unset($where['first_commission']);
+                    unset($where['second_commission']);
+                    $user_add = Db::name('users')->update($where);
                    
                 }else{
                     $data['utime'] = time();
@@ -279,8 +294,9 @@ class Member extends Base
         $where = [
             'end_time' => $end_time,
             'id'       => $info['user_id'],
-            'commission' =>$info['rebate_money']
-        ]; 
+            'first_commission' =>$info['first_rebate_money'],
+            'second_commission' =>$info['second_rebate_money']
+        ];
         return $where;       
     }  
 

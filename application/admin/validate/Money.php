@@ -12,8 +12,9 @@ class Money extends validate
         // 'package'     => '|unique:pack_name',
         'pack_time'   => 'require|checkNum',
         'pack_money'  => 'require|checkFloat',
-        'rebate_money' => 'require|checkFloat'
-        
+        'first_rebate_money' => 'require|checkFloat',
+        'second_rebate_money' => 'require|checkFloat'
+
         // 'password'      => 'require|length:4,16',
         // 'password2'     => 'require|length:4,16',
         // 'group_id'      => 'require',
@@ -27,7 +28,8 @@ class Money extends validate
         'pack_time.require'          => '请填写套餐时长',
         // 'pack_time.checkNum'         => '请填写正整数',
         'pack_money.require'         => '请填写套餐时长',
-        'rebate_money.require'       => '请填写返佣金额',
+        'first_rebate_money.require'       => '请填写一级返佣金额',
+        'second_rebate_money.require'       => '请填写二级返佣金额',
     ];
     // protected $scene = [
     //     'add' => ['name', 'jurisdiction'],

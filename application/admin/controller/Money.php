@@ -89,7 +89,8 @@ class Money extends Base
                     'pack_name'  => $data['pack_name'],
                     'pack_money' => $data['pack_money'],
                     'pack_time'  => $data[ 'pack_time'],
-                    'rebate_money'=> $data['rebate_money'],
+                    'first_rebate_money'=> $data['first_rebate_money'],
+                    'second_rebate_money'=> $data['second_rebate_money'],
                     'update_time' => time()
                 ];                
                 $res = Db::name('package')->where('id',$data['id'])->update($data1);
@@ -103,7 +104,8 @@ class Money extends Base
                 'pack_name'  => $data['pack_name'],
                 'pack_money' => $data['pack_money'],
                 'pack_time'  => $data['pack_time'],
-                'rebate_money' => $data['rebate_money'],
+                'first_rebate_money'=> $data['first_rebate_money'],
+                'second_rebate_money'=> $data['second_rebate_money'],
                 'add_time' => time()
             ]; 
             $res = Db::name('package')->insert($data1);

@@ -130,7 +130,10 @@ class User extends Base
             ->select();
 //        dump($team_ids);die;
         $team = Db::name('users')->where('first_leader',$user_id)->select();//dump($team);
-        $count = count($team);
+        //我的团队人数包含直推一级和这一级的所有下级
+        $count_team=Db::query("select count(*) count from zf_users where first_leader in (select id from zf_users where first_leader=$user_id)");
+//        var_dump($count_team[0]);die;
+        $count = count($team)+$count_team[0]['count'];
         $this->assign('info',$info);
         $this->assign('team_ids',$team_ids);
         $this->assign('count',$count);
@@ -580,5 +583,29 @@ class User extends Base
                     return json(['code'=>0]);
                 }
         }
+    }
+    public function my_team(){
+        //先查一级下级
+        $first_team=Db::name('users')->where(['first_leader'=>$this->user_id])->field('id,nickname')->select();
+        if(is_array($first_team)&&!empty($first_team)){
+            foreach ($first_team as $key=>$value){
+                $first_team[$key]['level']='1级';
+                $first_team[$key]['leader_name']=session('user.nickname');
+                //再查二级下级
+                $second_team=Db::name('users')->where(['first_leader'=>$value['id']])->field('id,nickname')->select();
+                if(is_array($second_team)&&!empty($second_team)){
+                    foreach ($second_team as $k=>$v){
+                        $second_team[$k]['level']="2级";
+                        $second_team[$k]['leader_name']=$value['nickname'];
+                    }
+                }
+
+            }
+        }else{
+            $second_team=array();
+        }
+        $this->assign('first',$first_team);
+        $this->assign('second',$second_team);
+        return $this->fetch();
     }
 }
