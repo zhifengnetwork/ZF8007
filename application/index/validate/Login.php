@@ -31,7 +31,7 @@ class Login extends validate
      * 手机号码
      */
     protected function checkMoblie($value){
-        if(preg_match( '/^13[\d]{9}$|^14[5,7]{1}\d{8}$|^15[^4]{1}\d{8}$|^17[0,6,7,8]{1}\d{8}$|^18[\d]{9}$/',$value)){
+        if(preg_match( "/^1[3456789]\d{9}$/",$value)){
             return true;
         }else{
             return '手机号输入有误！';
