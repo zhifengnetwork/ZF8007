@@ -57,6 +57,9 @@
 	margin: auto;
 	width: .19rem;
 	height: .34rem;
+	background: url("/public/static/mobile/image/back@2x.png") no-repeat;
+	background-size: 100% 100%;
+	
 }
 /*（右box-button）文字*/
 .lb_headWrap_text {
