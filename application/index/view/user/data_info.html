@@ -45,7 +45,7 @@
             		<a href="/index/user/alter_name">
 	            		<div class="ber_wrap">
 	        				<span>会员名：</span>
-	        				<span>*{if condition = "empty($info.nickname)"}{$info.mobile}{else/}{$info.nickname}{/if}</span>
+	        				<span>{if condition = "empty($info.nickname)"}{$info.mobile}{else/}{$info.nickname}{/if}</span>
 	        				<div class="run"></div>
 	            		</div>
             		</a>
