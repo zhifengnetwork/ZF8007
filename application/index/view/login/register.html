@@ -206,7 +206,7 @@
                         return false;
                     }else{
 						layer.msg(msg.msg, { time: 1000 }, function () {
-							window.location.replace(msg.url);
+							window.location.href = msg.url;
 						});
 					}
                 }
